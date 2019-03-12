@@ -69,6 +69,7 @@ public class Particle {
 
     /**
      * Called to tell a Particle to increase it's value
+     * If maximum value has been reached, it explodes
      *
      * @param	owner	Player who increases it
      */
@@ -92,16 +93,20 @@ public class Particle {
 
     /**
      * Called to react with the neighboring Particles
+     * It sets its value to zero, and sets its owner to null
      */
     private void Explode(){
 
-        current_size = 0;
+        Player exploder = this.owner;
+
+        this.current_size = 0;
+        this.owner = null;
 
         for (Direction dir : Direction.values()) {
 
             if(field.GetNeighborAt(dir) != null){
 
-                field.GetNeighborAt(dir).GetParticle().Increase(owner);
+                field.GetNeighborAt(dir).GetParticle().Increase(exploder);
 
             }
 
