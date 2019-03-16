@@ -93,7 +93,7 @@ public class GamePlay implements IGameModel {
 
         if(players.size() >= min_players_to_start){
 
-            players.get(current_player_index).Step();
+            players.get(current_player_index).ExecuteStep();
             return true;
 
         }
@@ -123,9 +123,8 @@ public class GamePlay implements IGameModel {
 
         if(players.get(current_player_index).ExecuteStep(pos_y,pos_x)){
 
-            if(this.UpdatePlayersInGame() && players.size() == 1){
+            if(this.IsGameEnded()){
 
-                winner_Id = players.get(current_player_index).GetId();
                 return (-1)*winner_Id;
 
             }
@@ -159,55 +158,10 @@ public class GamePlay implements IGameModel {
     }
 
     /**
-     * Provides the actual Playground info - Player and it's elements on Field
-     * First index is the Y coordinate of Field
-     * Second index is the X coordinate of Field
-     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field
-     *
-     * @return 	int[][][]   Field information matrix
-     */
-    public int[][][] ActualPlaygroundInfo() {
-
-        int[] dim = this.GetDimension();
-
-        int[][][] state_matrix = new int[dim[0]][dim[1]][2];
-
-        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
-
-            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
-
-                state_matrix[actual_height][actual_width][0] = playground.GetFieldAt(actual_height, actual_width).GetPlayerIdOnField();
-                state_matrix[actual_height][actual_width][1] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
-
-            }
-
-        }
-
-        return state_matrix;
-    }
-
-    /**
-     * Provides the dimensions of the Playground
-     * [0] is the width of the Playground
-     * [1] is the height of the Playground
-     *
-     * @return 	int[]   Playground dimension info
-     */
-    public int[] GetDimension() {
-
-        int[] dim = new int[2];
-
-        dim[0] = playground.GetHeight();
-        dim[1] = playground.GetWidth();
-
-        return dim;
-
-    }
-
-    /**
      * Updating the players list based on the current Playground status
      * Removes the Player from the players if no territory belongs to it anymore
      * Does not remove a Player during the first round
+     * Sets winner_Id if there is a winner
      *
      * @return 	boolean     True means there was modification in the players list, false means there was no change
      */
@@ -221,7 +175,7 @@ public class GamePlay implements IGameModel {
 
         }
 
-        //key is the Id of Player, value is the number of Fields it owns
+        //key is the Id of the Player, value is the number of Fields it owns
         HashMap<Integer,Integer> field_number_of_players = new HashMap<Integer, Integer>();
 
         for(Player player : players) {
@@ -283,7 +237,59 @@ public class GamePlay implements IGameModel {
 
         }
 
+        if(players.size() == 1){
+
+            winner_Id = players.get(current_player_index).GetId();
+
+        }
+
         return removed_flag;
+
+    }
+
+    /**
+     * Provides the actual Playground info - Player and it's elements on Field
+     * First index is the Y coordinate of Field
+     * Second index is the X coordinate of Field
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field
+     *
+     * @return 	int[][][]   Field information matrix
+     */
+    public int[][][] ActualPlaygroundInfo() {
+
+        int[] dim = this.GetDimension();
+
+        int[][][] state_matrix = new int[dim[0]][dim[1]][2];
+
+        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+
+            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+
+                state_matrix[actual_height][actual_width][0] = playground.GetFieldAt(actual_height, actual_width).GetPlayerIdOnField();
+                state_matrix[actual_height][actual_width][1] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
+
+            }
+
+        }
+
+        return state_matrix;
+    }
+
+    /**
+     * Provides the dimensions of the Playground
+     * [0] is the width of the Playground
+     * [1] is the height of the Playground
+     *
+     * @return 	int[]   Playground dimension info
+     */
+    public int[] GetDimension() {
+
+        int[] dim = new int[2];
+
+        dim[0] = playground.GetHeight();
+        dim[1] = playground.GetWidth();
+
+        return dim;
 
     }
 
@@ -295,6 +301,19 @@ public class GamePlay implements IGameModel {
     protected Playground GetPlayground() {
 
         return this.playground;
+
+    }
+
+    /**
+     * Called to decide whether the GamePlay is over or not
+     *
+     * @return 	boolean     True means Game over, False otherwise
+     */
+    protected boolean IsGameEnded(){
+
+        this.UpdatePlayersInGame();
+
+        return winner_Id != 0;
 
     }
 

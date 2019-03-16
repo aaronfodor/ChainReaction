@@ -35,11 +35,11 @@ public abstract class Player {
     }
 
     /**
-     * Quick stepping
+     * Automatic stepping
      *
      * @return 	boolean     Returns false by default
      */
-    public boolean Step() {
+    public boolean ExecuteStep() {
 
         return false;
 

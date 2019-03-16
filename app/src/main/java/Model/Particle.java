@@ -33,7 +33,7 @@ public class Particle {
      * @param	owner	Player to whom the Particle belongs
      * @param	max_size	Maximum size of the Particle before exploding
      */
-    public Particle(Field field, Player owner, int max_size){
+    protected Particle(Field field, Player owner, int max_size){
 
         this.field = field;
         this.owner = owner;
@@ -71,7 +71,7 @@ public class Particle {
      * Called to tell a Particle to increase it's value
      * If maximum value has been reached, it explodes
      *
-     * @param	owner	Player who increases it
+     * @param	owner   Player who increases it
      */
     private void Increase(Player owner){
 
@@ -93,9 +93,16 @@ public class Particle {
 
     /**
      * Called to react with the neighboring Particles
+     * Does nothing if the game is over
      * It sets its value to zero, and sets its owner to null
      */
     private void Explode(){
+
+        if(IsGameEnded()){
+
+            return;
+
+        }
 
         Player exploder = this.owner;
 
@@ -119,7 +126,7 @@ public class Particle {
      *
      * @return 	int    Id of the owner, or 0 if there is no owner
      */
-    public int GetOwnerId(){
+    protected int GetOwnerId(){
 
         if(owner != null){
 
@@ -140,9 +147,20 @@ public class Particle {
      *
      * @return 	int    Current size of the Particle
      */
-    public int GetSize(){
+    protected int GetSize(){
 
         return this.current_size;
+
+    }
+
+    /**
+     * Called to decide whether the game is over or not
+     *
+     * @return 	boolean     True means Game is over - computation is not necessary, False otherwise
+     */
+    private boolean IsGameEnded(){
+
+        return this.field.IsGameEnded();
 
     }
 

@@ -41,7 +41,6 @@ public class Field {
     public Field(Playground playground, int max_atoms, String Id){
 
         this.playground = playground;
-        this.particle = new Particle(this, null, max_atoms);
         this.neighbors = new EnumMap<Direction, Field>(Direction.class);
         this.Id = Id;
 
@@ -107,6 +106,17 @@ public class Field {
     public int GetPlayerIdOnField(){
 
         return particle.GetOwnerId();
+
+    }
+
+    /**
+     * Called to decide whether the game is over or not
+     *
+     * @return 	boolean     True means Game over, False otherwise
+     */
+    protected boolean IsGameEnded(){
+
+        return this.playground.IsGameEnded();
 
     }
 

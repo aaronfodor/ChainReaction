@@ -1,7 +1,5 @@
 package Model;
 
-import Presenter.IGameModel;
-
 /**
  * The Playground in the GamePlay
  * The collection of Fields form the Playground
@@ -9,7 +7,7 @@ import Presenter.IGameModel;
 public class Playground {
 
     /**
-     * GamePlay that the Playground is a part of
+     * GamePlay that the Playground is part of
      */
     private GamePlay gameplay;
 
@@ -17,11 +15,6 @@ public class Playground {
      * Matrix of Fields in the Warehouse
      */
     private Field[][] fields;
-
-    /**
-     * An object which presents this Playground
-     */
-    private IGameModel gameplay_presenter;
 
     /**
      * Width of the Warehouse
@@ -150,6 +143,17 @@ public class Playground {
     protected int GetHeight(){
 
         return this.height;
+
+    }
+
+    /**
+     * Called to decide whether the game is over or not
+     *
+     * @return 	boolean     True means Game over, False otherwise
+     */
+    protected boolean IsGameEnded(){
+
+        return this.gameplay.IsGameEnded();
 
     }
 

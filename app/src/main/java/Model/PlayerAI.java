@@ -27,7 +27,7 @@ public class PlayerAI extends Player {
      * @return 	boolean     True as automatic stepping has been conducted
      */
     @Override
-    public boolean Step() {
+    public boolean ExecuteStep() {
 
         //int[]position = this.AI.Predict(this.gameplay.GetPlayground(), this);
         //this.gameplay.StepRequest(position[0], position[1]);

@@ -45,7 +45,7 @@ public class GamePresenter {
         players.add(player1);
         players.add(player2);
 
-        this.model = new GamePlay(height,width,players);
+        this.model = new GamePlay(height, width, players);
         this.model.StartGame();
 
         int starter_player_Id = Integer.valueOf(players.get(0)[0]);
