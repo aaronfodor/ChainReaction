@@ -10,30 +10,17 @@ import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import hu.bme.aut.android.chainreaction.R
-
-
 
 class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
-
-    override fun onClick(v: View?) {
-
-        if(v != null){
-
-            val name = v.tag.toString()
-            val number_x = Integer.valueOf(name.get(4).toString())
-            val number_y = Integer.valueOf(name.get(6).toString())
-            onPlaygroudElementClicked(number_x, number_y)
-
-        }
-
-    }
 
     /**
      * presenter of the view
      */
     private lateinit var presenter: GamePresenter
 
+    /**
+     * layout of the Playground
+     */
     private lateinit var TableLayoutPlayground: TableLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +45,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
     }
 
-    fun Create7x5Game(){
+    /**
+     * Creates the presenter with an intent of a 7x5 dimensional Playground, and sets the onClickListeners on the Fields
+     */
+    private fun Create7x5Game(){
 
         TableLayoutPlayground = findViewById<TableLayout>(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
         TableLayoutPlayground.setBackgroundColor(Color.RED)
@@ -76,7 +66,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
                 val Field = row.getChildAt(j) as ImageView
                 Field.setOnClickListener(this)
-                //Field.setOnClickListener(onPlaygroudElementClicked(i, j))
 
             }
 
@@ -84,6 +73,31 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
     }
 
+    /**
+     * original onClick override
+     *
+     * @param    v      Current View object
+     */
+    override fun onClick(v: View?) {
+
+        if(v != null){
+
+            val name = v.tag.toString()
+            val number_x = Integer.valueOf(name.get(4).toString())
+            val number_y = Integer.valueOf(name.get(6).toString())
+            onPlaygroudElementClicked(number_x, number_y)
+
+        }
+
+    }
+
+    /**
+     * Element click listener
+     *
+     * @param    pos_y               Y coordinate
+     * @param    pos_x               X coordinate
+     * @return   OnClickListener     Listener of the given object, or null
+     */
     fun onPlaygroudElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
 
         presenter.StepRequest(pos_y, pos_x)
@@ -109,11 +123,11 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         if(color == 2){
 
             when (number) {
-                1 -> Field.setImageResource(R.drawable.blue_dot1)
-                2 -> Field.setImageResource(R.drawable.blue_dot2)
-                3 -> Field.setImageResource(R.drawable.blue_dot3)
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot3)
                 else -> { // Note the block
-                    Field.setImageResource(R.drawable.nothing)
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
                 }
 
             }
@@ -122,11 +136,11 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         else if(color == 1){
 
             when (number) {
-                1 -> Field.setImageResource(R.drawable.red_dot1)
-                2 -> Field.setImageResource(R.drawable.red_dot2)
-                3 -> Field.setImageResource(R.drawable.red_dot3)
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot3)
                 else -> { // Note the block
-                    Field.setImageResource(R.drawable.nothing)
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
                 }
             }
 
@@ -134,7 +148,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         else{
 
-            Field.setImageResource(R.drawable.nothing)
+            Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
 
         }
 

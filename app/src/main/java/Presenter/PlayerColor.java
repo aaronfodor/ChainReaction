@@ -1,7 +1,5 @@
 package Presenter;
 
-import android.graphics.Color;
-
 /**
  * Player Id and Color connection
  */

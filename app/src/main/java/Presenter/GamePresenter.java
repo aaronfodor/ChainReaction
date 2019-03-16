@@ -1,7 +1,6 @@
 package Presenter;
 
 import Model.GamePlay;
-
 import java.util.ArrayList;
 
 /**
@@ -20,6 +19,11 @@ public class GamePresenter {
      * MVP view
      */
     private IGameView view;
+
+    /**
+     * Task to execute model computations
+     */
+    private StepRequestTask task;
 
     /**
      * GamePresenter constructor
@@ -50,7 +54,7 @@ public class GamePresenter {
     }
 
     /**
-     * Requests a step to the Field described with the input parameters
+     * Requests a step to the Field described with the input parameters in a new task
      * Refreshes the view if the step is valid
      *
      * @param   pos_y	   Y coordinate
@@ -58,7 +62,8 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        int current_player_Id = model.StepRequest(pos_y,pos_x);
+        task = new StepRequestTask(model, pos_y, pos_x);
+        int current_player_Id = task.doInBackground();
 
         if(current_player_Id == 0){
 
