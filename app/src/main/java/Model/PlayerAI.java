@@ -1,5 +1,7 @@
 package Model;
 
+import Presenter.GamePresenter;
+
 /**
  * An AI Player in a GamePlay which communicates with it's LogicAI component.
  */
@@ -24,15 +26,20 @@ public class PlayerAI extends Player {
     /**
      * Quick stepping - PlayerAI does the calculation and steps
      *
-     * @return 	boolean     True as automatic stepping has been conducted
+     * @return 	Integer[]     Coordinates of the selected Field of AI
      */
     @Override
-    public boolean ExecuteStep() {
+    public Integer[] ExecuteStep() {
+
+        Integer[] coordinates = new Integer[2];
+
+        coordinates[0] = 1;
+        coordinates[1] = 1;
+
+        return coordinates;
 
         //int[]position = this.AI.Predict(this.gameplay.GetPlayground(), this);
         //this.gameplay.StepRequest(position[0], position[1]);
-
-        return true;
 
     }
 

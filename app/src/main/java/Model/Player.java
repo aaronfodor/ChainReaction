@@ -1,5 +1,7 @@
 package Model;
 
+import Presenter.GamePresenter;
+
 /**
  * An abstract Player who can step and therefore takes part in a GamePlay.
  */
@@ -37,11 +39,11 @@ public abstract class Player {
     /**
      * Automatic stepping
      *
-     * @return 	boolean     Returns false by default
+     * @return 	Integer[]     Returns null by default
      */
-    public boolean ExecuteStep() {
+    public Integer[] ExecuteStep() {
 
-        return false;
+        return null;
 
     }
 
@@ -64,7 +66,7 @@ public abstract class Player {
      *
      * @param 	gameplay 	GamePlay the Player is in
      */
-    public void SetGameplay(GamePlay gameplay){
+    public void SetGamePlay(GamePlay gameplay){
 
         this.gameplay= gameplay;
 

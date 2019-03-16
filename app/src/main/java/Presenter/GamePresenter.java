@@ -23,7 +23,7 @@ public class GamePresenter {
     /**
      * Task to execute model computations
      */
-    private StepRequestTask task;
+    private TaskModel task;
 
     /**
      * GamePresenter constructor
@@ -40,15 +40,15 @@ public class GamePresenter {
         ArrayList<String[]> players = new ArrayList<String[]>();
 
         String[] player1 = new String[]{"1","SanyiHooman","human"};
-        String[] player2 = new String[]{"2","RobiRobot","human"};
+        String[] player2 = new String[]{"2","RobiRobot","AI"};
 
         players.add(player1);
         players.add(player2);
 
-        this.model = new GamePlay(height, width, players);
-        this.model.StartGame();
+        this.model = new GamePlay(this, height, width, players);
 
-        int starter_player_Id = Integer.valueOf(players.get(0)[0]);
+        task = new TaskModel(model);
+        int starter_player_Id = task.StartGame();
         this.RefreshPlayground(starter_player_Id);
 
     }
@@ -62,8 +62,8 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        task = new StepRequestTask(model, pos_y, pos_x);
-        int current_player_Id = task.doInBackground();
+        task = new TaskModel(model);
+        int current_player_Id = task.StepRequest(pos_y, pos_x);
 
         if(current_player_Id == 0){
 
@@ -74,12 +74,6 @@ public class GamePresenter {
 
         this.RefreshPlayground(current_player_Id);
 
-        if(current_player_Id < 0){
-
-            view.ShowResult("Player " + Math.abs(current_player_Id) + " is the winner!");
-
-        }
-
     }
 
     /**
@@ -89,9 +83,13 @@ public class GamePresenter {
      */
     private void RefreshPlayground(int current_player_Id){
 
-        current_player_Id = Math.abs(current_player_Id);
+        view.ShowCurrentPlayer(Math.abs(current_player_Id));
 
-        view.ShowCurrentPlayer(current_player_Id);
+        if(current_player_Id < 0){
+
+            view.ShowResult("Player " + Math.abs(current_player_Id) + " is the winner!");
+
+        }
 
         int[][][] state_matrix = model.ActualPlaygroundInfo();
         int[] dimension = model.GetDimension();

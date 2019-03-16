@@ -9,9 +9,9 @@ public interface IGameModel {
     /**
      * Starts the actual GamePlay
      *
-     * @return 	boolean     True if started, false if there are not enough players to start a game
+     * @return 	int     Id of the Player to start the game with
      */
-    boolean StartGame();
+    int StartGame();
 
     /**
      * Requesting a step on behalf of the current player based on the state machine status

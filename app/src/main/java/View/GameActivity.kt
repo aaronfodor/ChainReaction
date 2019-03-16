@@ -186,8 +186,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * Shows a message from the Presenter
      *
-     * @param    msg         Message
-     * @return    boolean     True if succeed, false otherwise
+     * @param       msg         Message
+     * @return      boolean     True if succeed, false otherwise
      */
     override fun ShowMessage(msg: String): Boolean {
 

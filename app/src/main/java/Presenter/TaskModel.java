@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 /**
  * Async task to execute model computations
  */
-public class StepRequestTask extends AsyncTask<Void, Void, Integer> {
+public class TaskModel extends AsyncTask<Void, Void, Void> {
 
     /**
      * Model object where the computation and state change occurs
@@ -19,31 +19,44 @@ public class StepRequestTask extends AsyncTask<Void, Void, Integer> {
     int pos_x;
 
     /**
-     * Constructor of StepRequestTask
+     * Constructor of TaskModel
      *
      * @param   model	   Initialized IGameModel object to update
-     * @param   pos_y	   Y coordinate
-     * @param   pos_x      X coordinate
      */
-    protected StepRequestTask(IGameModel model, int pos_y, int pos_x){
+    protected TaskModel(IGameModel model){
 
         this.model = model;
-        this.pos_y = pos_y;
-        this.pos_x = pos_x;
 
     }
 
     /**
      * Executes the query and the computation on the Model
      *
-     * @param   parameters	    Empty (Void) input
-     * @return  Integer         Id of the next Player
+     * @param   pos_y	   Y coordinate
+     * @param   pos_x      X coordinate
+     * @return  Integer    Id of the next Player
      */
-    @Override
-    protected Integer doInBackground(Void... parameters) {
+    protected Integer StepRequest(int pos_y, int pos_x) {
 
         return model.StepRequest(pos_y, pos_x);
 
     }
 
+    /**
+     * Starts the game
+     *
+     * @return  Integer     Id of the next Player
+     */
+    protected Integer StartGame() {
+
+        return model.StartGame();
+
+    }
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        return null;
+
+    }
 }

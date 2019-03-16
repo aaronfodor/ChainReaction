@@ -1,5 +1,6 @@
 package Model;
 
+import Presenter.GamePresenter;
 import Presenter.IGameModel;
 
 import java.util.ArrayList;
@@ -44,6 +45,11 @@ public class GamePlay implements IGameModel {
     private boolean first_round_ended = false;
 
     /**
+     * MVP presenter
+     */
+    private GamePresenter presenter;
+
+    /**
      * GamePlay constructor
      * Creates the Playground, sets the Players, inits the state machine
      *
@@ -51,7 +57,9 @@ public class GamePlay implements IGameModel {
      * @param	width	        Width of the Playground
      * @param	players_raw	    Players represented by ArrayList of String arrays of 3 elements
      */
-    public GamePlay(int height, int width, ArrayList<String[]> players_raw){
+    public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
+
+        this.presenter = presenter;
 
         ArrayList<Player> players = new ArrayList<Player>();
 
@@ -78,7 +86,7 @@ public class GamePlay implements IGameModel {
 
         for(Player player : this.players){
 
-            player.SetGameplay(this);
+            player.SetGamePlay(this);
 
         }
 
@@ -87,22 +95,87 @@ public class GamePlay implements IGameModel {
     /**
      * Starts the actual GamePlay
      *
-     * @return 	boolean     True if started, false if there are not enough players to start a game
+     * @return 	int     Id of the Player to start the game with
      */
-    public boolean StartGame(){
+    public int StartGame(){
 
-        if(players.size() >= min_players_to_start){
+        Integer[] coordinates = players.get(current_player_index).ExecuteStep();
 
-            players.get(current_player_index).ExecuteStep();
-            return true;
+        if(coordinates != null){
+
+            players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
+
+            return StepToNextPlayer();
 
         }
 
         else{
 
-            return false;
+            return players.get(current_player_index).GetId();
 
         }
+
+    }
+
+    /**
+     * Triggers the AI Players to step in the order
+     * Sets the current Player Id to the actual Player's Id
+     *
+     * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
+     */
+    public int StepToNextPlayer(){
+
+        if(current_player_index >= players.size()-1){
+
+            current_player_index = 0;
+
+            if(!first_round_ended){
+
+                first_round_ended = true;
+
+            }
+
+        }
+        else{
+
+            current_player_index++;
+
+        }
+
+        Integer[] coordinates = players.get(current_player_index).ExecuteStep();
+
+        while(coordinates != null){
+
+            if(IsGameEnded()){
+
+                return (-1)*winner_Id;
+
+            }
+
+            this.players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
+
+            if(current_player_index >= players.size()-1){
+
+                current_player_index = 0;
+
+                if(!first_round_ended){
+
+                    first_round_ended = true;
+
+                }
+
+            }
+            else{
+
+                current_player_index++;
+
+            }
+
+            coordinates = players.get(current_player_index).ExecuteStep();
+
+        }
+
+        return players.get(current_player_index).GetId();
 
     }
 
@@ -136,24 +209,7 @@ public class GamePlay implements IGameModel {
 
         }
 
-        if(current_player_index >= players.size()-1){
-
-            current_player_index = 0;
-
-            if(!first_round_ended){
-
-                first_round_ended = true;
-
-            }
-
-        }
-        else{
-
-            current_player_index++;
-
-        }
-
-        return players.get(current_player_index).GetId();
+        return StepToNextPlayer();
 
     }
 
@@ -312,7 +368,6 @@ public class GamePlay implements IGameModel {
     protected boolean IsGameEnded(){
 
         this.UpdatePlayersInGame();
-
         return winner_Id != 0;
 
     }
