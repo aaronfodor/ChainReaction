@@ -307,7 +307,7 @@ public class GamePlay implements IGameModel {
      * Provides the actual Playground info - Player and it's elements on Field
      * First index is the Y coordinate of Field
      * Second index is the X coordinate of Field
-     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
      *
      * @return 	int[][][]   Field information matrix
      */
@@ -315,7 +315,7 @@ public class GamePlay implements IGameModel {
 
         int[] dim = this.GetDimension();
 
-        int[][][] state_matrix = new int[dim[0]][dim[1]][2];
+        int[][][] state_matrix = new int[dim[0]][dim[1]][3];
 
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
 
@@ -323,6 +323,7 @@ public class GamePlay implements IGameModel {
 
                 state_matrix[actual_height][actual_width][0] = playground.GetFieldAt(actual_height, actual_width).GetPlayerIdOnField();
                 state_matrix[actual_height][actual_width][1] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
+                state_matrix[actual_height][actual_width][2] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetNumberLeftBeforeExplosion();
 
             }
 

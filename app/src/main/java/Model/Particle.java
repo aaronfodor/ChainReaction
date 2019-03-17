@@ -154,6 +154,17 @@ public class Particle {
     }
 
     /**
+     * Called to get the number of residual elements left before explosion
+     *
+     * @return 	int    Number of elements before explosion
+     */
+    protected int GetNumberLeftBeforeExplosion(){
+
+        return (max_size - current_size);
+
+    }
+
+    /**
      * Called to decide whether the game is over or not
      *
      * @return 	boolean     True means Game is over - computation is not necessary, False otherwise
