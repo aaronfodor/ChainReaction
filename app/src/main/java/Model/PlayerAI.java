@@ -7,7 +7,7 @@ import Model.AI.PlayerLogic;
  */
 public class PlayerAI extends Player {
 
-    private static PlayerLogic AI = new PlayerLogic();
+    private static PlayerLogic AI;
 
     /**
      * PlayerAI constructor
@@ -19,6 +19,8 @@ public class PlayerAI extends Player {
     public PlayerAI(int Id, String name){
 
         super(Id, name);
+
+        AI = new PlayerLogic();
 
     }
 

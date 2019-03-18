@@ -1,11 +1,12 @@
-package Presenter;
+package Task;
 
+import Presenter.IGameModel;
 import android.os.AsyncTask;
 
 /**
  * Async task to execute model computations
  */
-public class TaskModel extends AsyncTask<Void, Void, Void> {
+public class InteractModelTask extends AsyncTask<Void, Void, Void> {
 
     /**
      * Model object where the computation and state change occurs
@@ -13,17 +14,11 @@ public class TaskModel extends AsyncTask<Void, Void, Void> {
     IGameModel model;
 
     /**
-     * Parameters where the Field of the requested step concluded by this task is
-     */
-    int pos_y;
-    int pos_x;
-
-    /**
-     * Constructor of TaskModel
+     * Constructor of InteractModelTask
      *
      * @param   model	   Initialized IGameModel object to update
      */
-    protected TaskModel(IGameModel model){
+    public InteractModelTask(IGameModel model){
 
         this.model = model;
 
@@ -36,7 +31,7 @@ public class TaskModel extends AsyncTask<Void, Void, Void> {
      * @param   pos_x      X coordinate
      * @return  Integer    Id of the next Player
      */
-    protected Integer StepRequest(int pos_y, int pos_x) {
+    public Integer StepRequest(int pos_y, int pos_x) {
 
         return model.StepRequest(pos_y, pos_x);
 
@@ -47,7 +42,7 @@ public class TaskModel extends AsyncTask<Void, Void, Void> {
      *
      * @return  Integer     Id of the next Player
      */
-    protected Integer StartGame() {
+    public Integer StartGame() {
 
         return model.StartGame();
 

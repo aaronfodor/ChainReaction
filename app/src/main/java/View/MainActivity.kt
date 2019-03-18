@@ -1,5 +1,6 @@
 package View
 
+import Task.AILoaderTask
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
             finish()
             System.exit(0)
         }
+
+        var task_AI_load = AILoaderTask()
+        task_AI_load.LoadNeuralNetwork(this)
 
     }
 }

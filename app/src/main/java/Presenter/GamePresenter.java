@@ -1,6 +1,8 @@
 package Presenter;
 
 import Model.GamePlay;
+import Task.InteractModelTask;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +25,7 @@ public class GamePresenter {
     /**
      * Task to execute model computations
      */
-    private TaskModel task;
+    private InteractModelTask task_compute;
 
     /**
      * GamePresenter constructor
@@ -47,9 +49,16 @@ public class GamePresenter {
 
         this.model = new GamePlay(this, height, width, players);
 
-        task = new TaskModel(model);
-        int starter_player_Id = task.StartGame();
+        task_compute = new InteractModelTask(model);
+        int starter_player_Id = task_compute.StartGame();
         this.RefreshPlayground(starter_player_Id);
+
+        if(starter_player_Id == 0){
+
+            view.ShowMessage("Invalid click!");
+            return;
+
+        }
 
     }
 
@@ -62,8 +71,8 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        task = new TaskModel(model);
-        int current_player_Id = task.StepRequest(pos_y, pos_x);
+        task_compute = new InteractModelTask(model);
+        int current_player_Id = task_compute.StepRequest(pos_y, pos_x);
 
         if(current_player_Id == 0){
 

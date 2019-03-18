@@ -1,12 +1,22 @@
 package Model.AI;
 
+import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 public class PlayerLogic {
 
-    private static final int SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED = 10;
+    private static MultiLayerNetwork NeuralNetwork;
 
-    public PlayerLogic(){
+    private static int SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED = 16;
 
+    public static void SetNeuralNetwork(MultiLayerNetwork network){
 
+        if(NeuralNetwork == null){
+
+            NeuralNetwork = network;
+
+        }
 
     }
 
@@ -68,13 +78,22 @@ public class PlayerLogic {
 
         }
 
-        Integer[][] selected_matrix = new Integer[3][3];
+        Integer[][][] selected_matrix = new Integer[3][3][2];
 
         for(int i = most_promising_field[0]-1; i <= most_promising_field[0]+1; i++){
 
             for(int j = most_promising_field[1]-1; j <= most_promising_field[1]+1; j++){
 
-                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = playground_state[i][j][2];
+                Integer stepable = 0;
+
+                if(playground_state[i][j][0] == player_Id_to_step_for || playground_state[i][j][0] == 0){
+
+                    stepable = 1;
+
+                }
+
+                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][0] = playground_state[i][j][2];
+                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][1] = stepable;
 
             }
 
@@ -89,12 +108,42 @@ public class PlayerLogic {
 
     }
 
-    private Integer[] NeuralNetworkStep(Integer[][] input_matrix){
+    private Integer[] NeuralNetworkStep(Integer[][][] input_matrix){
 
         Integer[] coordinates = new Integer[2];
 
-        coordinates[0] = 1;
-        coordinates[1] = 1;
+        INDArray actualInput = Nd4j.zeros(1,input_matrix.length * input_matrix[0].length);
+
+        for(int i = 0; i < input_matrix.length; i++){
+
+            for(int j = 0; j < input_matrix[i].length; j++){
+
+                actualInput.putScalar(new int[]{0,(i*3) + j }, input_matrix[i][j][0].doubleValue() * 0.25);
+
+            }
+
+        }
+
+        INDArray actualOutput = NeuralNetwork.output(actualInput);
+
+        Integer maximum_prediction_index = 0;
+        Double maximum_prediction = 0.0;
+
+        for(int i = 0; i < actualOutput.columns(); i++){
+
+            double blah = actualOutput.getDouble(i);
+            int bleh = input_matrix[i/3][i%3][1];
+
+            if(actualOutput.getDouble(i) > maximum_prediction && input_matrix[i/3][i%3][1] == 1){
+
+                maximum_prediction_index = i;
+
+            }
+
+        }
+
+        coordinates[0] = maximum_prediction_index / 3;
+        coordinates[1] = maximum_prediction_index % 3;
 
         return coordinates;
 

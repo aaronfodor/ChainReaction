@@ -28,8 +28,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
 
-        Create7x5Game()
-
         /*var FieldView = ImageView(this)
         val bmImg = getResources().getDrawable(android.R.drawable.ic_lock_lock);
         FieldView.setImageDrawable(bmImg)*/
@@ -43,6 +41,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         TableLayoutPlayground.addView(row)*/
 
+        Create7x5Game()
+
     }
 
     /**
@@ -51,12 +51,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     private fun Create7x5Game(){
 
         TableLayoutPlayground = findViewById<TableLayout>(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
-        TableLayoutPlayground.setBackgroundColor(Color.RED)
+        TableLayoutPlayground.setBackgroundColor(Color.BLACK)
 
         val root = TableLayoutPlayground.rootView
         root.setBackgroundColor(Color.BLACK)
-
-        presenter = GamePresenter(this, 7, 5)
 
         for (i in 0..6) {
 
@@ -70,6 +68,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             }
 
         }
+
+        presenter = GamePresenter(this, 7, 5)
 
     }
 
