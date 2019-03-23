@@ -1,7 +1,6 @@
-package Task;
+package Presenter.Task;
 
 import Model.AI.PlayerLogic;
-import Presenter.IGameModel;
 import android.content.Context;
 import android.os.AsyncTask;
 import hu.bme.aut.android.chainreaction.R;
@@ -12,17 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Async task to execute model computations
+ * Async task to load AI component
  */
 public class AILoaderTask extends AsyncTask<Void, Void, Void> {
 
     /**
-     * Model object where the computation and state change occurs
-     */
-    IGameModel model;
-
-    /**
-     * Constructor of InteractModelTask
+     * Loads and sets the Neural Network of PlayerLogic
      *
      * @param  context   Context
      */

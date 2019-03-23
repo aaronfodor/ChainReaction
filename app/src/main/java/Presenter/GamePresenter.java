@@ -1,7 +1,7 @@
 package Presenter;
 
 import Model.GamePlay;
-import Task.InteractModelTask;
+import Presenter.Task.InteractModelTask;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class GamePresenter {
     private IGameView view;
 
     /**
-     * Task to execute model computations
+     * Presenter.Task to execute model computations
      */
     private InteractModelTask task_compute;
 
@@ -31,21 +31,31 @@ public class GamePresenter {
      * GamePresenter constructor
      * Sets the view, the Players, the model, starts the game play
      *
-     * @param   view 	    IGameView object that holds the GamePresenter
-     * @param   height      height of the Playground
-     * @param   width 	    width of the Playground
+     * @param   view 	        IGameView object that holds the GamePresenter
+     * @param   height          height of the Playground
+     * @param   width 	        width of the Playground
+     * @param   players_input   ArrayList of Strings; "<Player type>-<Player name>" format
      */
-    public GamePresenter(IGameView view, int height, int width){
+    public GamePresenter(IGameView view, int height, int width, ArrayList<String> players_input){
 
         this.view = view;
 
+        int number_of_players = players_input.size();
+
         ArrayList<String[]> players = new ArrayList<String[]>();
 
-        String[] player1 = new String[]{"1","SanyiHooman","human"};
-        String[] player2 = new String[]{"2","RobiRobot","AI"};
+        for(int i = 0; i < number_of_players; i++){
 
-        players.add(player1);
-        players.add(player2);
+            String[] input_data = players_input.get(i).split("-");
+
+            String[] player_data = new String[3];
+            player_data[0] = String.valueOf(i+1);
+            player_data[1] = input_data[1];
+            player_data[2] = input_data[0];
+
+            players.add(player_data);
+
+        }
 
         this.model = new GamePlay(this, height, width, players);
 

@@ -1,4 +1,4 @@
-package Task;
+package Presenter.Task;
 
 import Presenter.IGameModel;
 import android.os.AsyncTask;

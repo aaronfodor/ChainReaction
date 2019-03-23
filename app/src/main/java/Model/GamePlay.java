@@ -65,7 +65,7 @@ public class GamePlay implements IGameModel {
 
         for(String[] raw_player_element : players_raw){
 
-            if(raw_player_element[2] == "human"){
+            if(raw_player_element[2].equals("human")){
 
                 players.add(new PlayerHuman(Integer.valueOf(raw_player_element[0]),raw_player_element[1]));
 
@@ -146,13 +146,13 @@ public class GamePlay implements IGameModel {
 
         while(coordinates != null){
 
+            this.players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
+
             if(IsGameEnded()){
 
                 return (-1)*winner_Id;
 
             }
-
-            this.players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
 
             if(current_player_index >= players.size()-1){
 

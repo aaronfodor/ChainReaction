@@ -1,7 +1,5 @@
 package Model;
 
-import Presenter.GamePresenter;
-
 /**
  * An abstract Player who can step and therefore takes part in a GamePlay.
  */

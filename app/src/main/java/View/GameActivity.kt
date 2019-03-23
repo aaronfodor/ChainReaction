@@ -2,15 +2,21 @@ package View
 
 import Presenter.GamePresenter
 import Presenter.IGameView
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 
+/**
+ * Activity of a game play
+ */
 class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
     /**
@@ -26,6 +32,25 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        var players = ArrayList<String>()
+
+        val extras = intent.extras
+        if (extras != null) {
+
+            val number = extras.getInt("number_of_players")
+
+            for(i in 1..number)
+
+            players.add(extras.getString(i.toString()))
+        }
+
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+        //Remove notification bar
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
 
         /*var FieldView = ImageView(this)
@@ -38,17 +63,16 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         row.addView(FieldView)
         row.addView(FieldView)
         row.addView(FieldView)
-
         TableLayoutPlayground.addView(row)*/
 
-        Create7x5Game()
+        Create7x5Game(players)
 
     }
 
     /**
      * Creates the presenter with an intent of a 7x5 dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun Create7x5Game(){
+    private fun Create7x5Game(players: ArrayList<String>){
 
         TableLayoutPlayground = findViewById<TableLayout>(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
         TableLayoutPlayground.setBackgroundColor(Color.BLACK)
@@ -69,7 +93,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         }
 
-        presenter = GamePresenter(this, 7, 5)
+        presenter = GamePresenter(this, 7, 5, players)
 
     }
 
@@ -120,7 +144,33 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         var row = TableLayoutPlayground.getChildAt(pos_y) as TableRow
         var Field = row.getChildAt(pos_x) as ImageView
 
-        if(color == 2){
+        if(color == 4){
+
+            when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
+
+            }
+        }
+
+        else if(color == 3){
+
+            when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
+
+            }
+        }
+
+        else if(color == 2){
 
             when (number) {
                 1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
@@ -172,6 +222,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         when (Id) {
             1 -> TableLayoutPlayground.setBackgroundColor(Color.RED)
             2 -> TableLayoutPlayground.setBackgroundColor(Color.BLUE)
+            3 -> TableLayoutPlayground.setBackgroundColor(Color.GREEN)
+            4 -> TableLayoutPlayground.setBackgroundColor(Color.YELLOW)
             else -> { // Note the block
                 TableLayoutPlayground.setBackgroundColor(Color.BLACK)
             }
@@ -210,6 +262,15 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         InfoText.text = msg
 
         return true
+
+    }
+
+    /**
+     * Returns to the MainActivity
+     */
+    override fun onBackPressed() {
+
+        startActivity(Intent(this, MainActivity::class.java))
 
     }
 
