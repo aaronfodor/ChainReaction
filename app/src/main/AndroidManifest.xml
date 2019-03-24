@@ -23,6 +23,15 @@
                     android:value="View.MainActivity"/>
         </activity>
         <activity
+                android:name="View.StatsActivity"
+                android:label="@string/title_activity_stats"
+                android:parentActivityName="View.MainActivity"
+                android:theme="@style/Theme.AppCompat.Light.Dialog">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="View.MainActivity"/>
+        </activity>
+        <activity
                 android:name="View.StartActivity"
                 android:label="@string/title_activity_start"
                 android:parentActivityName="View.MainActivity"

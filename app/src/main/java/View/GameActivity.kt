@@ -144,9 +144,44 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         var row = TableLayoutPlayground.getChildAt(pos_y) as TableRow
         var Field = row.getChildAt(pos_x) as ImageView
 
-        if(color == 4){
+        when (color) {
+            8 -> when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
 
-            when (number) {
+            }
+            7 -> when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
+
+            }
+            6 -> when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
+
+            }
+            5 -> when (number) {
+                1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot1)
+                2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot2)
+                3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot3)
+                else -> { // Note the block
+                    Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                }
+
+            }
+            4 -> when (number) {
                 1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1)
                 2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot2)
                 3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot3)
@@ -155,11 +190,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 }
 
             }
-        }
-
-        else if(color == 3){
-
-            when (number) {
+            3 -> when (number) {
                 1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot1)
                 2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot2)
                 3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot3)
@@ -168,11 +199,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 }
 
             }
-        }
-
-        else if(color == 2){
-
-            when (number) {
+            2 -> when (number) {
                 1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
                 2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot2)
                 3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot3)
@@ -181,11 +208,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 }
 
             }
-        }
-
-        else if(color == 1){
-
-            when (number) {
+            1 -> when (number) {
                 1 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot1)
                 2 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot2)
                 3 -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot3)
@@ -193,13 +216,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                     Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
                 }
             }
-
-        }
-
-        else{
-
-            Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-
+            else -> Field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
         }
 
         Field.invalidate()
@@ -211,8 +228,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * Shows whose turn is now
      *
-     * @param    Id          Id of the current Player
-     * @return    boolean     True if succeed, false otherwise
+     * @param       Id          Id of the current Player
+     * @return      boolean     True if succeed, false otherwise
      */
     override fun ShowCurrentPlayer(Id: Int): Boolean {
 
@@ -224,6 +241,12 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             2 -> TableLayoutPlayground.setBackgroundColor(Color.BLUE)
             3 -> TableLayoutPlayground.setBackgroundColor(Color.GREEN)
             4 -> TableLayoutPlayground.setBackgroundColor(Color.YELLOW)
+            //orange
+            5 -> TableLayoutPlayground.setBackgroundColor(Color.rgb(255,165,0))
+            6 -> TableLayoutPlayground.setBackgroundColor(Color.MAGENTA)
+            //brown
+            7 -> TableLayoutPlayground.setBackgroundColor(Color.rgb(210,180,140))
+            8 -> TableLayoutPlayground.setBackgroundColor(Color.LTGRAY)
             else -> { // Note the block
                 TableLayoutPlayground.setBackgroundColor(Color.BLACK)
             }

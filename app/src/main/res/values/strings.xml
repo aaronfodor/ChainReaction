@@ -22,6 +22,7 @@
     <string name="listclear">Players cleared</string>
     <string name="humanplayeradd">Human player added</string>
     <string name="aiplayeradd">AI player added</string>
-    <string name="maximumreached">Max player number reached</string>
-    <string name="notenoughplayer">Not enough player</string>
+    <string name="maximumreached">Maximum player number reached</string>
+    <string name="notenoughplayer">Not enough player to start</string>
+    <string name="title_activity_stats">Statistics</string>
 </resources>

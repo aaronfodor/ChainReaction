@@ -23,7 +23,7 @@ public class GamePlay implements IGameModel {
     private ArrayList<Player> players = new ArrayList<Player>();
 
     /**
-     * Current Player's position in player
+     * Current Player's position in players
      * State machine status which Player to come next
      */
     private int current_player_index;
@@ -370,6 +370,27 @@ public class GamePlay implements IGameModel {
 
         this.UpdatePlayersInGame();
         return winner_Id != 0;
+
+    }
+
+    /**
+     * Returns the type of the winner
+     *
+     * @return 	String     AI or human
+     */
+    public String WinnerType(){
+
+        if(players.get(winner_Id).ExecuteStep() != null){
+
+            return "AI";
+
+        }
+
+        else{
+
+            return "human";
+
+        }
 
     }
 

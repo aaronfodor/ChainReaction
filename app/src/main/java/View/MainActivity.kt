@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         val StatsButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonStats)
         StatsButton.setOnClickListener {
-            //todo
+            startActivity(Intent(this, StatsActivity::class.java))
         }
 
         val SettingsButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonSettings)

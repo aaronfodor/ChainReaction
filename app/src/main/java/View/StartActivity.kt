@@ -15,7 +15,7 @@ import android.widget.Toast
  */
 class StartActivity : AppCompatActivity() {
 
-    private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 4
+    private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
     private val MINIMUM_PLAYER_NUMBER_TO_START = 2
     var PlayerListData = ArrayList<PlayerListData>()
     lateinit var adapter: PlayerListAdapter
@@ -29,7 +29,7 @@ class StartActivity : AppCompatActivity() {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
 
-                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"human", ImageAdder(adapter.itemCount+1)))
+                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"human", imageAdder(adapter.itemCount+1)))
 
                 Toast.makeText(
                     this,
@@ -56,7 +56,7 @@ class StartActivity : AppCompatActivity() {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
 
-                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"AI", ImageAdder(adapter.itemCount+1)))
+                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"AI", imageAdder(adapter.itemCount+1)))
 
                 Toast.makeText(
                     this,
@@ -122,8 +122,8 @@ class StartActivity : AppCompatActivity() {
         }
 
         adapter = PlayerListAdapter(PlayerListData)
-        adapter.addItem(PlayerListData("Player 1", "human", ImageAdder(1)))
-        adapter.addItem(PlayerListData("Player 2", "AI", ImageAdder(2)))
+        adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
+        adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 
         var recyclerView = findViewById<RecyclerView>(hu.bme.aut.android.chainreaction.R.id.recyclerViewPlayers)
         //recyclerView.setHasFixedSize(true)
@@ -132,15 +132,19 @@ class StartActivity : AppCompatActivity() {
 
     }
 
-    fun ImageAdder(Id: Int): Int {
+    fun imageAdder(Id: Int): Int {
 
-        when (Id) {
-            1 -> return hu.bme.aut.android.chainreaction.R.drawable.red_dot1
-            2 -> return hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
-            3 -> return hu.bme.aut.android.chainreaction.R.drawable.green_dot1
-            4 -> return hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1
+        return when (Id) {
+            1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
+            2 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
+            3 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot1
+            4 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1
+            5 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot1
+            6 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot1
+            7 -> hu.bme.aut.android.chainreaction.R.drawable.brown_dot1
+            8 -> hu.bme.aut.android.chainreaction.R.drawable.grey_dot1
             else -> { // Note the block
-                return hu.bme.aut.android.chainreaction.R.drawable.nothing
+                hu.bme.aut.android.chainreaction.R.drawable.nothing
             }
         }
 

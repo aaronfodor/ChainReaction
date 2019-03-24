@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/listPreferredItemHeightLarge">
+                android:layout_height="35dp">
 
     <ImageView
             android:id="@+id/imageViewPlayer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
