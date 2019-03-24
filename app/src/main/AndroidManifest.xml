@@ -9,38 +9,38 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="View.GameActivity">
+        <activity android:name="view.GameActivity">
         </activity>
-        <activity android:name="View.SettingsActivity">
+        <activity android:name="view.SettingsActivity">
         </activity>
         <activity
-                android:name="View.AboutActivity"
+                android:name="view.AboutActivity"
                 android:label="@string/title_activity_about"
-                android:parentActivityName="View.MainActivity"
+                android:parentActivityName="view.MainActivity"
                 android:theme="@style/Theme.AppCompat.Light.Dialog">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="View.MainActivity"/>
+                    android:value="view.MainActivity"/>
         </activity>
         <activity
-                android:name="View.StatsActivity"
+                android:name="view.StatsActivity"
                 android:label="@string/title_activity_stats"
-                android:parentActivityName="View.MainActivity"
+                android:parentActivityName="view.MainActivity"
                 android:theme="@style/Theme.AppCompat.Light.Dialog">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="View.MainActivity"/>
+                    android:value="view.MainActivity"/>
         </activity>
         <activity
-                android:name="View.StartActivity"
+                android:name="view.StartActivity"
                 android:label="@string/title_activity_start"
-                android:parentActivityName="View.MainActivity"
+                android:parentActivityName="view.MainActivity"
                 android:theme="@style/Theme.AppCompat.Light.Dialog">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="View.MainActivity"/>
+                    android:value="view.MainActivity"/>
         </activity>
-        <activity android:name="View.MainActivity">
+        <activity android:name="view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
