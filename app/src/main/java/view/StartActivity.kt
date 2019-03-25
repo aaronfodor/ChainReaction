@@ -17,26 +17,20 @@ class StartActivity : AppCompatActivity() {
 
     private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
     private val MINIMUM_PLAYER_NUMBER_TO_START = 2
-    var PlayerListData = ArrayList<PlayerListData>()
-    lateinit var adapter: PlayerListAdapter
+    var playerListData = ArrayList<PlayerListData>()
+    private lateinit var adapter: PlayerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_start)
 
-        val AddHumanPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddHumanPlayer)
-        AddHumanPlayerButton.setOnClickListener {
+        val addHumanPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddHumanPlayer)
+        addHumanPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
 
                 adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"human", imageAdder(adapter.itemCount+1)))
 
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.humanplayeradd,
-                    Toast.LENGTH_LONG
-                ).show()
-
             }
 
             else{
@@ -51,19 +45,13 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val AddAIPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddAIPlayer)
-        AddAIPlayerButton.setOnClickListener {
+        val addAIPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddAIPlayer)
+        addAIPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
 
                 adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"AI", imageAdder(adapter.itemCount+1)))
 
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.aiplayeradd,
-                    Toast.LENGTH_LONG
-                ).show()
-
             }
 
             else{
@@ -78,8 +66,8 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val ClearPlayersButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonClearPlayers)
-        ClearPlayersButton.setOnClickListener {
+        val clearPlayersButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonClearPlayers)
+        clearPlayersButton.setOnClickListener {
             adapter.Clear()
 
                 Toast.makeText(
@@ -90,8 +78,8 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val StartGameButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonStartGame)
-        StartGameButton.setOnClickListener {
+        val startGameButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonStartGame)
+        startGameButton.setOnClickListener {
 
             if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
 
@@ -121,18 +109,17 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        adapter = PlayerListAdapter(PlayerListData)
+        adapter = PlayerListAdapter(playerListData)
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 
         var recyclerView = findViewById<RecyclerView>(hu.bme.aut.android.chainreaction.R.id.recyclerViewPlayers)
-        //recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
     }
 
-    fun imageAdder(Id: Int): Int {
+    private fun imageAdder(Id: Int): Int {
 
         return when (Id) {
             1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
