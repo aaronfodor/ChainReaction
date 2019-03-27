@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 
 /**
@@ -30,6 +31,11 @@ public class Field {
     private EnumMap<Direction, Field> neighbors;
 
     /**
+     * State history of the Field
+     */
+    private ArrayList<int[]> state_history;
+
+    /**
      * Field constructor
      * Sets the Field to know its container Playground,
      * Creates the Map containing the Field's neighbours
@@ -43,7 +49,7 @@ public class Field {
         this.playground = playground;
         this.neighbors = new EnumMap<Direction, Field>(Direction.class);
         this.Id = Id;
-
+        this.state_history = new ArrayList<>();
         this.particle = new Particle(this, null, max_atoms);
 
     }
@@ -120,4 +126,98 @@ public class Field {
 
     }
 
+    public void AddStateToHistory(int propagation_depth, int Id, int current_size, int numberLeftBeforeExplosion) {
+
+        int[] new_state = new int[4];
+        new_state[0] = propagation_depth;
+        new_state[1] = Id;
+        new_state[2] = current_size;
+        new_state[3] = numberLeftBeforeExplosion;
+
+        this.state_history.add(new_state);
+
+        if(propagation_depth > this.playground.GetReactionPropagationDepth()){
+
+            this.playground.SetReactionPropagationDepth(propagation_depth);
+
+        }
+
+    }
+
+    public int NumberOfStates() {
+
+        if(this.state_history.isEmpty()){
+
+            return 1;
+
+        }
+
+        else{
+
+            return this.state_history.size();
+
+        }
+
+    }
+
+    public int[] GetStateAt(int propagation_time) {
+
+        if(this.state_history.isEmpty()){
+
+            int[] current_state = new int[3];
+            current_state[0] = this.particle.GetOwnerId();
+            current_state[1] = this.particle.GetSize();
+            current_state[2] = this.particle.GetNumberLeftBeforeExplosion();
+
+            return current_state;
+
+        }
+
+        else{
+
+            int state_index_at_propagation_time = 0;
+
+            for(int i = 0; i < this.state_history.size(); i++){
+
+                int current_time_in_history = this.state_history.get(i)[0];
+
+                if(state_index_at_propagation_time < i && current_time_in_history < propagation_time){
+
+                    state_index_at_propagation_time = i;
+
+                }
+
+                if(current_time_in_history == propagation_time){
+
+                    int[] state = this.state_history.get(i);
+
+                    int[] current_state = new int[3];
+                    current_state[0] = state[1];
+                    current_state[1] = state[2];
+                    current_state[2] = state[3];
+
+                    return current_state;
+
+                }
+
+            }
+
+            int[] state = this.state_history.get(state_index_at_propagation_time);
+
+            int[] current_state = new int[3];
+            current_state[0] = state[1];
+            current_state[1] = state[2];
+            current_state[2] = state[3];
+
+            return current_state;
+
+        }
+
+    }
+
+    public void Clear() {
+
+        this.state_history.clear();
+
+    }
 }

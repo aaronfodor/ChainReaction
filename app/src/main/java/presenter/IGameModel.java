@@ -26,11 +26,26 @@ public interface IGameModel {
      * Provides the actual Playground info - Player and it's elements on Field
      * First index is the Y coordinate of Field
      * Second index is the X coordinate of Field
-     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
      *
      * @return 	int[][][]   Field information matrix
      */
     int[][][] ActualPlaygroundInfo();
+
+    /**
+     * History playground info builder
+     */
+    void HistoryPlaygroundBuilder();
+
+    /**
+     * Provides the actual Playground info - Player and it's elements on Field
+     * First index is the Y coordinate of Field
+     * Second index is the X coordinate of Field
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
+     *
+     * @return 	int[][][]   Field information matrix
+     */
+    int[][][] HistoryPlaygroundInfoAt(int propagation_depth);
 
     /**
      * Provides the dimensions of the Playground
@@ -54,4 +69,12 @@ public interface IGameModel {
      * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
      */
     Integer[] getAutoCoordinates();
+
+    /**
+     * Reaction propagation depth getter method
+     *
+     * @return 	int     Reaction propagation depth
+     */
+    int GetReactionPropagationDepth();
+
 }

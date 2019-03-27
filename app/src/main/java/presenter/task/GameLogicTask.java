@@ -35,6 +35,7 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         this.model = model;
         this.presenter = presenter;
+        this.refresh_rate_milliseconds = refresh_rate_milliseconds;
 
     }
 
@@ -49,13 +50,13 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         if(params.length == 0){
 
-            publishProgress();
+            publishProgress(0);
 
             Integer[] coordinates = model.getAutoCoordinates();
 
-            while(coordinates != null){
+            try{
 
-                try {
+                while(coordinates != null){
 
                     if(isCancelled()){
 
@@ -66,13 +67,28 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
                     publishProgress(coordinates);
                     Thread.sleep(refresh_rate_milliseconds);
 
-                } catch (InterruptedException e) {
+                    /*for(int i = 0; i < model.GetReactionPropagationDepth(); i++){
 
-                    e.printStackTrace();
+                        if(isCancelled()){
+
+                            break;
+
+                        }
+
+                        publishProgress(i);
+                        //Thread.sleep(refresh_rate_milliseconds);
+
+                    }*/
+
+                    //int[][][][] state_matrix = model.HistoryPlaygroundInfo();
+
+                    coordinates = model.getAutoCoordinates();
 
                 }
 
-                coordinates = model.getAutoCoordinates();
+            } catch (InterruptedException e) {
+
+                e.printStackTrace();
 
             }
 
@@ -99,9 +115,9 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
             }
 
-            while(coordinates != null){
+            try{
 
-                try {
+                while(coordinates != null){
 
                     if(isCancelled()){
 
@@ -112,13 +128,28 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
                     publishProgress(coordinates);
                     Thread.sleep(refresh_rate_milliseconds);
 
-                } catch (InterruptedException e) {
+                    /*for(int i = 0; i < model.GetReactionPropagationDepth(); i++){
 
-                    e.printStackTrace();
+                        if(isCancelled()){
+
+                            break;
+
+                        }
+
+                        publishProgress(i);
+                        //Thread.sleep(refresh_rate_milliseconds);
+
+                    }*/
+
+                    //int[][][][] state_matrix = model.HistoryPlaygroundInfo();
+
+                    coordinates = model.getAutoCoordinates();
 
                 }
 
-                coordinates = model.getAutoCoordinates();
+            } catch (InterruptedException e) {
+
+                e.printStackTrace();
 
             }
 
@@ -145,15 +176,15 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         super.onProgressUpdate();
 
-        if(values.length == 0){
+        if(values.length == 1){
 
-            presenter.RefreshPlayground(model.getActualPlayerId());
+            presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);
 
         }
 
         else{
 
-            presenter.RefreshPlayground(model.StepRequest(values[0], values[1]));
+            presenter.RefreshPlayground(model.StepRequest(values[0], values[1]), 0);
 
         }
 

@@ -27,6 +27,11 @@ public class Playground {
     private int height;
 
     /**
+     * Reaction propagation depth
+     */
+    private int propagation_depth;
+
+    /**
      * limit before element on the Field does not explode
      */
     private static int corner_element_limit = 1;
@@ -46,6 +51,8 @@ public class Playground {
         this.gameplay = game;
         this.width = width;
         this.height = height;
+
+        this.propagation_depth = 0;
 
         fields = new Field[height][];
 
@@ -154,6 +161,37 @@ public class Playground {
     protected boolean IsGameEnded(){
 
         return this.gameplay.IsGameEnded();
+
+    }
+
+    /**
+     * Reaction propagation depth getter method
+     *
+     * @return 	int     Reaction propagation depth
+     */
+    protected int GetReactionPropagationDepth(){
+
+        return this.propagation_depth;
+
+    }
+
+    /**
+     * Reaction propagation depth setter method
+     *
+     * @param 	value       The value to be set as reaction propagation depth
+     */
+    protected void SetReactionPropagationDepth(int value){
+
+        this.propagation_depth = value;
+
+    }
+
+    /**
+     * Reaction propagation depth reset method
+     */
+    protected void ResetReactionPropagationDepth(){
+
+        this.propagation_depth = 0;
 
     }
 

@@ -1,6 +1,5 @@
 package model;
 
-import android.os.SystemClock;
 import presenter.GamePresenter;
 import presenter.IGameModel;
 
@@ -49,6 +48,8 @@ public class GamePlay implements IGameModel {
      * MVP presenter
      */
     private GamePresenter presenter;
+
+    int[][][][] history_matrix;
 
     /**
      * GamePlay constructor
@@ -302,6 +303,79 @@ public class GamePlay implements IGameModel {
     }
 
     /**
+     * Provides the actual Playground info - Player and it's elements on Field
+     * First index is the Y coordinate of Field
+     * Second index is the X coordinate of Field
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
+     *
+     * @return 	int[][][]   Field information matrix
+     */
+    public int[][][] HistoryPlaygroundInfoAt(int propagation_depth) {
+
+        if(this.history_matrix == null){
+
+            return this.ActualPlaygroundInfo();
+
+        }
+
+        int[] dim = this.GetDimension();
+
+        int[][][] state_matrix = new int[dim[0]][dim[1]][3];
+
+        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+
+            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+
+                int[] actual_field_state = this.history_matrix[actual_height][actual_width][propagation_depth];
+
+                state_matrix[actual_height][actual_width] = actual_field_state;
+
+            }
+
+        }
+
+        return state_matrix;
+    }
+
+    /**
+     * Provides the actual Playground info - Player and it's elements on Field
+     * First index is the Y coordinate of Field
+     * Second index is the X coordinate of Field
+     * Third index contains the states during reaction propagation
+     * Fourth index is the Field specific information: [0] is the current reaction propagation time, [1] is the owner Player's Id, [2] is the number of elements on the Field, [3] is the number of residual elements left before explosion
+     *
+     * @return 	int[][][][]   Field information matrix
+     */
+    public void HistoryPlaygroundBuilder() {
+
+        int[] dim = this.GetDimension();
+
+        int propagation_depth = this.playground.GetReactionPropagationDepth();
+
+        int[][][][] state_matrix = new int[dim[0]][dim[1]][propagation_depth][];
+
+        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+
+            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+
+                for(int propagation_time = 0; propagation_time < playground.GetFieldAt(actual_height, actual_width).NumberOfStates(); propagation_time++){
+
+                    state_matrix[actual_height][actual_width][propagation_time] = playground.GetFieldAt(actual_height, actual_width).GetStateAt(propagation_time);
+
+                }
+
+                playground.GetFieldAt(actual_height, actual_width).Clear();
+
+            }
+
+        }
+
+        //this.playground.ResetReactionPropagationDepth();
+
+        this.history_matrix = state_matrix;
+    }
+
+    /**
      * Provides the dimensions of the Playground
      * [0] is the width of the Playground
      * [1] is the height of the Playground
@@ -382,6 +456,17 @@ public class GamePlay implements IGameModel {
     public Integer[] getAutoCoordinates(){
 
         return players.get(current_player_index).ExecuteStep();
+
+    }
+
+    /**
+     * Reaction propagation depth getter method
+     *
+     * @return 	int     Reaction propagation depth
+     */
+    public int GetReactionPropagationDepth(){
+
+        return this.playground.GetReactionPropagationDepth();
 
     }
 

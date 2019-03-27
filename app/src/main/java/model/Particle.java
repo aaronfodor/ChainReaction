@@ -54,7 +54,7 @@ public class Particle {
 
         if((this.owner == owner) || (this.owner == null)){
 
-            this.Increase(owner);
+            this.Increase(owner, 0);
             return true;
 
         }
@@ -73,13 +73,15 @@ public class Particle {
      *
      * @param	owner   Player who increases it
      */
-    private void Increase(Player owner){
+    private void Increase(Player owner, int propagation_depth){
 
         this.owner = owner;
 
+        int new_distance = propagation_depth + 1;
+
         if(current_size == max_size){
 
-            this.Explode();
+            this.Explode(new_distance);
 
         }
 
@@ -89,6 +91,8 @@ public class Particle {
 
         }
 
+        this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+
     }
 
     /**
@@ -96,7 +100,7 @@ public class Particle {
      * Does nothing if the game is over
      * It sets its value to zero, and sets its owner to null
      */
-    private void Explode(){
+    private void Explode(int propagation_depth){
 
         if(IsGameEnded()){
 
@@ -113,7 +117,7 @@ public class Particle {
 
             if(field.GetNeighborAt(dir) != null){
 
-                field.GetNeighborAt(dir).GetParticle().Increase(exploder);
+                field.GetNeighborAt(dir).GetParticle().Increase(exploder, propagation_depth);
 
             }
 

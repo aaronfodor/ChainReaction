@@ -83,7 +83,7 @@ public class GamePresenter {
      *
      * @param   current_player_Id     Id of the current Player
      */
-    public void RefreshPlayground(int current_player_Id){
+    public void RefreshPlayground(int current_player_Id, int propagation_depth){
 
         if(current_player_Id == 0){
 
