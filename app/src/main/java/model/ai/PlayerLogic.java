@@ -237,4 +237,15 @@ public class PlayerLogic {
 
     }
 
+    /**
+     * Neural Network state checker
+     *
+     * @return 	Boolean     True if loaded, false if not
+     */
+    public static Boolean isNeuralNetworkLoaded(){
+
+        return NeuralNetwork != null;
+
+    }
+
 }

@@ -1,7 +1,7 @@
 package presenter;
 
 import model.GamePlay;
-import presenter.task.InteractModelTask;
+import presenter.task.GameLogicTask;
 
 import java.util.ArrayList;
 
@@ -22,10 +22,7 @@ public class GamePresenter {
      */
     private IGameView view;
 
-    /**
-     * Presenter.Task to execute model computations
-     */
-    private InteractModelTask task_compute;
+    GameLogicTask game_task;
 
     /**
      * GamePresenter constructor
@@ -59,16 +56,8 @@ public class GamePresenter {
 
         this.model = new GamePlay(this, height, width, players);
 
-        task_compute = new InteractModelTask(model);
-        int starter_player_Id = task_compute.StartGame();
-        this.RefreshPlayground(starter_player_Id);
-
-        if(starter_player_Id == 0){
-
-            view.ShowMessage("Invalid click!");
-            return;
-
-        }
+        game_task = new GameLogicTask(model, this);
+        game_task.execute();
 
     }
 
@@ -81,17 +70,8 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        task_compute = new InteractModelTask(model);
-        int current_player_Id = task_compute.StepRequest(pos_y, pos_x);
-
-        if(current_player_Id == 0){
-
-            view.ShowMessage("Invalid click!");
-            return;
-
-        }
-
-        this.RefreshPlayground(current_player_Id);
+        game_task = new GameLogicTask(model, this);
+        game_task.execute(pos_y, pos_x);
 
     }
 
@@ -100,7 +80,14 @@ public class GamePresenter {
      *
      * @param   current_player_Id     Id of the current Player
      */
-    private void RefreshPlayground(int current_player_Id){
+    public void RefreshPlayground(int current_player_Id){
+
+        if(current_player_Id == 0){
+
+            view.ShowMessage("Invalid click!");
+            return;
+
+        }
 
         view.ShowCurrentPlayer(Math.abs(current_player_Id));
 

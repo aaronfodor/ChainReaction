@@ -1,5 +1,9 @@
 package presenter.task;
 
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 import model.ai.PlayerLogic;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -13,14 +17,39 @@ import java.io.InputStream;
 /**
  * Async task to load AI component
  */
-public class AILoaderTask extends AsyncTask<Void, Void, Void> {
+public class AILoaderTask extends AsyncTask<Void, Integer, Boolean> {
+
+    /**
+     * Context of the UI thread
+     */
+    Context context;
+
+    /**
+     * View of the UI thread
+     */
+    View rootView;
+
+    /**
+     * GameLogicTask constructor
+     *
+     * @param   context         Context of the UI thread
+     * @param   rootView        View of the UI thread
+     */
+    public AILoaderTask(Context context, View rootView){
+
+        this.context = context;
+        this.rootView = rootView;
+
+    }
 
     /**
      * Loads and sets the Neural Network of PlayerLogic
      *
-     * @param  context   Context
+     * @param   params      none
+     * @return 	Boolean 	True when AI component loading is finished
      */
-    public void LoadNeuralNetwork(Context context){
+    @Override
+    protected Boolean doInBackground(Void... params) {
 
         InputStream inStream = context.getResources().openRawResource(R.raw.player_neural_network);
 
@@ -35,12 +64,34 @@ public class AILoaderTask extends AsyncTask<Void, Void, Void> {
 
         }
 
+        return true;
+
+    }
+
+    /**
+     * Accesses the UI thread - notifies the user that AI loading was successful
+     *
+     * @param   result      Result of doInBackground
+     */
+    @Override
+    protected void onPostExecute(Boolean result) {
+
+        Button btn = rootView.findViewById(R.id.buttonNewGame);
+        btn.setText(R.string.button_newgame);
+        btn.setEnabled(true);
+
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected void onPreExecute() {
 
-        return null;
+            Button btn = rootView.findViewById(R.id.buttonNewGame);
+            btn.setText(R.string.button_loading);
+            btn.setEnabled(false);
 
     }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {}
+
 }

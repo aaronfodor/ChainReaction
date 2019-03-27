@@ -83,7 +83,7 @@ class StartActivity : AppCompatActivity() {
 
             if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
 
-                val myIntent = Intent(this, GameActivity::class.java)
+                var myIntent = Intent(this, GameActivity::class.java)
 
                 myIntent.putExtra("number_of_players", adapter.itemCount)
 

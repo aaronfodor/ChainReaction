@@ -1,5 +1,6 @@
 package model;
 
+import android.os.SystemClock;
 import presenter.GamePresenter;
 import presenter.IGameModel;
 
@@ -20,7 +21,7 @@ public class GamePlay implements IGameModel {
     /**
      * List of the Players
      */
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private ArrayList<Player> players;
 
     /**
      * Current Player's position in players
@@ -51,7 +52,7 @@ public class GamePlay implements IGameModel {
 
     /**
      * GamePlay constructor
-     * Creates the Playground, sets the Players, inits the state machine
+     * Creates the Playground, sets the Players, initializes the state machine
      *
      * @param	height	        Height of the Playground
      * @param	width	        Width of the Playground
@@ -81,8 +82,9 @@ public class GamePlay implements IGameModel {
 
         this.players = players;
         this.current_player_index = 0;
-        this.playground = new Playground(this, height, width);
+        this.winner_Id = 0;
         this.first_round_ended = false;
+        this.playground = new Playground(this, height, width);
 
         for(Player player : this.players){
 
@@ -118,7 +120,7 @@ public class GamePlay implements IGameModel {
     }
 
     /**
-     * Triggers the AI Players to step in the order
+     * Triggers the AI Players to step in their order
      * Sets the current Player Id to the actual Player's Id
      *
      * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
@@ -139,39 +141,6 @@ public class GamePlay implements IGameModel {
         else{
 
             current_player_index++;
-
-        }
-
-        Integer[] coordinates = players.get(current_player_index).ExecuteStep();
-
-        while(coordinates != null){
-
-            this.players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
-
-            if(IsGameEnded()){
-
-                return (-1)*winner_Id;
-
-            }
-
-            if(current_player_index >= players.size()-1){
-
-                current_player_index = 0;
-
-                if(!first_round_ended){
-
-                    first_round_ended = true;
-
-                }
-
-            }
-            else{
-
-                current_player_index++;
-
-            }
-
-            coordinates = players.get(current_player_index).ExecuteStep();
 
         }
 
@@ -391,6 +360,28 @@ public class GamePlay implements IGameModel {
             return "human";
 
         }
+
+    }
+
+    /**
+     * Returns the Id of the current Player
+     *
+     * @return 	Integer     Id of the current Player
+     */
+    public Integer getActualPlayerId(){
+
+        return players.get(current_player_index).GetId();
+
+    }
+
+    /**
+     * Returns the Id of the current Player
+     *
+     * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
+     */
+    public Integer[] getAutoCoordinates(){
+
+        return players.get(current_player_index).ExecuteStep();
 
     }
 

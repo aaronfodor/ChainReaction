@@ -47,6 +47,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
 
+        create7x5Game(players)
+
         /*var FieldView = ImageView(this)
         val bmImg = getResources().getDrawable(android.R.drawable.ic_lock_lock);
         FieldView.setImageDrawable(bmImg)*/
@@ -58,8 +60,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         row.addView(FieldView)
         row.addView(FieldView)
         TableLayoutPlayground.addView(row)*/
-
-        create7x5Game(players)
 
     }
 
@@ -288,6 +288,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onBackPressed() {
 
         startActivity(Intent(this, MainActivity::class.java))
+
+    }
+
+    override fun onPause() {
+
+        super.onPause()
+
+        finish()
 
     }
 

@@ -15,13 +15,13 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     companion object {
 
-        const val KEY_DELETE_STATS = "delete_stats"
+        const val KEY_ANIMATION = "animation"
 
         fun changeSettings(sharedPreferences: SharedPreferences, context: Context) {
 
-            val deleteStats = sharedPreferences.getBoolean(KEY_DELETE_STATS, false)
+            val enableAnimation = sharedPreferences.getBoolean(KEY_ANIMATION, true)
 
-            if (deleteStats) {
+            if (!enableAnimation) {
 
                 //TODO
 
@@ -62,7 +62,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         when(key) {
 
-            KEY_DELETE_STATS -> {
+            KEY_ANIMATION -> {
 
                 changeSettings(sharedPreferences, applicationContext)
 

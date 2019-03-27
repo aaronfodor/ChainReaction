@@ -41,4 +41,17 @@ public interface IGameModel {
      */
     int[] GetDimension();
 
+    /**
+     * Returns the Id of the current Player
+     *
+     * @return 	Integer     Id of the current Player
+     */
+    Integer getActualPlayerId();
+
+    /**
+     * Returns the Id of the current Player
+     *
+     * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
+     */
+    Integer[] getAutoCoordinates();
 }
