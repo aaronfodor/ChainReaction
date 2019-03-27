@@ -22,7 +22,10 @@ public class GamePresenter {
      */
     private IGameView view;
 
-    GameLogicTask game_task;
+    /**
+     * AsyncTask to execute model computations
+     */
+    private GameLogicTask game_task;
 
     /**
      * GamePresenter constructor
@@ -56,7 +59,7 @@ public class GamePresenter {
 
         this.model = new GamePlay(this, height, width, players);
 
-        game_task = new GameLogicTask(model, this);
+        game_task = new GameLogicTask(model, this, 300);
         game_task.execute();
 
     }
@@ -70,7 +73,7 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        game_task = new GameLogicTask(model, this);
+        game_task = new GameLogicTask(model, this, 300);
         game_task.execute(pos_y, pos_x);
 
     }
@@ -109,6 +112,27 @@ public class GamePresenter {
                         state_matrix[actual_height][actual_width][1]);
 
             }
+
+        }
+
+    }
+
+    /**
+     * Stops immediately GamePresenter computations
+     *
+     * @return 	Boolean     True if stopped, false otherwise
+     */
+    public Boolean stopPresenter(){
+
+        if(game_task != null){
+
+            return game_task.cancel(true);
+
+        }
+
+        else{
+
+            return true;
 
         }
 

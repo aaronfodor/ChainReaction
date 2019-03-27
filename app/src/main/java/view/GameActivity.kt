@@ -291,11 +291,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
     }
 
+    /**
+     * Stops the Presenter calculations
+     */
     override fun onPause() {
 
         super.onPause()
 
-        finish()
+        presenter.stopPresenter()
 
     }
 
