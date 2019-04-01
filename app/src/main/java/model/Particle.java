@@ -54,7 +54,26 @@ public class Particle {
 
         if((this.owner == owner) || (this.owner == null)){
 
-            this.Increase(owner, 0);
+            int propagation_depth = 1;
+
+            //this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+
+            this.owner = owner;
+
+            if(current_size == max_size){
+
+                this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), 0, max_size);
+                this.Explode(propagation_depth);
+
+            }
+
+            else{
+
+                current_size++;
+                this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+
+            }
+
             return true;
 
         }
@@ -77,21 +96,20 @@ public class Particle {
 
         this.owner = owner;
 
-        int new_distance = propagation_depth + 1;
-
         if(current_size == max_size){
 
-            this.Explode(new_distance);
+            this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+            this.Explode(propagation_depth);
 
         }
 
         else{
 
             current_size++;
+            this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
 
         }
 
-        this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
 
     }
 
@@ -117,7 +135,7 @@ public class Particle {
 
             if(field.GetNeighborAt(dir) != null){
 
-                field.GetNeighborAt(dir).GetParticle().Increase(exploder, propagation_depth);
+                field.GetNeighborAt(dir).GetParticle().Increase(exploder, propagation_depth+1);
 
             }
 

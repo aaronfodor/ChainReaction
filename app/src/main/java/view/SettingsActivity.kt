@@ -15,13 +15,13 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     companion object {
 
-        const val KEY_ANIMATION = "animation"
+        const val KEY_PROPAGATION = "show_propagation"
 
         fun changeSettings(sharedPreferences: SharedPreferences, context: Context) {
 
-            val enableAnimation = sharedPreferences.getBoolean(KEY_ANIMATION, true)
+            val showPropagation = sharedPreferences.getBoolean(KEY_PROPAGATION, true)
 
-            if (!enableAnimation) {
+            if (!showPropagation) {
 
                 //TODO
 
@@ -44,14 +44,14 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     override fun onStart() {
 
         super.onStart()
-        PreferenceManager.getDefaultSharedPreferences(this)
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .registerOnSharedPreferenceChangeListener(this)
 
     }
 
     override fun onStop() {
 
-        PreferenceManager.getDefaultSharedPreferences(this)
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .unregisterOnSharedPreferenceChangeListener(this)
 
         super.onStop()
@@ -62,7 +62,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         when(key) {
 
-            KEY_ANIMATION -> {
+            KEY_PROPAGATION -> {
 
                 changeSettings(sharedPreferences, applicationContext)
 

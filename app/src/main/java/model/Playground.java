@@ -160,7 +160,7 @@ public class Playground {
      */
     protected boolean IsGameEnded(){
 
-        return this.gameplay.IsGameEnded();
+        return this.gameplay.GameStateRefresh();
 
     }
 

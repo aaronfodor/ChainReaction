@@ -2,9 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/title_settings">
         <SwitchPreference
-                android:key="animation"
-                android:summaryOff="@string/label_lightning"
-                android:summaryOn="@string/label_normal"
-                android:title="@string/setting_enable_animation" />
+                android:key="show_propagation"
+                android:summaryOff="@string/label_off"
+                android:summaryOn="@string/label_on"
+                android:title="@string/setting_show_propagation" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -21,7 +21,12 @@ public class PlayerLogic {
     /**
      * Value above corner acquisition is prioritised
      */
-    private static int SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED = 16;
+    private static int SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED = 14;
+
+    /**
+     * Number of the Player's Fields below the Player starts to escape
+     */
+    private static int NUMBER_OF_FIELDS_LIMIT_ESCAPING_BELOW = 2;
 
     /**
      * Sets the global Neural Network object to be available to the class instances
@@ -55,12 +60,20 @@ public class PlayerLogic {
         most_promising_field[1] = 1;
         most_promising_field[2] = 100;
 
+        int[] least_promising_field = new int[3];
+        least_promising_field[0] = 1;
+        least_promising_field[1] = 1;
+        least_promising_field[2] = 0;
+
+        int fieldsOfPlayer = 0;
+
         //playground pre-processing
         for(int actual_height = 1; actual_height < playground_state.length-1; actual_height++){
 
             for(int actual_width = 1; actual_width < playground_state[actual_width].length-1; actual_width++){
 
                 int current_most_promising_value = 0;
+                int current_least_promising_value = 100;
                 int fields_clickable = 0;
 
                 for(int i = actual_height-1; i <= actual_height+1; i++){
@@ -68,12 +81,19 @@ public class PlayerLogic {
                     for(int j = actual_width-1; j <= actual_width+1; j++){
 
                         current_most_promising_value += playground_state[i][j][2];
+                        current_least_promising_value += playground_state[i][j][2];
 
                         int current_owner_Id = playground_state[i][j][0];
 
                         if(current_owner_Id == 0 || current_owner_Id == player_Id_to_step_for){
 
                             fields_clickable++;
+
+                        }
+
+                        if(current_owner_Id == player_Id_to_step_for){
+
+                            fieldsOfPlayer++;
 
                         }
 
@@ -89,10 +109,19 @@ public class PlayerLogic {
 
                 }
 
+                if(current_least_promising_value > least_promising_field[2] && fields_clickable > 0){
+
+                    least_promising_field[0] = actual_height;
+                    least_promising_field[1] = actual_width;
+                    least_promising_field[2] = current_least_promising_value;
+
+                }
+
             }
 
         }
 
+        Integer[][][] selected_matrix = new Integer[3][3][2];
         Integer[] coordinates;
 
         //if limit reached, prioritise corner stepping
@@ -108,34 +137,33 @@ public class PlayerLogic {
 
         }
 
-        Integer[][][] selected_matrix = new Integer[3][3][2];
+        //if limit reached, step to the least promising sub-matrix
+        if(fieldsOfPlayer < NUMBER_OF_FIELDS_LIMIT_ESCAPING_BELOW){
 
-        //selection of the 3x3 sub-matrix
-        for(int i = most_promising_field[0]-1; i <= most_promising_field[0]+1; i++){
+            selected_matrix = RetrieveSelectedSubMatrix(least_promising_field, playground_state, player_Id_to_step_for);
 
-            for(int j = most_promising_field[1]-1; j <= most_promising_field[1]+1; j++){
+            //feeding the Neural Network with the selected 3x3 matrix
+            coordinates = NeuralNetworkStep(selected_matrix);
 
-                Integer stepable = 0;
-
-                if(playground_state[i][j][0] == player_Id_to_step_for || playground_state[i][j][0] == 0){
-
-                    stepable = 1;
-
-                }
-
-                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][0] = playground_state[i][j][2];
-                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][1] = stepable;
-
-            }
+            //translates the Neural Network selection coordinates to global coordinates
+            coordinates[0] += least_promising_field[0]-1;
+            coordinates[1] += least_promising_field[1]-1;
 
         }
 
-        //feeding the Neural Network with the selected 3x3 matrix
-        coordinates = NeuralNetworkStep(selected_matrix);
+        //step to the most promising sub-matrix
+        else{
 
-        //translates the Neural Network selection coordinates to global coordinates
-        coordinates[0] += most_promising_field[0]-1;
-        coordinates[1] += most_promising_field[1]-1;
+            selected_matrix = RetrieveSelectedSubMatrix(most_promising_field, playground_state, player_Id_to_step_for);
+
+            //feeding the Neural Network with the selected 3x3 matrix
+            coordinates = NeuralNetworkStep(selected_matrix);
+
+            //translates the Neural Network selection coordinates to global coordinates
+            coordinates[0] += most_promising_field[0]-1;
+            coordinates[1] += most_promising_field[1]-1;
+
+        }
 
         return coordinates;
 
@@ -167,8 +195,8 @@ public class PlayerLogic {
         //getting DeepLearning4J-specific output
         INDArray actualOutput = NeuralNetwork.output(actualInput);
 
-        Integer maximum_prediction_index = 0;
-        Double maximum_prediction = 0.0;
+        int maximum_prediction_index = 0;
+        double maximum_prediction = 0.0;
 
         //evaluating the output - the greatest value is the one to step on
         for(int i = 0; i < actualOutput.columns(); i++){
@@ -234,6 +262,34 @@ public class PlayerLogic {
         }
 
         return null;
+
+    }
+
+    private Integer[][][] RetrieveSelectedSubMatrix(int[] most_promising_field, int[][][] playground_state, int player_Id_to_step_for){
+
+        Integer[][][] selected_matrix = new Integer[3][3][2];
+
+        //selection of the 3x3 sub-matrix
+        for(int i = most_promising_field[0]-1; i <= most_promising_field[0]+1; i++){
+
+            for(int j = most_promising_field[1]-1; j <= most_promising_field[1]+1; j++){
+
+                Integer stepable = 0;
+
+                if(playground_state[i][j][0] == player_Id_to_step_for || playground_state[i][j][0] == 0){
+
+                    stepable = 1;
+
+                }
+
+                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][0] = playground_state[i][j][2];
+                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][1] = stepable;
+
+            }
+
+        }
+
+        return selected_matrix;
 
     }
 

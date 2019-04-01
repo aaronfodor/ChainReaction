@@ -64,7 +64,14 @@ public interface IGameModel {
     Integer getActualPlayerId();
 
     /**
-     * Returns the Id of the current Player
+     * Returns the Id of the last Player
+     *
+     * @return 	Integer     Id of the last Player
+     */
+    Integer getLastPlayerId();
+
+    /**
+     * Returns the automatic stepping coordinates
      *
      * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
      */
@@ -76,5 +83,17 @@ public interface IGameModel {
      * @return 	int     Reaction propagation depth
      */
     int GetReactionPropagationDepth();
+
+    /**
+     * Reaction propagation depth reset method
+     */
+    void ResetReactionPropagationDepth();
+
+    /**
+     * Called to decide whether the GamePlay is over or not
+     *
+     * @return 	boolean     True means Game over, False otherwise
+     */
+    boolean IsGameEnded();
 
 }

@@ -6,13 +6,14 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
+import hu.bme.aut.android.chainreaction.R
 
 /**
  * Activity of a game play
@@ -33,7 +34,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         super.onCreate(savedInstanceState)
 
-        var players = ArrayList<String>()
+        val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val showPropagation = settings.getBoolean("show_propagation", true)
+
+        val players = ArrayList<String>()
 
         val extras = intent.extras
         if (extras != null) {
@@ -46,8 +50,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        create7x5Game(players)
+        create7x5Game(players, showPropagation)
 
         /*var FieldView = ImageView(this)
         val bmImg = getResources().getDrawable(android.R.drawable.ic_lock_lock);
@@ -66,7 +71,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * Creates the presenter with an intent of a 7x5 dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun create7x5Game(players: ArrayList<String>){
+    private fun create7x5Game(players: ArrayList<String>, showPropagation: Boolean){
 
         tableLayoutPlayground = findViewById<TableLayout>(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
         tableLayoutPlayground.setBackgroundColor(Color.BLACK)
@@ -87,7 +92,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         }
 
-        presenter = GamePresenter(this, 7, 5, players)
+        presenter = GamePresenter(this, 7, 5, players, showPropagation)
 
     }
 
@@ -135,8 +140,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun RefreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
 
-        var row = tableLayoutPlayground.getChildAt(pos_y) as TableRow
-        var field = row.getChildAt(pos_x) as ImageView
+        val row = tableLayoutPlayground.getChildAt(pos_y) as TableRow
+        val field = row.getChildAt(pos_x) as ImageView
 
         when (color) {
             8 -> when (number) {
@@ -227,8 +232,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun ShowCurrentPlayer(Id: Int): Boolean {
 
-        var infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.text = "Player " + Id + "'s turn"
+        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        infoText.text = getString(R.string.player_turn, Id)
 
         when (Id) {
             1 -> tableLayoutPlayground.setBackgroundColor(Color.RED)
@@ -242,7 +247,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             7 -> tableLayoutPlayground.setBackgroundColor(Color.rgb(210,180,140))
             8 -> tableLayoutPlayground.setBackgroundColor(Color.LTGRAY)
             else -> { // Note the block
-                tableLayoutPlayground.setBackgroundColor(Color.BLACK)
             }
         }
 
@@ -260,7 +264,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun ShowMessage(msg: String): Boolean {
 
-        var infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = msg
 
         return true
@@ -275,7 +279,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun ShowResult(msg: String): Boolean {
 
-        var infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = msg
 
         return true

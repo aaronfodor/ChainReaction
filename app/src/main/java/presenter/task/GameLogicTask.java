@@ -10,32 +10,39 @@ import presenter.IGameModel;
 public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
     /**
-     * Model object where the computation and state change occurs
+     * model object where the computation and state change occurs
      */
-    IGameModel model;
+    private IGameModel model;
 
     /**
-     * Presenter object which is on the UI thread
+     * presenter object which is on the UI thread
      */
-    GamePresenter presenter;
+    private GamePresenter presenter;
 
     /**
      * Time delay between two UI refresh events in milliseconds
      */
-    Integer refresh_rate_milliseconds;
+    private Integer refresh_rate_milliseconds = 300;
+
+    /**
+     * Whether to show propagation states or not
+     */
+    private Boolean showPropagation;
+
+    private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
 
     /**
      * GameLogicTask constructor
      *
-     * @param   model                       Model of the game play
-     * @param   presenter                   Presenter of the game play - the UI thread
-     * @param   refresh_rate_milliseconds   Time delay between two UI refresh events in milliseconds
+     * @param   model                       model of the game play
+     * @param   presenter                   presenter of the game play - the UI thread
+     * @param   showPropagation             is UI refresh allowed while propagating
      */
-    public GameLogicTask(IGameModel model, GamePresenter presenter, Integer refresh_rate_milliseconds){
+    public GameLogicTask(IGameModel model, GamePresenter presenter, Boolean showPropagation){
 
         this.model = model;
         this.presenter = presenter;
-        this.refresh_rate_milliseconds = refresh_rate_milliseconds;
+        this.showPropagation = showPropagation;
 
     }
 
@@ -50,48 +57,32 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         if(params.length == 0){
 
-            publishProgress(0);
+            PropagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE);
 
             Integer[] coordinates = model.getAutoCoordinates();
 
-            try{
+            while(coordinates != null){
 
-                while(coordinates != null){
+                if(isCancelled()){
 
-                    if(isCancelled()){
-
-                        break;
-
-                    }
-
-                    publishProgress(coordinates);
-                    Thread.sleep(refresh_rate_milliseconds);
-
-                    /*for(int i = 0; i < model.GetReactionPropagationDepth(); i++){
-
-                        if(isCancelled()){
-
-                            break;
-
-                        }
-
-                        publishProgress(i);
-                        //Thread.sleep(refresh_rate_milliseconds);
-
-                    }*/
-
-                    //int[][][][] state_matrix = model.HistoryPlaygroundInfo();
-
-                    coordinates = model.getAutoCoordinates();
+                    break;
 
                 }
 
-            } catch (InterruptedException e) {
+                try {
 
-                e.printStackTrace();
+                    PropagationDisplayManager(coordinates[0], coordinates[1]);
+                    Thread.sleep(refresh_rate_milliseconds);
+
+                } catch (InterruptedException e) {
+
+                    e.printStackTrace();
+
+                }
+
+                coordinates = model.getAutoCoordinates();
 
             }
-
 
         }
 
@@ -115,9 +106,52 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
             }
 
-            try{
+            while(coordinates != null) {
 
-                while(coordinates != null){
+                if(isCancelled()){
+
+                    break;
+
+                }
+
+                try {
+
+                    PropagationDisplayManager(coordinates[0], coordinates[1]);
+                    Thread.sleep(refresh_rate_milliseconds);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                coordinates = model.getAutoCoordinates();
+
+            }
+
+        }
+
+        return true;
+
+    }
+
+    private void PropagationDisplayManager(Integer... values) {
+
+        if(values.length == 1){
+
+            publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
+
+        }
+
+        else{
+
+            model.StepRequest(values[0], values[1]);
+
+            if(showPropagation){
+
+                model.HistoryPlaygroundBuilder();
+
+                int propagation_depth = model.GetReactionPropagationDepth();
+
+                for(int i = propagation_depth-2; i > 0; i--){
 
                     if(isCancelled()){
 
@@ -125,38 +159,26 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
                     }
 
-                    publishProgress(coordinates);
-                    Thread.sleep(refresh_rate_milliseconds);
+                    try {
 
-                    /*for(int i = 0; i < model.GetReactionPropagationDepth(); i++){
+                        publishProgress(model.getLastPlayerId(), i);
+                        Thread.sleep(refresh_rate_milliseconds);
 
-                        if(isCancelled()){
+                    } catch (InterruptedException e) {
 
-                            break;
+                        e.printStackTrace();
 
-                        }
-
-                        publishProgress(i);
-                        //Thread.sleep(refresh_rate_milliseconds);
-
-                    }*/
-
-                    //int[][][][] state_matrix = model.HistoryPlaygroundInfo();
-
-                    coordinates = model.getAutoCoordinates();
+                    }
 
                 }
 
-            } catch (InterruptedException e) {
-
-                e.printStackTrace();
+                model.ResetReactionPropagationDepth();
 
             }
 
+            publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
 
         }
-
-        return true;
 
     }
 
@@ -174,8 +196,6 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
 
-        super.onProgressUpdate();
-
         if(values.length == 1){
 
             presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);
@@ -184,7 +204,7 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         else{
 
-            presenter.RefreshPlayground(model.StepRequest(values[0], values[1]), 0);
+            presenter.RefreshPlayground(values[0], values[1]);
 
         }
 

@@ -6,7 +6,7 @@ import presenter.task.GameLogicTask;
 import java.util.ArrayList;
 
 /**
- * Presenter of a game play
+ * presenter of a game play
  * Controls what and how to be displayed on the view
  * Mediator between model and view
  */
@@ -28,6 +28,11 @@ public class GamePresenter {
     private GameLogicTask game_task;
 
     /**
+     * Unit in milliseconds to refresh propagation state
+     */
+    private Boolean showPropagation;
+
+    /**
      * GamePresenter constructor
      * Sets the view, the Players, the model, starts the game play
      *
@@ -36,9 +41,10 @@ public class GamePresenter {
      * @param   width 	        width of the Playground
      * @param   players_input   ArrayList of Strings; "<Player type>-<Player name>" format
      */
-    public GamePresenter(IGameView view, int height, int width, ArrayList<String> players_input){
+    public GamePresenter(IGameView view, int height, int width, ArrayList<String> players_input, Boolean showPropagation){
 
         this.view = view;
+        this.showPropagation = showPropagation;
 
         int number_of_players = players_input.size();
 
@@ -59,7 +65,7 @@ public class GamePresenter {
 
         this.model = new GamePlay(this, height, width, players);
 
-        game_task = new GameLogicTask(model, this, 300);
+        game_task = new GameLogicTask(model, this, showPropagation);
         game_task.execute();
 
     }
@@ -73,7 +79,7 @@ public class GamePresenter {
      */
     public void StepRequest(int pos_y, int pos_x){
 
-        game_task = new GameLogicTask(model, this, 300);
+        game_task = new GameLogicTask(model, this, showPropagation);
         game_task.execute(pos_y, pos_x);
 
     }
@@ -85,7 +91,10 @@ public class GamePresenter {
      */
     public void RefreshPlayground(int current_player_Id, int propagation_depth){
 
-        if(current_player_Id == 0){
+        int[] dimension = model.GetDimension();
+        int[][][] state_matrix = new int[dimension[0]][dimension[1]][];
+
+        if(current_player_Id == 0 && !model.IsGameEnded()){
 
             view.ShowMessage("Invalid click!");
             return;
@@ -94,14 +103,23 @@ public class GamePresenter {
 
         view.ShowCurrentPlayer(Math.abs(current_player_Id));
 
-        if(current_player_Id < 0){
+        if(model.IsGameEnded()){
 
-            view.ShowResult("Player " + Math.abs(current_player_Id) + " is the winner!");
+            view.ShowResult("Player " + Math.abs(model.getActualPlayerId()) + " is the winner!");
 
         }
 
-        int[][][] state_matrix = model.ActualPlaygroundInfo();
-        int[] dimension = model.GetDimension();
+        if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
+
+            state_matrix = model.HistoryPlaygroundInfoAt(propagation_depth);
+
+        }
+
+        else{
+
+            state_matrix = model.ActualPlaygroundInfo();
+
+        }
 
         for(int actual_height = 0; actual_height < dimension[0]; actual_height++){
 

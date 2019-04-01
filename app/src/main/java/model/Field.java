@@ -49,7 +49,7 @@ public class Field {
         this.playground = playground;
         this.neighbors = new EnumMap<Direction, Field>(Direction.class);
         this.Id = Id;
-        this.state_history = new ArrayList<>();
+        this.state_history = new ArrayList<int[]>();
         this.particle = new Particle(this, null, max_atoms);
 
     }
@@ -148,7 +148,7 @@ public class Field {
 
         if(this.state_history.isEmpty()){
 
-            return 1;
+            return 0;
 
         }
 
@@ -162,62 +162,48 @@ public class Field {
 
     public int[] GetStateAt(int propagation_time) {
 
-        if(this.state_history.isEmpty()){
+        int state_change_index_at_propagation = 0;
 
-            int[] current_state = new int[3];
-            current_state[0] = this.particle.GetOwnerId();
-            current_state[1] = this.particle.GetSize();
-            current_state[2] = this.particle.GetNumberLeftBeforeExplosion();
+        for(int i = 0; i < this.state_history.size(); i++){
 
-            return current_state;
+            int current_time_in_history = this.state_history.get(i)[0];
 
-        }
+            if(state_change_index_at_propagation < i && current_time_in_history < propagation_time){
 
-        else{
-
-            int state_index_at_propagation_time = 0;
-
-            for(int i = 0; i < this.state_history.size(); i++){
-
-                int current_time_in_history = this.state_history.get(i)[0];
-
-                if(state_index_at_propagation_time < i && current_time_in_history < propagation_time){
-
-                    state_index_at_propagation_time = i;
-
-                }
-
-                if(current_time_in_history == propagation_time){
-
-                    int[] state = this.state_history.get(i);
-
-                    int[] current_state = new int[3];
-                    current_state[0] = state[1];
-                    current_state[1] = state[2];
-                    current_state[2] = state[3];
-
-                    return current_state;
-
-                }
+                state_change_index_at_propagation = i;
 
             }
 
-            int[] state = this.state_history.get(state_index_at_propagation_time);
+            if(current_time_in_history == propagation_time){
 
-            int[] current_state = new int[3];
-            current_state[0] = state[1];
-            current_state[1] = state[2];
-            current_state[2] = state[3];
+                int[] state = this.state_history.get(i);
 
-            return current_state;
+                int[] current_state = new int[3];
+                current_state[0] = state[1];
+                current_state[1] = state[2];
+                current_state[2] = state[3];
+
+                return current_state;
+
+            }
 
         }
+
+        int[] state = this.state_history.get(state_change_index_at_propagation);
+
+        int[] current_state = new int[3];
+        current_state[0] = state[1];
+        current_state[1] = state[2];
+        current_state[2] = state[3];
+
+        return current_state;
 
     }
 
     public void Clear() {
 
-        this.state_history.clear();
+        this.state_history.removeAll(state_history);
 
     }
+
 }
