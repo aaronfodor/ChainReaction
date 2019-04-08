@@ -49,7 +49,7 @@ public class PlayerLogic {
      * Does playground pre-processing to evaluate which 3x3 part is worth to step on
      * Breaks the playground into 3x3 piece to feed the Neural Network with
      *
-     * @param	playground_state	    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
+     * @param	playground_state	    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements on the Field, [][][2] is the number of elements can be placed onto the Field before explosion
      * @param	player_Id_to_step_for	Player Id to calculate the step for
      * @return 	Integer[]               Global coordinates of the Field to step on: [0] is Y, [1] is X coordinate
      */
@@ -121,7 +121,7 @@ public class PlayerLogic {
 
         }
 
-        Integer[][][] selected_matrix = new Integer[3][3][2];
+        Double[][] selected_matrix;
         Integer[] coordinates;
 
         //if limit reached, prioritise corner stepping
@@ -172,10 +172,10 @@ public class PlayerLogic {
     /**
      * Feeds the Neural Network with the given 3x3 matrix
      *
-     * @param	input_matrix    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
+     * @param	input_matrix    [i] is Y coordinate, [][j] is X coordinate, [i][j] is the double value: minus value means AI Player cannot step onto that Field; the bigger value is the better
      * @return 	Integer[]       Local coordinates of the Field to step on the input matrix: [0] is Y, [1] is X coordinate
      */
-    private Integer[] NeuralNetworkStep(Integer[][][] input_matrix){
+    private Integer[] NeuralNetworkStep(Double[][] input_matrix){
 
         Integer[] coordinates = new Integer[2];
 
@@ -186,7 +186,7 @@ public class PlayerLogic {
 
             for(int j = 0; j < input_matrix[i].length; j++){
 
-                actualInput.putScalar(new int[]{0,(i*3) + j }, input_matrix[i][j][0].doubleValue() * 0.25);
+                actualInput.putScalar(new int[]{0,(i*3) + j }, input_matrix[i][j]);
 
             }
 
@@ -201,7 +201,7 @@ public class PlayerLogic {
         //evaluating the output - the greatest value is the one to step on
         for(int i = 0; i < actualOutput.columns(); i++){
 
-            if(actualOutput.getDouble(i) > maximum_prediction && input_matrix[i/3][i%3][1] == 1){
+            if(actualOutput.getDouble(i) > maximum_prediction && input_matrix[i/3][i%3] >= 0){
 
                 maximum_prediction_index = i;
 
@@ -265,25 +265,39 @@ public class PlayerLogic {
 
     }
 
-    private Integer[][][] RetrieveSelectedSubMatrix(int[] most_promising_field, int[][][] playground_state, int player_Id_to_step_for){
+    /**
+     * Retrieves the selected sub-matrix
+     *
+     * @param	most_promising_field	Coordinates of the most promising Field, which is the centre of the sub-matrix: [0] is Y coordinate, [1] is X coordinate
+     * @param	playground_state	    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
+     * @param	player_Id_to_step_for	Id of the Player to step for
+     * @return 	Double[][]              The selected 3x3 sub-matrix: [i] is Y coordinate, [][j] is X coordinate, [i][j] is the double value: minus value means AI Player cannot step onto that Field; the bigger value is the better
+     */
+    private Double[][] RetrieveSelectedSubMatrix(int[] most_promising_field, int[][][] playground_state, int player_Id_to_step_for){
 
-        Integer[][][] selected_matrix = new Integer[3][3][2];
+        Double[][] selected_matrix = new Double[3][3];
+
+        //normalization multiplier for neural network
+        double foreToken = 0.25;
 
         //selection of the 3x3 sub-matrix
         for(int i = most_promising_field[0]-1; i <= most_promising_field[0]+1; i++){
 
             for(int j = most_promising_field[1]-1; j <= most_promising_field[1]+1; j++){
 
-                Integer stepable = 0;
-
+                //the AI Player can step onto the Field
                 if(playground_state[i][j][0] == player_Id_to_step_for || playground_state[i][j][0] == 0){
 
-                    stepable = 1;
+                    selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = (1 - (playground_state[i][j][2] * foreToken));
 
                 }
 
-                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][0] = playground_state[i][j][2];
-                selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ][1] = stepable;
+                //AI Player cannot step onto the Field
+                else{
+
+                    selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = ((-1) * (playground_state[i][j][1] * foreToken));
+
+                }
 
             }
 

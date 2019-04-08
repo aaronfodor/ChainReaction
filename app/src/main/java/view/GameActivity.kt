@@ -54,18 +54,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         create7x5Game(players, showPropagation)
 
-        /*var FieldView = ImageView(this)
-        val bmImg = getResources().getDrawable(android.R.drawable.ic_lock_lock);
-        FieldView.setImageDrawable(bmImg)*/
-        //val bmImg = BitmapFactory.decodeFile("@drawable/blue_dot1")
-        //FieldView.setImageBitmap(bmImg)
-
-        /*var row = TableRow(this)
-        row.addView(FieldView)
-        row.addView(FieldView)
-        row.addView(FieldView)
-        TableLayoutPlayground.addView(row)*/
-
     }
 
     /**
@@ -73,7 +61,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private fun create7x5Game(players: ArrayList<String>, showPropagation: Boolean){
 
-        tableLayoutPlayground = findViewById<TableLayout>(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
+        tableLayoutPlayground = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
         tableLayoutPlayground.setBackgroundColor(Color.BLACK)
 
         val root = tableLayoutPlayground.rootView
@@ -300,9 +288,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun onPause() {
 
-        super.onPause()
-
         presenter.stopPresenter()
+        super.onPause()
 
     }
 

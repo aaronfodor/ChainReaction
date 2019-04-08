@@ -196,6 +196,12 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
 
+        if(isCancelled()){
+
+            return;
+
+        }
+
         if(values.length == 1){
 
             presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);

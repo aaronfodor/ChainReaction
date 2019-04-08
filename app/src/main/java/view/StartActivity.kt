@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
 import android.widget.Toast
+import org.bytedeco.javacpp.opencv_core.setFlags
+
+
 
 /**
  * Activity of settings of game play

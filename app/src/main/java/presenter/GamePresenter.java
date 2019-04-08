@@ -118,6 +118,7 @@ public class GamePresenter {
         else{
 
             state_matrix = model.ActualPlaygroundInfo();
+            int tmp = 6;
 
         }
 
