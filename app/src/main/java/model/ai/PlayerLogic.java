@@ -53,6 +53,8 @@ public class PlayerLogic {
      */
     public Integer[] CalculateStep(int[][][] playground_state, int player_Id_to_step_for) {
 
+        //adapter
+
         int[] most_promising_field = new int[3];
         most_promising_field[0] = 1;
         most_promising_field[1] = 1;
