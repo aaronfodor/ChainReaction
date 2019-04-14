@@ -34,13 +34,10 @@ public class Particle {
      * @param	max_size	Maximum size of the Particle before exploding
      */
     protected Particle(Field field, Player owner, int max_size){
-
         this.field = field;
         this.owner = owner;
         this.max_size = max_size;
-
         current_size = 0;
-
     }
 
     /**
@@ -55,23 +52,17 @@ public class Particle {
         if((this.owner == owner) || (this.owner == null)){
 
             int propagation_depth = 1;
-
             //this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
-
             this.owner = owner;
 
             if(current_size == max_size){
-
                 this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), 0, max_size);
                 this.Explode(propagation_depth);
-
             }
 
             else{
-
                 current_size++;
                 this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
-
             }
 
             return true;
@@ -79,9 +70,7 @@ public class Particle {
         }
 
         else{
-
             return false;
-
         }
 
     }
@@ -97,17 +86,13 @@ public class Particle {
         this.owner = owner;
 
         if(current_size == max_size){
-
             this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
             this.Explode(propagation_depth);
-
         }
 
         else{
-
             current_size++;
             this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
-
         }
 
 
@@ -121,22 +106,17 @@ public class Particle {
     private void Explode(int propagation_depth){
 
         if(IsGameEnded()){
-
             return;
-
         }
 
         Player exploder = this.owner;
-
         this.current_size = 0;
         this.owner = null;
 
         for (Direction dir : Direction.values()) {
 
             if(field.GetNeighborAt(dir) != null){
-
                 field.GetNeighborAt(dir).GetParticle().Increase(exploder, propagation_depth+1);
-
             }
 
         }
@@ -151,15 +131,11 @@ public class Particle {
     protected int GetOwnerId(){
 
         if(owner != null){
-
             return owner.GetId();
-
         }
 
         else{
-
             return 0;
-
         }
 
     }
@@ -170,9 +146,7 @@ public class Particle {
      * @return 	int    Current size of the Particle
      */
     protected int GetSize(){
-
         return this.current_size;
-
     }
 
     /**
@@ -181,9 +155,7 @@ public class Particle {
      * @return 	int    Number of elements before explosion
      */
     protected int GetNumberLeftBeforeExplosion(){
-
         return (max_size - current_size);
-
     }
 
     /**
@@ -192,9 +164,7 @@ public class Particle {
      * @return 	boolean     True means Game is over - computation is not necessary, False otherwise
      */
     private boolean IsGameEnded(){
-
         return this.field.IsGameEnded();
-
     }
 
 }

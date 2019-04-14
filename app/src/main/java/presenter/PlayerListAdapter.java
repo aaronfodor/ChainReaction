@@ -27,9 +27,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Vi
      * @param   list_data 	    The list to work on
      */
     public PlayerListAdapter(ArrayList<PlayerListData> list_data) {
-
         this.list_data = list_data;
-
     }
 
     @Override  
@@ -49,10 +47,8 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Vi
     }
   
     @Override  
-    public int getItemCount() {  
-
+    public int getItemCount() {
         return list_data.size();
-
     }
 
     /**
@@ -72,13 +68,11 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Vi
          * constructor of ViewHolder
          */
         public ViewHolder(View itemView) {
-
             super(itemView);  
             this.imageView = itemView.findViewById(R.id.imageViewPlayer);
             this.nameView = itemView.findViewById(R.id.nameView);
             this.typeView = itemView.findViewById(R.id.typeView);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
-
         }
 
     }
@@ -89,21 +83,17 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Vi
      * @param   player 	    PlayerListData to add
      */
     public void addItem(PlayerListData player) {
-
         int size = list_data.size();
         list_data.add(player);
         notifyItemInserted(size);
-
     }
 
     /**
      * Clears the whole list
      */
     public void Clear() {
-
         list_data.clear();
         notifyDataSetChanged();
-
     }
 
     /**
@@ -113,12 +103,9 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Vi
      * @return 	String	"<Player type>-<Player name>" format
      */
     public String StringElementAt(int idx) {
-
         PlayerListData data = list_data.get(idx);
         String value = data.getType() + "-" + data.getName();
-
         return value;
-
     }
 
 }  

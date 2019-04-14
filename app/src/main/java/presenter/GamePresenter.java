@@ -1,5 +1,7 @@
 package presenter;
 
+import android.os.AsyncTask;
+import android.os.Looper;
 import model.GamePlay;
 import presenter.task.GameLogicTask;
 
@@ -78,10 +80,8 @@ public class GamePresenter {
      * @param   pos_x      X coordinate
      */
     public void StepRequest(int pos_y, int pos_x){
-
         game_task = new GameLogicTask(model, this, showPropagation);
         game_task.execute(pos_y, pos_x);
-
     }
 
     /**
@@ -95,41 +95,30 @@ public class GamePresenter {
         int[][][] state_matrix = new int[dimension[0]][dimension[1]][];
 
         if(current_player_Id == 0 && !model.IsGameEnded()){
-
             view.ShowMessage("Invalid click!");
             return;
-
         }
 
         view.ShowCurrentPlayer(Math.abs(current_player_Id));
 
         if(model.IsGameEnded()){
-
             view.ShowResult("Player " + Math.abs(model.getActualPlayerId()) + " is the winner!");
-
         }
 
         if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
-
             state_matrix = model.HistoryPlaygroundInfoAt(propagation_depth);
-
         }
 
         else{
-
             state_matrix = model.ActualPlaygroundInfo();
-            int tmp = 6;
-
         }
 
         for(int actual_height = 0; actual_height < dimension[0]; actual_height++){
 
             for(int actual_width = 0; actual_width < dimension[1]; actual_width++){
-
                 view.RefreshPlayground(actual_height, actual_width,
                         PlayerColor.GetColorById(state_matrix[actual_height][actual_width][0]),
                         state_matrix[actual_height][actual_width][1]);
-
             }
 
         }
@@ -137,22 +126,17 @@ public class GamePresenter {
     }
 
     /**
-     * Stops immediately GamePresenter computations
+     * Returns the AsyncTask
      *
-     * @return 	Boolean     True if stopped, false otherwise
+     * @return 	AsyncTask     Returns the AsyncTask. If empty, returns null
      */
-    public Boolean stopPresenter(){
+    public AsyncTask getTask(){
 
         if(game_task != null){
-
-            return game_task.cancel(true);
-
+            return game_task;
         }
-
         else{
-
-            return true;
-
+            return null;
         }
 
     }

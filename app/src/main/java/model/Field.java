@@ -45,13 +45,11 @@ public class Field {
      * @param   Id       	Name of the Field
      */
     public Field(Playground playground, int max_atoms, String Id){
-
         this.playground = playground;
         this.neighbors = new EnumMap<Direction, Field>(Direction.class);
         this.Id = Id;
         this.state_history = new ArrayList<int[]>();
         this.particle = new Particle(this, null, max_atoms);
-
     }
 
     /**
@@ -62,9 +60,7 @@ public class Field {
      * @return 	boolean     True if the action was successful, false otherwise
      */
     public boolean ElementAdd(Player adder){
-
         return this.GetParticle().React(adder);
-
     }
 
     /**
@@ -76,9 +72,7 @@ public class Field {
      * @return 	void
      */
     public void SetNeighbor(Field f, Direction d){
-
         this.neighbors.put(d,f);
-
     }
 
     /**
@@ -88,9 +82,7 @@ public class Field {
      * @return 	Field       Neighboring Field in the given Direction
      */
     public Field GetNeighborAt(Direction dir){
-
         return neighbors.get(dir);
-
     }
 
     /**
@@ -99,9 +91,7 @@ public class Field {
      * @return 	Particle    Particle of the Field
      */
     public Particle GetParticle(){
-
         return particle;
-
     }
 
     /**
@@ -110,9 +100,7 @@ public class Field {
      * @return 	int    Id of the Player
      */
     public int GetPlayerIdOnField(){
-
         return particle.GetOwnerId();
-
     }
 
     /**
@@ -121,9 +109,7 @@ public class Field {
      * @return 	boolean     True means Game over, False otherwise
      */
     protected boolean IsGameEnded(){
-
         return this.playground.IsGameEnded();
-
     }
 
     public void AddStateToHistory(int propagation_depth, int Id, int current_size, int numberLeftBeforeExplosion) {
@@ -137,9 +123,7 @@ public class Field {
         this.state_history.add(new_state);
 
         if(propagation_depth > this.playground.GetReactionPropagationDepth()){
-
             this.playground.SetReactionPropagationDepth(propagation_depth);
-
         }
 
     }
@@ -147,15 +131,11 @@ public class Field {
     public int NumberOfStates() {
 
         if(this.state_history.isEmpty()){
-
             return 0;
-
         }
 
         else{
-
             return this.state_history.size();
-
         }
 
     }
@@ -169,15 +149,12 @@ public class Field {
             int current_time_in_history = this.state_history.get(i)[0];
 
             if(state_change_index_at_propagation < i && current_time_in_history < propagation_time){
-
                 state_change_index_at_propagation = i;
-
             }
 
             if(current_time_in_history == propagation_time){
 
                 int[] state = this.state_history.get(i);
-
                 int[] current_state = new int[3];
                 current_state[0] = state[1];
                 current_state[1] = state[2];
@@ -190,7 +167,6 @@ public class Field {
         }
 
         int[] state = this.state_history.get(state_change_index_at_propagation);
-
         int[] current_state = new int[3];
         current_state[0] = state[1];
         current_state[1] = state[2];
@@ -201,9 +177,7 @@ public class Field {
     }
 
     public void Clear() {
-
         this.state_history.removeAll(state_history);
-
     }
 
 }

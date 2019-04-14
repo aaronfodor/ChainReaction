@@ -28,10 +28,8 @@ public abstract class Player {
      * @param	name       	Name of the Player
      */
     public Player(int Id, String name){
-
         this.Id = Id;
         this.name = name;
-
     }
 
     /**
@@ -40,9 +38,7 @@ public abstract class Player {
      * @return 	Integer[]     Returns null by default
      */
     public Integer[] ExecuteStep() {
-
         return null;
-
     }
 
 
@@ -54,9 +50,7 @@ public abstract class Player {
      * @return 	boolean     True if succeed, false otherwise
      */
     protected boolean ExecuteStep(int pos_y, int pos_x){
-
         return this.gameplay.GetPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
-
     }
 
     /**
@@ -65,9 +59,7 @@ public abstract class Player {
      * @param 	gameplay 	GamePlay the Player is in
      */
     public void SetGamePlay(GamePlay gameplay){
-
         this.gameplay= gameplay;
-
     }
 
     /**
@@ -76,9 +68,7 @@ public abstract class Player {
      * @return 	int     Id of the Player
      */
     public int GetId(){
-
         return this.Id;
-
     }
 
 }

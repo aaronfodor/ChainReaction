@@ -67,21 +67,16 @@ public class GamePlay implements IGameModel {
     public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
 
         this.presenter = presenter;
-
         ArrayList<Player> players = new ArrayList<Player>();
 
         for(String[] raw_player_element : players_raw){
 
             if(raw_player_element[2].equals("human")){
-
                 players.add(new PlayerHuman(Integer.valueOf(raw_player_element[0]),raw_player_element[1]));
-
             }
 
             else{
-
                 players.add(new PlayerAI(Integer.valueOf(raw_player_element[0]),raw_player_element[1]));
-
             }
 
         }
@@ -94,9 +89,7 @@ public class GamePlay implements IGameModel {
         this.playground = new Playground(this, height, width);
 
         for(Player player : this.players){
-
             player.SetGamePlay(this);
-
         }
 
     }
@@ -111,17 +104,12 @@ public class GamePlay implements IGameModel {
         Integer[] coordinates = players.get(current_player_index).ExecuteStep();
 
         if(coordinates != null){
-
             players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
-
             return StepToNextPlayer();
-
         }
 
         else{
-
             return players.get(current_player_index).GetId();
-
         }
 
     }
@@ -141,16 +129,12 @@ public class GamePlay implements IGameModel {
             current_player_index = 0;
 
             if(!first_round_ended){
-
                 first_round_ended = true;
-
             }
 
         }
         else{
-
             current_player_index++;
-
         }
 
         return players.get(current_player_index).GetId();
@@ -167,24 +151,19 @@ public class GamePlay implements IGameModel {
     public int StepRequest(int pos_y, int pos_x){
 
         if(winner_Id != 0){
-
             return (-1)*winner_Id;
-
         }
 
         if(players.get(current_player_index).ExecuteStep(pos_y,pos_x)){
 
             if(this.GameStateRefresh()){
-
                 return (-1)*winner_Id;
-
             }
 
         }
+
         else{
-
             return 0;
-
         }
 
         return StepToNextPlayer();
@@ -204,18 +183,14 @@ public class GamePlay implements IGameModel {
         boolean removed_flag = false;
 
         if(!first_round_ended){
-
             return removed_flag;
-
         }
 
         //key is the Id of the Player, value is the number of Fields it owns
         HashMap<Integer,Integer> field_number_of_players = new HashMap<Integer, Integer>();
 
         for(Player player : players) {
-
             field_number_of_players.put(player.GetId(),0);
-
         }
 
         for(int actual_height = 0; actual_height < this.playground.GetHeight(); actual_height++){
@@ -225,9 +200,7 @@ public class GamePlay implements IGameModel {
                 int temp_Id = this.playground.GetFieldAt(actual_height,actual_width).GetPlayerIdOnField();
 
                 if(temp_Id != 0){
-
                     field_number_of_players.put(temp_Id, field_number_of_players.get(temp_Id)+1);
-
                 }
             }
 
@@ -242,9 +215,7 @@ public class GamePlay implements IGameModel {
                 for(Player player : players){
 
                     if(player.GetId() == entry.getKey()){
-
                         players_to_remove.add(player);
-
                     }
 
                 }
@@ -254,17 +225,13 @@ public class GamePlay implements IGameModel {
         }
 
         if(players_to_remove.size() > 0){
-
             removed_flag = true;
-
         }
 
         for(Player player : players_to_remove){
 
             if(players.indexOf(player) < current_player_index){
-
                 current_player_index--;
-
             }
 
             players.remove(player);
@@ -272,9 +239,7 @@ public class GamePlay implements IGameModel {
         }
 
         if(players.size() == 1){
-
             winner_Id = players.get(current_player_index).GetId();
-
         }
 
         return removed_flag;
@@ -298,11 +263,9 @@ public class GamePlay implements IGameModel {
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
 
             for(int actual_width = 0; actual_width < dim[1]; actual_width++){
-
                 state_matrix[actual_height][actual_width][0] = playground.GetFieldAt(actual_height, actual_width).GetPlayerIdOnField();
                 state_matrix[actual_height][actual_width][1] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
                 state_matrix[actual_height][actual_width][2] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetNumberLeftBeforeExplosion();
-
             }
 
         }
@@ -321,9 +284,7 @@ public class GamePlay implements IGameModel {
     public int[][][] HistoryPlaygroundInfoAt(int propagation_depth) {
 
         if(this.history_matrix == null){
-
             return this.ActualPlaygroundInfo();
-
         }
 
         int[] dim = this.GetDimension();
@@ -333,11 +294,8 @@ public class GamePlay implements IGameModel {
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
 
             for(int actual_width = 0; actual_width < dim[1]; actual_width++){
-
                 int[] actual_field_state = this.history_matrix[actual_height][actual_width][propagation_depth];
-
                 state_matrix[actual_height][actual_width] = actual_field_state;
-
             }
 
         }
@@ -361,9 +319,7 @@ public class GamePlay implements IGameModel {
         int propagation_depth = this.playground.GetReactionPropagationDepth();
 
         if(propagation_depth == 0){
-
             propagation_depth++;
-
         }
 
         int[][][][] state_matrix = new int[dim[0]][dim[1]][propagation_depth][3];
@@ -379,11 +335,8 @@ public class GamePlay implements IGameModel {
                     current_state[1] = this.playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
                     current_state[2] = this.playground.GetFieldAt(actual_height, actual_width).GetParticle().GetNumberLeftBeforeExplosion();
 
-
                     for(int i = 0; i < propagation_depth; i++){
-
                         state_matrix[actual_height][actual_width][i] = current_state;
-
                     }
 
                 }
@@ -393,15 +346,11 @@ public class GamePlay implements IGameModel {
                     int current_propagation_depth = playground.GetFieldAt(actual_height, actual_width).NumberOfStates();
 
                     if(current_propagation_depth > propagation_depth){
-
                         current_propagation_depth = propagation_depth;
-
                     }
 
                     for(int propagation_time = 0; propagation_time < current_propagation_depth; propagation_time++){
-
                         state_matrix[actual_height][actual_width][propagation_time] = playground.GetFieldAt(actual_height, actual_width).GetStateAt(propagation_time);
-
                     }
 
                 }
@@ -423,14 +372,10 @@ public class GamePlay implements IGameModel {
      * @return 	int[]   Playground dimension info
      */
     public int[] GetDimension() {
-
         int[] dim = new int[2];
-
         dim[0] = playground.GetHeight();
         dim[1] = playground.GetWidth();
-
         return dim;
-
     }
 
     /**
@@ -439,9 +384,7 @@ public class GamePlay implements IGameModel {
      * @return  playground  Playground in the GamePlay
      */
     protected Playground GetPlayground() {
-
         return this.playground;
-
     }
 
     /**
@@ -450,10 +393,8 @@ public class GamePlay implements IGameModel {
      * @return 	boolean     True means Game over, False otherwise
      */
     protected boolean GameStateRefresh(){
-
         this.UpdatePlayersInGame();
         return this.IsGameEnded();
-
     }
 
     /**
@@ -462,9 +403,7 @@ public class GamePlay implements IGameModel {
      * @return 	boolean     True means Game over, False otherwise
      */
     public boolean IsGameEnded(){
-
         return winner_Id != 0;
-
     }
 
     /**
@@ -475,15 +414,11 @@ public class GamePlay implements IGameModel {
     public String WinnerType(){
 
         if(players.get(winner_Id).ExecuteStep() != null){
-
             return "AI";
-
         }
 
         else{
-
             return "human";
-
         }
 
     }
@@ -494,9 +429,7 @@ public class GamePlay implements IGameModel {
      * @return 	Integer     Id of the current Player
      */
     public Integer getActualPlayerId(){
-
         return players.get(current_player_index).GetId();
-
     }
 
     /**
@@ -507,27 +440,29 @@ public class GamePlay implements IGameModel {
     public Integer getLastPlayerId(){
 
         if(players.size() == 1){
-
             return 0;
-
         }
 
         else{
-
             return players.get(last_player_index).GetId();
-
         }
 
     }
 
     /**
-     * Returns the Id of the current Player
+     * Returns the AI stepping coordinates if the current Player is an AI or the game has not ended
      *
-     * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
+     * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available or game has finished, returns null
      */
     public Integer[] getAutoCoordinates(){
 
-        return players.get(current_player_index).ExecuteStep();
+        if(IsGameEnded()){
+            return null;
+        }
+
+        else{
+            return players.get(current_player_index).ExecuteStep();
+        }
 
     }
 
@@ -537,18 +472,14 @@ public class GamePlay implements IGameModel {
      * @return 	int     Reaction propagation depth
      */
     public int GetReactionPropagationDepth(){
-
         return this.playground.GetReactionPropagationDepth();
-
     }
 
     /**
      * Reaction propagation depth reset method
      */
     public void ResetReactionPropagationDepth(){
-
         this.playground.ResetReactionPropagationDepth();
-
     }
 
 }

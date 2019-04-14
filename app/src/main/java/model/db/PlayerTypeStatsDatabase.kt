@@ -17,10 +17,8 @@ abstract class PlayerTypeStatsDatabase : RoomDatabase() {
         fun getInstance(context: Context): PlayerTypeStatsDatabase {
 
             if (INSTANCE == null) {
-
                 INSTANCE =  Room.databaseBuilder(context.applicationContext,
                     PlayerTypeStatsDatabase::class.java, "player_type_statistics.db").build()
-
             }
 
             return INSTANCE!!
@@ -28,9 +26,7 @@ abstract class PlayerTypeStatsDatabase : RoomDatabase() {
         }
 
         fun destroyInstance() {
-
             INSTANCE = null
-
         }
 
     }

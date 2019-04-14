@@ -36,9 +36,7 @@ public class PlayerLogic {
     public static void SetNeuralNetwork(MultiLayerNetwork network){
 
         if(NeuralNetwork == null){
-
             NeuralNetwork = network;
-
         }
 
     }
@@ -86,15 +84,11 @@ public class PlayerLogic {
                         int current_owner_Id = playground_state[i][j][0];
 
                         if(current_owner_Id == 0 || current_owner_Id == player_Id_to_step_for){
-
                             fields_clickable++;
-
                         }
 
                         if(current_owner_Id == player_Id_to_step_for){
-
                             fieldsOfPlayer++;
-
                         }
 
                     }
@@ -102,19 +96,15 @@ public class PlayerLogic {
                 }
 
                 if(current_most_promising_value < most_promising_field[2] && fields_clickable > 0){
-
                     most_promising_field[0] = actual_height;
                     most_promising_field[1] = actual_width;
                     most_promising_field[2] = current_most_promising_value;
-
                 }
 
                 if(current_least_promising_value > least_promising_field[2] && fields_clickable > 0){
-
                     least_promising_field[0] = actual_height;
                     least_promising_field[1] = actual_width;
                     least_promising_field[2] = current_least_promising_value;
-
                 }
 
             }
@@ -126,20 +116,16 @@ public class PlayerLogic {
 
         //if limit reached, prioritise corner stepping
         if(most_promising_field[2] > SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED){
-
-            coordinates = EmptyCornerStep(playground_state);
+            coordinates = EmptyCornerStep(playground_state, player_Id_to_step_for);
 
             if(coordinates != null){
-
                 return coordinates;
-
             }
 
         }
 
         //if limit reached, step to the least promising sub-matrix
         if(fieldsOfPlayer < NUMBER_OF_FIELDS_LIMIT_ESCAPING_BELOW){
-
             selected_matrix = RetrieveSelectedSubMatrix(least_promising_field, playground_state, player_Id_to_step_for);
 
             //feeding the Neural Network with the selected 3x3 matrix
@@ -148,12 +134,10 @@ public class PlayerLogic {
             //translates the Neural Network selection coordinates to global coordinates
             coordinates[0] += least_promising_field[0]-1;
             coordinates[1] += least_promising_field[1]-1;
-
         }
 
         //step to the most promising sub-matrix
         else{
-
             selected_matrix = RetrieveSelectedSubMatrix(most_promising_field, playground_state, player_Id_to_step_for);
 
             //feeding the Neural Network with the selected 3x3 matrix
@@ -162,7 +146,6 @@ public class PlayerLogic {
             //translates the Neural Network selection coordinates to global coordinates
             coordinates[0] += most_promising_field[0]-1;
             coordinates[1] += most_promising_field[1]-1;
-
         }
 
         return coordinates;
@@ -185,9 +168,7 @@ public class PlayerLogic {
         for(int i = 0; i < input_matrix.length; i++){
 
             for(int j = 0; j < input_matrix[i].length; j++){
-
                 actualInput.putScalar(new int[]{0,(i*3) + j }, input_matrix[i][j]);
-
             }
 
         }
@@ -202,9 +183,7 @@ public class PlayerLogic {
         for(int i = 0; i < actualOutput.columns(); i++){
 
             if(actualOutput.getDouble(i) > maximum_prediction && input_matrix[i/3][i%3] >= 0){
-
                 maximum_prediction_index = i;
-
             }
 
         }
@@ -220,45 +199,38 @@ public class PlayerLogic {
     /**
      * Tries to step onto an empty corner Field
      *
-     * @param	playground_state	    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
-     * @return 	Integer[]               Global coordinates of the Field to step on: [0] is Y, [1] is X coordinate; null means there is no empty corners left
+     * @param	playground_state	        [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
+     * @param	player_Id_to_step_for	    Player Id to calculate the step for
+     * @return 	Integer[]                   Global coordinates of the Field to step on: [0] is Y, [1] is X coordinate; null means there is no empty corners left
      */
-    private Integer[] EmptyCornerStep(int[][][] playground_state){
+    private Integer[] EmptyCornerStep(int[][][] playground_state, int player_Id_to_step_for){
 
         if(playground_state[0][0][1] == 0){
-
             Integer[] coordinates = new Integer[2];
             coordinates[0] = 0;
             coordinates[1] = 0;
             return coordinates;
-
         }
 
         if(playground_state[playground_state.length-1][0][1] == 0){
-
             Integer[] coordinates = new Integer[2];
             coordinates[0] = playground_state.length-1;
             coordinates[1] = 0;
             return coordinates;
-
         }
 
         if(playground_state[0][playground_state[0].length-1][1] == 0){
-
             Integer[] coordinates = new Integer[2];
             coordinates[0] = 0;
             coordinates[1] = playground_state[0].length-1;
             return coordinates;
-
         }
 
         if(playground_state[playground_state.length-1][playground_state[playground_state.length-1].length-1][1] == 0){
-
             Integer[] coordinates = new Integer[2];
             coordinates[0] = playground_state.length-1;
             coordinates[1] = playground_state[playground_state.length-1].length-1;
             return coordinates;
-
         }
 
         return null;
@@ -287,16 +259,11 @@ public class PlayerLogic {
 
                 //the AI Player can step onto the Field
                 if(playground_state[i][j][0] == player_Id_to_step_for || playground_state[i][j][0] == 0){
-
                     selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = (1 - (playground_state[i][j][2] * foreToken));
-
                 }
-
                 //AI Player cannot step onto the Field
                 else{
-
                     selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = ((-1) * (playground_state[i][j][1] * foreToken));
-
                 }
 
             }
@@ -313,9 +280,7 @@ public class PlayerLogic {
      * @return 	Boolean     True if loaded, false if not
      */
     public static Boolean isNeuralNetworkLoaded(){
-
         return NeuralNetwork != null;
-
     }
 
 }

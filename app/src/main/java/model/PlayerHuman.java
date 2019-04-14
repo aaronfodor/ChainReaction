@@ -13,9 +13,7 @@ public class PlayerHuman extends Player {
      * @param	name       	Name of the Player
      */
     public PlayerHuman(int Id, String name){
-
         super(Id, name);
-
     }
 
 }

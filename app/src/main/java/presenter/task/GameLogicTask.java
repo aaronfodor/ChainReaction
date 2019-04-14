@@ -32,6 +32,11 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
 
     /**
+     * Static cancel flag of all GameLogicTask instances
+     */
+    static boolean cancelTask = true;
+
+    /**
      * GameLogicTask constructor
      *
      * @param   model                       model of the game play
@@ -39,11 +44,10 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
      * @param   showPropagation             is UI refresh allowed while propagating
      */
     public GameLogicTask(IGameModel model, GamePresenter presenter, Boolean showPropagation){
-
         this.model = model;
         this.presenter = presenter;
         this.showPropagation = showPropagation;
-
+        cancelTask = false;
     }
 
     /**
@@ -55,75 +59,64 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     @Override
     protected Boolean doInBackground(Integer... params) {
 
-        if(params.length == 0){
+        //do if the task is not cancelled
+        if (!cancelTask){
 
-            PropagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE);
+            if(params.length == 0){
 
-            Integer[] coordinates = model.getAutoCoordinates();
+                PropagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE);
+                Integer[] coordinates = model.getAutoCoordinates();
 
-            while(coordinates != null){
+                while(coordinates != null){
 
-                if(isCancelled()){
+                    if(cancelTask){
+                        break;
+                    }
 
-                    break;
+                    try {
+                        PropagationDisplayManager(coordinates[0], coordinates[1]);
+                        Thread.sleep(refresh_rate_milliseconds);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    coordinates = model.getAutoCoordinates();
 
                 }
-
-                try {
-
-                    PropagationDisplayManager(coordinates[0], coordinates[1]);
-                    Thread.sleep(refresh_rate_milliseconds);
-
-                } catch (InterruptedException e) {
-
-                    e.printStackTrace();
-
-                }
-
-                coordinates = model.getAutoCoordinates();
-
-            }
-
-        }
-
-        else{
-
-            Integer[] coordinates = new Integer[2];
-
-            Integer[] auto_coordinates = model.getAutoCoordinates();
-
-            if(auto_coordinates == null){
-
-                coordinates[0] = params[0];
-                coordinates[1] = params[1];
 
             }
 
             else{
 
-                coordinates[0] = auto_coordinates[0];
-                coordinates[1] = auto_coordinates[1];
+                Integer[] coordinates = new Integer[2];
+                Integer[] auto_coordinates = model.getAutoCoordinates();
 
-            }
-
-            while(coordinates != null) {
-
-                if(isCancelled()){
-
-                    break;
-
+                if(auto_coordinates == null){
+                    coordinates[0] = params[0];
+                    coordinates[1] = params[1];
                 }
 
-                try {
-
-                    PropagationDisplayManager(coordinates[0], coordinates[1]);
-                    Thread.sleep(refresh_rate_milliseconds);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                else{
+                    coordinates[0] = auto_coordinates[0];
+                    coordinates[1] = auto_coordinates[1];
                 }
 
-                coordinates = model.getAutoCoordinates();
+                while(coordinates != null) {
+
+                    if(cancelTask){
+                        break;
+                    }
+
+                    try {
+                        PropagationDisplayManager(coordinates[0], coordinates[1]);
+                        Thread.sleep(refresh_rate_milliseconds);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    coordinates = model.getAutoCoordinates();
+
+                }
 
             }
 
@@ -133,60 +126,83 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
     }
 
+    /**
+     * Manages the display of the propagation
+     *
+     * @param   values      The selected coordinates (two parameters) where the Player wants to step; if one parameter passed, the current state is displayed
+     */
     private void PropagationDisplayManager(Integer... values) {
 
-        if(values.length == 1){
+        if(!cancelTask){
 
-            publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
+            if(values.length == 1){
+                publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
+            }
 
-        }
+            else{
 
-        else{
+                model.StepRequest(values[0], values[1]);
 
-            model.StepRequest(values[0], values[1]);
+                if(showPropagation){
 
-            if(showPropagation){
+                    model.HistoryPlaygroundBuilder();
+                    int propagation_depth = model.GetReactionPropagationDepth();
 
-                model.HistoryPlaygroundBuilder();
+                    for(int i = propagation_depth-2; i > 0; i--){
 
-                int propagation_depth = model.GetReactionPropagationDepth();
+                        if(cancelTask){
+                            break;
+                        }
 
-                for(int i = propagation_depth-2; i > 0; i--){
-
-                    if(isCancelled()){
-
-                        break;
-
-                    }
-
-                    try {
-
-                        publishProgress(model.getLastPlayerId(), i);
-                        Thread.sleep(refresh_rate_milliseconds);
-
-                    } catch (InterruptedException e) {
-
-                        e.printStackTrace();
+                        try {
+                            publishProgress(model.getLastPlayerId(), i);
+                            Thread.sleep(refresh_rate_milliseconds);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
                     }
+
+                    model.ResetReactionPropagationDepth();
 
                 }
 
-                model.ResetReactionPropagationDepth();
+                publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
 
             }
-
-            publishProgress(SHOW_CURRENT_PLAYGROUND_STATE);
 
         }
 
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {}
+    protected void onPostExecute(Boolean result) {
+        if (!cancelTask){}
+    }
 
     @Override
-    protected void onPreExecute() {}
+    protected void onPreExecute() {
+        if(cancelTask){
+            return;
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        handleOnCancelled();
+    }
+
+    @Override
+    protected void onCancelled(Boolean result) {
+        handleOnCancelled();
+    }
+
+    /**
+     * Sets the static cancel task flag
+     */
+    private void handleOnCancelled() {
+        cancelTask = true;
+    }
 
     /**
      * Refreshes the UI
@@ -196,21 +212,16 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     @Override
     protected void onProgressUpdate(Integer... values) {
 
-        if(isCancelled()){
+        //do if the task is not cancelled
+        if(!cancelTask){
 
-            return;
+            if(values.length == 1){
+                presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);
+            }
 
-        }
-
-        if(values.length == 1){
-
-            presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);
-
-        }
-
-        else{
-
-            presenter.RefreshPlayground(values[0], values[1]);
+            else{
+                presenter.RefreshPlayground(values[0], values[1]);
+            }
 
         }
 

@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.Snackbar
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -14,6 +15,7 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
+import kotlinx.android.synthetic.main.activity_game.*
 
 /**
  * Activity of a game play
@@ -36,22 +38,17 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val showPropagation = settings.getBoolean("show_propagation", true)
-
         val players = ArrayList<String>()
-
         val extras = intent.extras
+
         if (extras != null) {
-
             val number = extras.getInt("number_of_players")
-
             for(i in 1..number)
-
             players.add(extras.getString(i.toString()))
         }
 
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
         create7x5Game(players, showPropagation)
 
     }
@@ -72,10 +69,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             val row = tableLayoutPlayground.getChildAt(i) as TableRow
 
             for (j in 0..4) {
-
                 val Field = row.getChildAt(j) as ImageView
                 Field.setOnClickListener(this)
-
             }
 
         }
@@ -92,12 +87,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onClick(v: View?) {
 
         if(v != null){
-
             val name = v.tag.toString()
             val number_x = Integer.valueOf(name.get(4).toString())
             val number_y = Integer.valueOf(name.get(6).toString())
             onPlaygroudElementClicked(number_x, number_y)
-
         }
 
     }
@@ -110,11 +103,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return   OnClickListener     Listener of the given object, or null
      */
     private fun onPlaygroudElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
-
         presenter.StepRequest(pos_y, pos_x)
-
         return null
-
     }
 
     /**
@@ -207,7 +197,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         field.invalidate()
-
         return true
 
     }
@@ -239,7 +228,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         tableLayoutPlayground.invalidate()
-
         return true
 
     }
@@ -251,12 +239,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun ShowMessage(msg: String): Boolean {
-
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = msg
-
         return true
-
     }
 
     /**
@@ -268,7 +253,11 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun ShowResult(msg: String): Boolean {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.text = msg
+
+        if(infoText.text != msg){
+            infoText.text = msg
+            Snackbar.make(TableLayoutPlayground, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
+        }
 
         return true
 
@@ -278,19 +267,15 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Returns to the MainActivity
      */
     override fun onBackPressed() {
-
         startActivity(Intent(this, MainActivity::class.java))
-
     }
 
     /**
      * Stops the Presenter calculations
      */
     override fun onPause() {
-
-        presenter.stopPresenter()
+        presenter.task.cancel(true)
         super.onPause()
-
     }
 
 }

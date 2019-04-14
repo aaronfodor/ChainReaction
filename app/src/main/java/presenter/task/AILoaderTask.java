@@ -1,9 +1,8 @@
 package presenter.task;
 
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 import model.ai.PlayerLogic;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -36,10 +35,8 @@ public class AILoaderTask extends AsyncTask<Void, Integer, Boolean> {
      * @param   rootView        View of the UI thread
      */
     public AILoaderTask(Context context, View rootView){
-
         this.context = context;
         this.rootView = rootView;
-
     }
 
     /**
@@ -54,14 +51,10 @@ public class AILoaderTask extends AsyncTask<Void, Integer, Boolean> {
         InputStream inStream = context.getResources().openRawResource(R.raw.player_neural_network);
 
         try {
-
             MultiLayerNetwork network = ModelSerializer.restoreMultiLayerNetwork(inStream);
             PlayerLogic.SetNeuralNetwork(network);
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
 
         return true;
@@ -75,20 +68,17 @@ public class AILoaderTask extends AsyncTask<Void, Integer, Boolean> {
      */
     @Override
     protected void onPostExecute(Boolean result) {
-
         Button btn = rootView.findViewById(R.id.buttonNewGame);
-        btn.setText(R.string.button_newgame);
+        btn.setText(R.string.button_new_game);
         btn.setEnabled(true);
-
+        Snackbar.make(rootView, hu.bme.aut.android.chainreaction.R.string.ai_loaded, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     protected void onPreExecute() {
-
             Button btn = rootView.findViewById(R.id.buttonNewGame);
             btn.setText(R.string.button_loading);
             btn.setEnabled(false);
-
     }
 
     @Override

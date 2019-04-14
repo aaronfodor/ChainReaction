@@ -17,11 +17,8 @@ public class PlayerAI extends Player {
      * @param	name       	Name of the Player
      */
     public PlayerAI(int Id, String name){
-
         super(Id, name);
-
         AI = new PlayerLogic();
-
     }
 
     /**
@@ -31,10 +28,8 @@ public class PlayerAI extends Player {
      */
     @Override
     public Integer[] ExecuteStep() {
-
         Integer[]coordinates = AI.CalculateStep(this.gameplay.ActualPlaygroundInfo(), this.GetId());
         return coordinates;
-
     }
 
 }

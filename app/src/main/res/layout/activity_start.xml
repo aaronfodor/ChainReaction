@@ -16,10 +16,10 @@ tools:context="view.AboutActivity">
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                                                 tools:context=".AboutActivity"
-                                                 tools:showIn="@layout/activity_about">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".AboutActivity"
+            tools:showIn="@layout/activity_about">
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewPlayers"
@@ -37,7 +37,7 @@ tools:context="view.AboutActivity">
                 android:id="@+id/buttonAddHumanPlayer"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="@string/button_addhumanplayer"
+                android:text="@string/button_add_human_player"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonClearPlayers"/>
 
@@ -45,7 +45,7 @@ tools:context="view.AboutActivity">
                 android:id="@+id/buttonAddAIPlayer"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:text="@string/button_addaiplayer"
+                android:text="@string/button_add_ai_player"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonClearPlayers"/>
 
@@ -53,7 +53,7 @@ tools:context="view.AboutActivity">
                 android:id="@+id/buttonClearPlayers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/button_clearplayers"
+                android:text="@string/button_clear_players"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/buttonStartGame"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@ tools:context="view.AboutActivity">
                 android:id="@+id/buttonStartGame"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/button_startgame"
+                android:text="@string/button_start_game"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"

@@ -4,8 +4,10 @@ import presenter.task.AILoaderTask
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_start.*
 import model.ai.PlayerLogic
 
 /**
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // do nothing - accessing previous games are not allowed
+        Snackbar.make(constraintLayoutMainActivity, hu.bme.aut.android.chainreaction.R.string.how_to_exit, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -56,14 +58,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         if(!PlayerLogic.isNeuralNetworkLoaded()){
-
             //loading the AI component
             val taskAILoad = AILoaderTask(this, findViewById(android.R.id.content))
             taskAILoad.execute()
-
-            //val task = LongOperation(this, findViewById(android.R.id.content))
-            //task.execute()
-
         }
 
     }

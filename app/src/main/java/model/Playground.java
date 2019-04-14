@@ -51,7 +51,6 @@ public class Playground {
         this.gameplay = game;
         this.width = width;
         this.height = height;
-
         this.propagation_depth = 0;
 
         fields = new Field[height][];
@@ -126,9 +125,7 @@ public class Playground {
      * @return 	Field       The result Field
      */
     protected Field GetFieldAt(int pos_y, int pos_x){
-
         return fields[pos_y][pos_x];
-
     }
 
     /**
@@ -137,9 +134,7 @@ public class Playground {
      * @return 	width   Width of the Playground
      */
     protected int GetWidth(){
-
         return this.width;
-
     }
 
     /**
@@ -148,9 +143,7 @@ public class Playground {
      * @return 	height   Height of the Playground
      */
     protected int GetHeight(){
-
         return this.height;
-
     }
 
     /**
@@ -159,9 +152,7 @@ public class Playground {
      * @return 	boolean     True means Game over, False otherwise
      */
     protected boolean IsGameEnded(){
-
         return this.gameplay.GameStateRefresh();
-
     }
 
     /**
@@ -170,9 +161,7 @@ public class Playground {
      * @return 	int     Reaction propagation depth
      */
     protected int GetReactionPropagationDepth(){
-
         return this.propagation_depth;
-
     }
 
     /**
@@ -181,18 +170,14 @@ public class Playground {
      * @param 	value       The value to be set as reaction propagation depth
      */
     protected void SetReactionPropagationDepth(int value){
-
         this.propagation_depth = value;
-
     }
 
     /**
      * Reaction propagation depth reset method
      */
     protected void ResetReactionPropagationDepth(){
-
         this.propagation_depth = 0;
-
     }
 
 }

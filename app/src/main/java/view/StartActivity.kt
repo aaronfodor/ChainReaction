@@ -2,16 +2,15 @@ package view
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
+import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
-import android.widget.Toast
-import org.bytedeco.javacpp.opencv_core.setFlags
-
-
+import kotlinx.android.synthetic.main.activity_start.*
 
 /**
  * Activity of settings of game play
@@ -31,19 +30,12 @@ class StartActivity : AppCompatActivity() {
         addHumanPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
-
                 adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"human", imageAdder(adapter.itemCount+1)))
-
+                Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (adapter.itemCount)), Snackbar.LENGTH_SHORT).show()
             }
 
             else{
-
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.maximumreached,
-                    Toast.LENGTH_LONG
-                ).show()
-
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
             }
 
         }
@@ -52,19 +44,12 @@ class StartActivity : AppCompatActivity() {
         addAIPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
-
                 adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"AI", imageAdder(adapter.itemCount+1)))
-
+                Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (adapter.itemCount)), Snackbar.LENGTH_SHORT).show()
             }
 
             else{
-
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.maximumreached,
-                    Toast.LENGTH_LONG
-                ).show()
-
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
             }
 
         }
@@ -72,13 +57,7 @@ class StartActivity : AppCompatActivity() {
         val clearPlayersButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonClearPlayers)
         clearPlayersButton.setOnClickListener {
             adapter.Clear()
-
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.listclear,
-                    Toast.LENGTH_LONG
-                ).show()
-
+            Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.list_clear, Snackbar.LENGTH_LONG).show()
         }
 
         val startGameButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonStartGame)
@@ -87,13 +66,10 @@ class StartActivity : AppCompatActivity() {
             if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
 
                 var myIntent = Intent(this, GameActivity::class.java)
-
                 myIntent.putExtra("number_of_players", adapter.itemCount)
 
                 for(i in 0..adapter.itemCount-1){
-
                     myIntent.putExtra((i+1).toString(), adapter.StringElementAt(i))
-
                 }
 
                 startActivity(myIntent)
@@ -101,13 +77,7 @@ class StartActivity : AppCompatActivity() {
             }
 
             else{
-
-                Toast.makeText(
-                    this,
-                    hu.bme.aut.android.chainreaction.R.string.notenoughplayer,
-                    Toast.LENGTH_LONG
-                ).show()
-
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
             }
 
         }
@@ -123,7 +93,6 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun imageAdder(Id: Int): Int {
-
         return when (Id) {
             1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
             2 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
@@ -137,7 +106,6 @@ class StartActivity : AppCompatActivity() {
                 hu.bme.aut.android.chainreaction.R.drawable.nothing
             }
         }
-
     }
 
 }

@@ -18,13 +18,11 @@ public enum Direction {
     Direction GetOpposite(){
 
         switch (this){
-
             case Down: return Up;
             case Left: return Right;
             case Up: return Down;
             case Right: return Left;
             default: return this;
-
         }
 
     }

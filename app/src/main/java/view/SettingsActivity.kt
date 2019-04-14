@@ -22,9 +22,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             val showPropagation = sharedPreferences.getBoolean(KEY_PROPAGATION, true)
 
             if (!showPropagation) {
-
                 //TODO
-
             }
 
         }
@@ -34,7 +32,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, FragmentSettingsBasic())
             .commit()
@@ -53,7 +50,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .unregisterOnSharedPreferenceChangeListener(this)
-
         super.onStop()
 
     }
@@ -61,13 +57,9 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
 
         when(key) {
-
             KEY_PROPAGATION -> {
-
                 changeSettings(sharedPreferences, applicationContext)
-
             }
-
         }
 
     }
@@ -75,9 +67,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     class FragmentSettingsBasic : PreferenceFragmentCompat() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, key: String?) {
-
             addPreferencesFromResource(R.xml.preferences)
-
         }
 
     }
