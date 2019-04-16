@@ -32,6 +32,7 @@
     <string name="title_activity_stats">Statistics</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
+    <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
 
 </resources>

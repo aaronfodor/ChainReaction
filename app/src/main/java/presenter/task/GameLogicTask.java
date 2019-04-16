@@ -225,11 +225,4 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
     }
 
-    /**
-     * Sets the static cancel task flag
-     */
-    public static void CancelAll(){
-        cancelTask = true;
-    }
-
 }

@@ -15,7 +15,6 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
-import kotlinx.android.synthetic.main.activity_game.*
 
 /**
  * Activity of a game play
@@ -30,7 +29,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * layout of the Playground
      */
-    private lateinit var tableLayoutPlayground: TableLayout
+    private lateinit var tableLayoutPlayGround: TableLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -58,19 +57,19 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private fun create7x5Game(players: ArrayList<String>, showPropagation: Boolean){
 
-        tableLayoutPlayground = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayground)
-        tableLayoutPlayground.setBackgroundColor(Color.BLACK)
+        tableLayoutPlayGround = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayGround)
+        tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
 
-        val root = tableLayoutPlayground.rootView
+        val root = tableLayoutPlayGround.rootView
         root.setBackgroundColor(Color.BLACK)
 
         for (i in 0..6) {
 
-            val row = tableLayoutPlayground.getChildAt(i) as TableRow
+            val row = tableLayoutPlayGround.getChildAt(i) as TableRow
 
             for (j in 0..4) {
-                val Field = row.getChildAt(j) as ImageView
-                Field.setOnClickListener(this)
+                val field = row.getChildAt(j) as ImageView
+                field.setOnClickListener(this)
             }
 
         }
@@ -88,9 +87,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         if(v != null){
             val name = v.tag.toString()
-            val number_x = Integer.valueOf(name.get(4).toString())
-            val number_y = Integer.valueOf(name.get(6).toString())
-            onPlaygroudElementClicked(number_x, number_y)
+            val numberX = Integer.valueOf(name.get(4).toString())
+            val numberY = Integer.valueOf(name.get(6).toString())
+            onPlayGroudElementClicked(numberX, numberY)
         }
 
     }
@@ -102,7 +101,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param    pos_x               X coordinate
      * @return   OnClickListener     Listener of the given object, or null
      */
-    private fun onPlaygroudElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
+    private fun onPlayGroudElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
         presenter.StepRequest(pos_y, pos_x)
         return null
     }
@@ -118,7 +117,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun RefreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
 
-        val row = tableLayoutPlayground.getChildAt(pos_y) as TableRow
+        val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
 
         when (color) {
@@ -213,21 +212,21 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         infoText.text = getString(R.string.player_turn, Id)
 
         when (Id) {
-            1 -> tableLayoutPlayground.setBackgroundColor(Color.RED)
-            2 -> tableLayoutPlayground.setBackgroundColor(Color.BLUE)
-            3 -> tableLayoutPlayground.setBackgroundColor(Color.GREEN)
-            4 -> tableLayoutPlayground.setBackgroundColor(Color.YELLOW)
+            1 -> tableLayoutPlayGround.setBackgroundColor(Color.RED)
+            2 -> tableLayoutPlayGround.setBackgroundColor(Color.BLUE)
+            3 -> tableLayoutPlayGround.setBackgroundColor(Color.GREEN)
+            4 -> tableLayoutPlayGround.setBackgroundColor(Color.YELLOW)
             //orange
-            5 -> tableLayoutPlayground.setBackgroundColor(Color.rgb(255,165,0))
-            6 -> tableLayoutPlayground.setBackgroundColor(Color.MAGENTA)
+            5 -> tableLayoutPlayGround.setBackgroundColor(Color.rgb(255,165,0))
+            6 -> tableLayoutPlayGround.setBackgroundColor(Color.MAGENTA)
             //brown
-            7 -> tableLayoutPlayground.setBackgroundColor(Color.rgb(210,180,140))
-            8 -> tableLayoutPlayground.setBackgroundColor(Color.LTGRAY)
+            7 -> tableLayoutPlayGround.setBackgroundColor(Color.rgb(210,180,140))
+            8 -> tableLayoutPlayGround.setBackgroundColor(Color.LTGRAY)
             else -> { // Note the block
             }
         }
 
-        tableLayoutPlayground.invalidate()
+        tableLayoutPlayGround.invalidate()
         return true
 
     }
@@ -245,6 +244,19 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
+     * Shows the start text from the Presenter
+     *
+     * @param       Id          Id of the current Player
+     * @return      boolean     True if succeed, false otherwise
+     */
+    override fun ShowStart(Id: Int): Boolean {
+        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        infoText.text = getString(R.string.player_turn, Id)
+        Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.start_game, Snackbar.LENGTH_LONG).show()
+        return true
+    }
+
+    /**
      * Shows the result of the game play
      *
      * @param     msg         Message
@@ -256,7 +268,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         if(infoText.text != msg){
             infoText.text = msg
-            Snackbar.make(TableLayoutPlayground, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
+            Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
         }
 
         return true

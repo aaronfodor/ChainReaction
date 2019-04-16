@@ -43,9 +43,8 @@ public class PlayerLogic {
 
     /**
      * Calculates the next step based on the given inputs
-     * If limit reached, prioritises corner stepping
-     * Does playground pre-processing to evaluate which 3x3 part is worth to step on
-     * Breaks the playground into 3x3 piece to feed the Neural Network with
+     * Breaks the playground into 3x3 pieces to feed the Neural Network with
+     * Does a valid step if the neural network output is invalid
      *
      * @param	playground_state	    [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements on the Field, [][][2] is the number of elements can be placed onto the Field before explosion
      * @param	player_Id_to_step_for	Player Id to calculate the step for
@@ -85,7 +84,32 @@ public class PlayerLogic {
 
         }
 
-        return coordinates;
+        int selected_field_owner_Id = playground_state[coordinates[0]][coordinates[1]][0];
+        //Check whether the current player can step onto the selected field
+        if(selected_field_owner_Id == 0 || selected_field_owner_Id == player_Id_to_step_for){
+            return coordinates;
+        }
+
+        //Protection against wrong neural network output - when the current player cannot step onto the selected field, find a field to step on
+        else{
+
+            Integer[] backup_step = new Integer[2];
+            for(int actual_height = 0; actual_height < playground_state.length; actual_height++){
+
+                for(int actual_width = 0; actual_width < playground_state[actual_height].length; actual_width++){
+
+                    int owner = playground_state[actual_height][actual_width][0];
+                    if(owner == player_Id_to_step_for || owner == 0){
+                        backup_step[0] = actual_height;
+                        backup_step[1] = actual_width;
+                    }
+
+                }
+            }
+
+            return backup_step;
+
+        }
 
     }
 

@@ -41,5 +41,12 @@ public interface IGameView {
      */
     boolean ShowResult(String msg);
 
+    /**
+     * Shows the start text from the Presenter
+     *
+     * @param       Id          Id of the current Player
+     * @return      boolean     True if succeed, false otherwise
+     */
+    boolean ShowStart(int Id);
 
 }

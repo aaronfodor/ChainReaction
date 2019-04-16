@@ -65,10 +65,11 @@ public class GamePresenter {
         }
 
         this.model = new GamePlay(this, height, width, players);
+        this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), 0);
+        view.ShowStart(Integer.valueOf(players.get(0)[0]));
 
         game_task = new GameLogicTask(model, this, showPropagation);
-        GameLogicTask.CancelAll();
-        this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), -1);
+        game_task.cancel(true);
 
     }
 

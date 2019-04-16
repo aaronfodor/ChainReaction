@@ -7,7 +7,7 @@
         tools:context="view.GameActivity">
 
     <TableLayout
-            android:id="@+id/TableLayoutPlayground"
+            android:id="@+id/TableLayoutPlayGround"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="*"
@@ -342,7 +342,7 @@
             android:id="@+id/textViewInfo"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/TableLayoutPlayground" android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/TableLayoutPlayGround" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"/>
 
