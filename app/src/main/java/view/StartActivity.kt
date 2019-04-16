@@ -23,6 +23,7 @@ class StartActivity : AppCompatActivity() {
     private lateinit var adapter: PlayerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_start)
 
@@ -93,6 +94,7 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun imageAdder(Id: Int): Int {
+
         return when (Id) {
             1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
             2 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
@@ -106,6 +108,7 @@ class StartActivity : AppCompatActivity() {
                 hu.bme.aut.android.chainreaction.R.drawable.nothing
             }
         }
+
     }
 
 }

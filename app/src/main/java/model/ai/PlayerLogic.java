@@ -120,6 +120,7 @@ public class PlayerLogic {
 
             if(actualOutput.getDouble(i) > maximum_prediction && input_matrix[i/3][i%3] >= 0){
                 maximum_prediction_index = i;
+                maximum_prediction = actualOutput.getDouble(i);
             }
 
         }
@@ -199,7 +200,7 @@ public class PlayerLogic {
                 }
                 //AI Player cannot step onto the Field
                 else{
-                    selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = ((-1) * (playground_state[i][j][1] * foreToken));
+                    selected_matrix[ i - (most_promising_field[0]-1) ][ j - (most_promising_field[1]-1) ] = ((-1) + (playground_state[i][j][2] * foreToken));
                 }
 
             }

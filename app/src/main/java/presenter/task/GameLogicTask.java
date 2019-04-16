@@ -182,9 +182,7 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        if(cancelTask){
-            return;
-        }
+        if(!cancelTask){}
     }
 
     @Override
@@ -225,6 +223,13 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
         }
 
+    }
+
+    /**
+     * Sets the static cancel task flag
+     */
+    public static void CancelAll(){
+        cancelTask = true;
     }
 
 }

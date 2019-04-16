@@ -1,7 +1,6 @@
 package presenter;
 
 import android.os.AsyncTask;
-import android.os.Looper;
 import model.GamePlay;
 import presenter.task.GameLogicTask;
 
@@ -68,7 +67,8 @@ public class GamePresenter {
         this.model = new GamePlay(this, height, width, players);
 
         game_task = new GameLogicTask(model, this, showPropagation);
-        game_task.execute();
+        GameLogicTask.CancelAll();
+        this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), -1);
 
     }
 
@@ -88,6 +88,7 @@ public class GamePresenter {
      * Refreshes the Playground and tells the view to draw it
      *
      * @param   current_player_Id     Id of the current Player
+     * @param   propagation_depth     Id of the current Player
      */
     public void RefreshPlayground(int current_player_Id, int propagation_depth){
 
@@ -99,10 +100,12 @@ public class GamePresenter {
             return;
         }
 
-        view.ShowCurrentPlayer(Math.abs(current_player_Id));
-
         if(model.IsGameEnded()){
             view.ShowResult("Player " + Math.abs(model.getActualPlayerId()) + " is the winner!");
+        }
+
+        else{
+            view.ShowCurrentPlayer(Math.abs(current_player_Id));
         }
 
         if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
