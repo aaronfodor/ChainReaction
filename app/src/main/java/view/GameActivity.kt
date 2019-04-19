@@ -10,11 +10,8 @@ import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
+import android.widget.*
 
 /**
  * Activity of a game play
@@ -40,7 +37,13 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val players = ArrayList<String>()
         val extras = intent.extras
 
+        //default values to generate PlayGround
+        var height = 7
+        var width = 5
+
         if (extras != null) {
+            height = extras.getInt("PlayGroundHeight")
+            width = extras.getInt("PlayGroundWidth")
             val number = extras.getInt("number_of_players")
             for(i in 1..number)
             players.add(extras.getString(i.toString()))
@@ -48,33 +51,48 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        create7x5Game(players, showPropagation)
+        createNxMGame(players, showPropagation, height, width)
 
     }
 
     /**
-     * Creates the presenter with an intent of a 7x5 dimensional Playground, and sets the onClickListeners on the Fields
+     * Creates the presenter with an intent of a NxM dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun create7x5Game(players: ArrayList<String>, showPropagation: Boolean){
+    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, height: Int, width: Int){
 
         tableLayoutPlayGround = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
 
-        val root = tableLayoutPlayGround.rootView
-        root.setBackgroundColor(Color.BLACK)
+        val tableLayout = tableLayoutPlayGround.rootView
+        tableLayout.setBackgroundColor(Color.BLACK)
 
-        for (i in 0..6) {
+        for (i in 0..(height-1)) {
 
-            val row = tableLayoutPlayGround.getChildAt(i) as TableRow
+            val tableRow = TableRow(this)
+            tableRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-            for (j in 0..4) {
-                val field = row.getChildAt(j) as ImageView
-                field.setOnClickListener(this)
+            for(j in 0..(width-1)){
+                var ivField = ImageView(this)
+                ivField.tag = "img-$i-$j"
+                ivField.adjustViewBounds = true
+                ivField.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                ivField.setOnClickListener(this)
+
+                val lp = TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.MATCH_PARENT
+                )
+                lp.setMargins(1, 1, 1, 1)
+                ivField.layoutParams = lp
+
+                tableRow.addView(ivField)
             }
+
+            tableLayoutPlayGround.addView(tableRow)
 
         }
 
-        presenter = GamePresenter(this, 7, 5, players, showPropagation)
+        presenter = GamePresenter(this, height, width, players, showPropagation)
 
     }
 
@@ -86,10 +104,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onClick(v: View?) {
 
         if(v != null){
-            val name = v.tag.toString()
-            val numberX = Integer.valueOf(name.get(4).toString())
-            val numberY = Integer.valueOf(name.get(6).toString())
-            onPlayGroudElementClicked(numberX, numberY)
+            val values = v.tag.toString().split("-").toTypedArray()
+            val numberX = Integer.valueOf(values[1])
+            val numberY = Integer.valueOf(values[2])
+            onPlayGroundElementClicked(numberX, numberY)
         }
 
     }
@@ -101,7 +119,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param    pos_x               X coordinate
      * @return   OnClickListener     Listener of the given object, or null
      */
-    private fun onPlayGroudElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
+    private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
         presenter.StepRequest(pos_y, pos_x)
         return null
     }
@@ -167,18 +185,18 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
             }
             3 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot3)
+                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
+                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot2)
+                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot3)
                 else -> { // Note the block
                     field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
                 }
 
             }
             2 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot3)
+                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot1)
+                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot2)
+                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot3)
                 else -> { // Note the block
                     field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
                 }
@@ -213,8 +231,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         when (Id) {
             1 -> tableLayoutPlayGround.setBackgroundColor(Color.RED)
-            2 -> tableLayoutPlayGround.setBackgroundColor(Color.BLUE)
-            3 -> tableLayoutPlayGround.setBackgroundColor(Color.GREEN)
+            2 -> tableLayoutPlayGround.setBackgroundColor(Color.GREEN)
+            3 -> tableLayoutPlayGround.setBackgroundColor(Color.BLUE)
             4 -> tableLayoutPlayGround.setBackgroundColor(Color.YELLOW)
             //orange
             5 -> tableLayoutPlayGround.setBackgroundColor(Color.rgb(255,165,0))
