@@ -70,11 +70,12 @@ public class PlayerLogic {
                     Double[][] selected_matrix = RetrieveSelectedSubMatrix(current_field, playground_state, player_Id_to_step_for);
                     //feeding the Neural Network with the selected 3x3 matrix
                     Double[] result = NeuralNetworkStep(selected_matrix);
+                    result = translateToGlobalCoordinates(result, actual_height, actual_width);
+                    result = weightDecisionGlobally(result, playground_state);
 
                     if(result[2] > max_prediction){
-                        //translates the Neural Network selection coordinates to global coordinates
-                        coordinates[0] = (result[0].intValue()) + actual_height - 1;
-                        coordinates[1] = (result[1].intValue()) + actual_width - 1;
+                        coordinates[0] = (result[0].intValue());
+                        coordinates[1] = (result[1].intValue());
                         max_prediction = result[2];
                     }
 
@@ -114,10 +115,67 @@ public class PlayerLogic {
     }
 
     /**
+     * Translates the Neural Network selection coordinates to global coordinates
+     *
+     * @param	result          Local info of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
+     * @param	height          Height of the centre of the sub-matrix
+     * @param	width           Width of the centre of the sub-matrix
+     * @return 	Double[]        Global info of the Field to step on the matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
+     */
+    private Double[] translateToGlobalCoordinates(Double[] result, int height, int width) {
+        result[0] = result[0] + (height - 1);
+        result[1] = result[1] + (width - 1);
+        return result;
+    }
+
+    /**
+     * Multiplies the sureness of the selected step with the global goodness value of it
+     *
+     * @param  result                   Local info of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
+     * @param	playground_state        [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements on the Field, [][][2] is the number of elements can be placed onto the Field before explosion
+     * @return 	Double[]                Global weighted info of the Field to step on the matrix: [0] is Y, [1] is X coordinate, [2] is the weighted prediction value
+     */
+    private Double[] weightDecisionGlobally(Double[] result, int[][][] playground_state) {
+
+        if(playground_state[result[0].intValue()][result[1].intValue()][2] == 0){
+            if(result[0].intValue() > 0){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()-1][result[1].intValue()][2]));
+                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()-1][result[1].intValue()][0]){
+                    result[2] += neighbor;
+                }
+            }
+            if(result[0].intValue()+1 < playground_state.length){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()+1][result[1].intValue()][2]));
+                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()+1][result[1].intValue()][0]){
+                    result[2] += neighbor;
+                }
+            }
+            if(result[1].intValue() > 0){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()-1][2]));
+                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()][result[1].intValue()-1][0]){
+                    result[2] += neighbor;
+                }
+            }
+            if(result[1].intValue()+1 < playground_state[0].length){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()+1][2]));
+                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()][result[1].intValue()+1][0]){
+                    result[2] += neighbor;
+                }
+            }
+        }
+
+        else{
+            //result[2] *= 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()][2]));
+        }
+
+        return result;
+    }
+
+    /**
      * Feeds the Neural Network with the given 3x3 matrix
      *
      * @param	input_matrix    [i] is Y coordinate, [][j] is X coordinate, [i][j] is the double value: minus value means AI Player cannot step onto that Field; the bigger value is the better
-     * @return 	Integer[]       Local coordinates of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
+     * @return 	Double[]        Local info of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
      */
     private Double[] NeuralNetworkStep(Double[][] input_matrix){
 
@@ -135,7 +193,6 @@ public class PlayerLogic {
 
         //getting DeepLearning4J-specific output
         INDArray actualOutput = NeuralNetwork.output(actualInput);
-
         int maximum_prediction_index = 0;
         double maximum_prediction = 0.0;
 
@@ -153,7 +210,6 @@ public class PlayerLogic {
         result[0] = (maximum_prediction_index / 3) + 0.0;
         result[1] = (maximum_prediction_index % 3) + 0.0;
         result[2] = maximum_prediction;
-
         return result;
 
     }
