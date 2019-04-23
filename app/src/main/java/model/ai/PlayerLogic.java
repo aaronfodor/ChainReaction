@@ -19,14 +19,9 @@ public class PlayerLogic {
     private static MultiLayerNetwork NeuralNetwork;
 
     /**
-     * Value above corner acquisition is prioritised
+     * Goodness value of an empty corner
      */
-    private static int SUBMATRIX_LIMIT_ABOVE_CORNERS_PRIORISED = 14;
-
-    /**
-     * Number of the Player's Fields below the Player starts to escape
-     */
-    private static int NUMBER_OF_FIELDS_LIMIT_ESCAPING_BELOW = 2;
+    private static Double EMPTY_CORNER_WEIGHT = 1.0;
 
     /**
      * Sets the global Neural Network object to be available to the class instances
@@ -56,6 +51,13 @@ public class PlayerLogic {
         coordinates[0] = 0;
         coordinates[1] = 0;
         Double max_prediction = 0.0;
+
+        Double[] emptyStep = EmptyCornerStep(playground_state);
+        if(emptyStep[2] > max_prediction){
+            coordinates[0] = (emptyStep[0].intValue());
+            coordinates[1] = (emptyStep[1].intValue());
+            max_prediction = emptyStep[2];
+        }
 
         //playground pre-processing
         for(int actual_height = 1; actual_height < playground_state.length-1; actual_height++){
@@ -91,7 +93,7 @@ public class PlayerLogic {
             return coordinates;
         }
 
-        //Protection against wrong neural network output - when the current player cannot step onto the selected field, find a field to step on
+        //Protection against wrong neural network output - when the current player cannot step onto the selected field, find a valid field to step on
         else{
 
             Integer[] backup_step = new Integer[2];
@@ -129,7 +131,7 @@ public class PlayerLogic {
     }
 
     /**
-     * Multiplies the sureness of the selected step with the global goodness value of it
+     * Weights the sureness of the selected step with the global goodness value of it
      *
      * @param  result                   Local info of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
      * @param	playground_state        [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements on the Field, [][][2] is the number of elements can be placed onto the Field before explosion
@@ -138,30 +140,77 @@ public class PlayerLogic {
     private Double[] weightDecisionGlobally(Double[] result, int[][][] playground_state) {
 
         if(playground_state[result[0].intValue()][result[1].intValue()][2] == 0){
-            if(result[0].intValue() > 0){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()-1][result[1].intValue()][2]));
-                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()-1][result[1].intValue()][0]){
-                    result[2] += neighbor;
+
+            int player = playground_state[result[0].intValue()][result[1].intValue()][0];
+
+            int cntr = result[0].intValue()-1;
+            while(cntr >= 0){
+                double neighbor = 1-(0.25*(playground_state[cntr][result[1].intValue()][2]));
+                if(player != 0 && neighbor == 1){
+                    if(player != playground_state[cntr][result[1].intValue()][0]){
+                        result[2] += neighbor;
+                    }
                 }
-            }
-            if(result[0].intValue()+1 < playground_state.length){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()+1][result[1].intValue()][2]));
-                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()+1][result[1].intValue()][0]){
-                    result[2] += neighbor;
+                else{
+                    if(playground_state[cntr][result[1].intValue()][0] != 0 && playground_state[cntr][result[1].intValue()][0] != player){
+                        result[2] += neighbor;
+                    }
+                    break;
                 }
+                cntr--;
             }
-            if(result[1].intValue() > 0){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()-1][2]));
-                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()][result[1].intValue()-1][0]){
-                    result[2] += neighbor;
+
+            cntr = result[0].intValue();
+            while(cntr+1 < playground_state.length){
+                double neighbor = 1-(0.25*(playground_state[cntr][result[1].intValue()][2]));
+                if(player != 0 && neighbor == 1){
+                    if(player != playground_state[cntr][result[1].intValue()][0]){
+                        result[2] += neighbor;
+                    }
                 }
-            }
-            if(result[1].intValue()+1 < playground_state[0].length){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()+1][2]));
-                if(playground_state[result[0].intValue()][result[1].intValue()][0] != playground_state[result[0].intValue()][result[1].intValue()+1][0]){
-                    result[2] += neighbor;
+                else{
+                    if(playground_state[cntr][result[1].intValue()][0] != 0 && playground_state[cntr][result[1].intValue()][0] != player){
+                        result[2] += neighbor;
+                    }
+                    break;
                 }
+                cntr++;
             }
+
+            cntr = result[1].intValue()-1;
+            while(cntr >= 0){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr][2]));
+                if(player != 0 && neighbor == 1){
+                    if(player != playground_state[result[0].intValue()][cntr][0]){
+                        result[2] += neighbor;
+                    }
+                }
+                else{
+                    if(playground_state[result[0].intValue()][cntr][0] != 0 && playground_state[result[0].intValue()][cntr][0] != player){
+                        result[2] += neighbor;
+                    }
+                    break;
+                }
+                cntr--;
+            }
+
+            cntr = result[1].intValue();
+            while(cntr+1 < playground_state[0].length){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr][2]));
+                if(player != 0 && neighbor == 1){
+                    if(player != playground_state[result[0].intValue()][cntr][0]){
+                        result[2] += neighbor;
+                    }
+                }
+                else{
+                    if(playground_state[result[0].intValue()][cntr][0] != 0 && playground_state[result[0].intValue()][cntr][0] != player){
+                        result[2] += neighbor;
+                    }
+                    break;
+                }
+                cntr++;
+            }
+
         }
 
         else{
@@ -218,40 +267,44 @@ public class PlayerLogic {
      * Tries to step onto an empty corner Field
      *
      * @param	playground_state	        [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements of the Field, [][][2] is the number of elements can be placed onto the Field before explosion
-     * @param	player_Id_to_step_for	    Player Id to calculate the step for
-     * @return 	Integer[]                   Global coordinates of the Field to step on: [0] is Y, [1] is X coordinate; null means there is no empty corners left
+     * @return 	Double[]                    Global coordinates of the Field to step on: [0] is Y, [1] is X coordinate; null means there is no empty corners left
      */
-    private Integer[] EmptyCornerStep(int[][][] playground_state, int player_Id_to_step_for){
+    private Double[] EmptyCornerStep(int[][][] playground_state){
+
+        Double[] emptyStep = new Double[3];
+        emptyStep[0] = 0.0;
+        emptyStep[1] = 0.0;
+        emptyStep[2] = 0.0;
 
         if(playground_state[0][0][1] == 0){
-            Integer[] coordinates = new Integer[2];
-            coordinates[0] = 0;
-            coordinates[1] = 0;
-            return coordinates;
+            emptyStep[0] = 0.0;
+            emptyStep[1] = 0.0;
+            emptyStep[2] = EMPTY_CORNER_WEIGHT;
+            return emptyStep;
         }
 
         if(playground_state[playground_state.length-1][0][1] == 0){
-            Integer[] coordinates = new Integer[2];
-            coordinates[0] = playground_state.length-1;
-            coordinates[1] = 0;
-            return coordinates;
+            emptyStep[0] = playground_state.length-1.0;
+            emptyStep[1] = 0.0;
+            emptyStep[2] = EMPTY_CORNER_WEIGHT;
+            return emptyStep;
         }
 
         if(playground_state[0][playground_state[0].length-1][1] == 0){
-            Integer[] coordinates = new Integer[2];
-            coordinates[0] = 0;
-            coordinates[1] = playground_state[0].length-1;
-            return coordinates;
+            emptyStep[0] = 0.0;
+            emptyStep[1] = playground_state[0].length-1.0;
+            emptyStep[2] = EMPTY_CORNER_WEIGHT;
+            return emptyStep;
         }
 
         if(playground_state[playground_state.length-1][playground_state[playground_state.length-1].length-1][1] == 0){
-            Integer[] coordinates = new Integer[2];
-            coordinates[0] = playground_state.length-1;
-            coordinates[1] = playground_state[playground_state.length-1].length-1;
-            return coordinates;
+            emptyStep[0] = playground_state.length-1.0;
+            emptyStep[1] = playground_state[playground_state.length-1].length-1.0;
+            emptyStep[2] = EMPTY_CORNER_WEIGHT;
+            return emptyStep;
         }
 
-        return null;
+        return emptyStep;
 
     }
 
