@@ -64,23 +64,17 @@ public class PlayerLogic {
 
             for(int actual_width = 1; actual_width < playground_state[actual_height].length-1; actual_width++){
 
-                int owner = playground_state[actual_height][actual_width][0];
+                int[] current_field = {actual_height, actual_width};
+                Double[][] selected_matrix = RetrieveSelectedSubMatrix(current_field, playground_state, player_Id_to_step_for);
+                //feeding the Neural Network with the selected 3x3 matrix
+                Double[] result = NeuralNetworkStep(selected_matrix);
+                result = translateToGlobalCoordinates(result, actual_height, actual_width);
+                result = weightDecisionGlobally(result, playground_state);
 
-                if(owner == player_Id_to_step_for || owner == 0){
-
-                    int[] current_field = {actual_height, actual_width};
-                    Double[][] selected_matrix = RetrieveSelectedSubMatrix(current_field, playground_state, player_Id_to_step_for);
-                    //feeding the Neural Network with the selected 3x3 matrix
-                    Double[] result = NeuralNetworkStep(selected_matrix);
-                    result = translateToGlobalCoordinates(result, actual_height, actual_width);
-                    result = weightDecisionGlobally(result, playground_state);
-
-                    if(result[2] > max_prediction){
-                        coordinates[0] = (result[0].intValue());
-                        coordinates[1] = (result[1].intValue());
-                        max_prediction = result[2];
-                    }
-
+                if(result[2] > max_prediction){
+                    coordinates[0] = (result[0].intValue());
+                    coordinates[1] = (result[1].intValue());
+                    max_prediction = result[2];
                 }
 
             }
@@ -143,16 +137,16 @@ public class PlayerLogic {
 
             int player = playground_state[result[0].intValue()][result[1].intValue()][0];
 
-            int cntr = result[0].intValue()-1;
-            while(cntr >= 0){
-                double neighbor = 1-(0.25*(playground_state[cntr][result[1].intValue()][2]));
+            int cntr = result[0].intValue();
+            while(cntr-1 >= 0){
+                double neighbor = 1-(0.25*(playground_state[cntr-1][result[1].intValue()][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[cntr][result[1].intValue()][0]){
+                    if(player != playground_state[cntr-1][result[1].intValue()][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[cntr][result[1].intValue()][0] != 0 && playground_state[cntr][result[1].intValue()][0] != player){
+                    if(playground_state[cntr-1][result[1].intValue()][0] != 0 && playground_state[cntr-1][result[1].intValue()][0] != player){
                         result[2] += neighbor;
                     }
                     break;
@@ -162,14 +156,14 @@ public class PlayerLogic {
 
             cntr = result[0].intValue();
             while(cntr+1 < playground_state.length){
-                double neighbor = 1-(0.25*(playground_state[cntr][result[1].intValue()][2]));
+                double neighbor = 1-(0.25*(playground_state[cntr+1][result[1].intValue()][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[cntr][result[1].intValue()][0]){
+                    if(player != playground_state[cntr+1][result[1].intValue()][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[cntr][result[1].intValue()][0] != 0 && playground_state[cntr][result[1].intValue()][0] != player){
+                    if(playground_state[cntr+1][result[1].intValue()][0] != 0 && playground_state[cntr+1][result[1].intValue()][0] != player){
                         result[2] += neighbor;
                     }
                     break;
@@ -177,16 +171,16 @@ public class PlayerLogic {
                 cntr++;
             }
 
-            cntr = result[1].intValue()-1;
-            while(cntr >= 0){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr][2]));
+            cntr = result[1].intValue();
+            while(cntr-1 >= 0){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr-1][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[result[0].intValue()][cntr][0]){
+                    if(player != playground_state[result[0].intValue()][cntr-1][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[result[0].intValue()][cntr][0] != 0 && playground_state[result[0].intValue()][cntr][0] != player){
+                    if(playground_state[result[0].intValue()][cntr-1][0] != 0 && playground_state[result[0].intValue()][cntr-1][0] != player){
                         result[2] += neighbor;
                     }
                     break;
@@ -196,14 +190,14 @@ public class PlayerLogic {
 
             cntr = result[1].intValue();
             while(cntr+1 < playground_state[0].length){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr][2]));
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr+1][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[result[0].intValue()][cntr][0]){
+                    if(player != playground_state[result[0].intValue()][cntr+1][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[result[0].intValue()][cntr][0] != 0 && playground_state[result[0].intValue()][cntr][0] != player){
+                    if(playground_state[result[0].intValue()][cntr+1][0] != 0 && playground_state[result[0].intValue()][cntr+1][0] != player){
                         result[2] += neighbor;
                     }
                     break;
