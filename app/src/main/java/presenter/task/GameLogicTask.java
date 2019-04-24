@@ -65,7 +65,11 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
             if(params.length == 0){
 
                 PropagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE);
+
+                Long startTime = System.currentTimeMillis();
                 Integer[] coordinates = model.getAutoCoordinates();
+                Long estimatedTime = System.currentTimeMillis() - startTime;
+                int estimated = estimatedTime.intValue();
 
                 while(coordinates != null){
 
@@ -74,13 +78,16 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
                     }
 
                     try {
-                        PropagationDisplayManager(coordinates[0], coordinates[1]);
+                        PropagationDisplayManager(coordinates[0], coordinates[1], estimated);
                         Thread.sleep(refresh_rate_milliseconds);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
+                    startTime = System.currentTimeMillis();
                     coordinates = model.getAutoCoordinates();
+                    estimatedTime = System.currentTimeMillis() - startTime;
+                    estimated = estimatedTime.intValue();
 
                 }
 
@@ -89,11 +96,16 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
             else{
 
                 Integer[] coordinates = new Integer[2];
+
+                Long startTime = System.currentTimeMillis();
                 Integer[] auto_coordinates = model.getAutoCoordinates();
+                Long estimatedTime = System.currentTimeMillis() - startTime;
+                int estimated = estimatedTime.intValue();
 
                 if(auto_coordinates == null){
                     coordinates[0] = params[0];
                     coordinates[1] = params[1];
+                    estimated = params[2];
                 }
 
                 else{
@@ -108,13 +120,16 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
                     }
 
                     try {
-                        PropagationDisplayManager(coordinates[0], coordinates[1]);
+                        PropagationDisplayManager(coordinates[0], coordinates[1], estimated);
                         Thread.sleep(refresh_rate_milliseconds);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
+                    startTime = System.currentTimeMillis();
                     coordinates = model.getAutoCoordinates();
+                    estimatedTime = System.currentTimeMillis() - startTime;
+                    estimated = estimatedTime.intValue();
 
                 }
 
@@ -141,6 +156,7 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
             else{
 
+                model.addCurrentPlayerWaitingTime(values[2]);
                 model.StepRequest(values[0], values[1]);
 
                 if(showPropagation){

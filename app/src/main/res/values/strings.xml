@@ -32,12 +32,14 @@
     <string name="buttonExtract">-</string>
     <string name="height_show">height: %1$d\</string>
     <string name="width_show">width: %1$d\</string>
+    <string name="minimum_size">Minimum size reached</string>
 
     <string name="title_activity_stats">Statistics</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
+    <string name="winner_text">Player %1$d\ is the winner!</string>
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
-    <string name="minimum_size">Minimum size reached</string>
+    <string name="response_time">Avg step time: %1$d\ms</string>
 
 </resources>

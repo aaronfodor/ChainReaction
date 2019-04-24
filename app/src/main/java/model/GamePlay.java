@@ -450,6 +450,24 @@ public class GamePlay implements IGameModel {
     }
 
     /**
+     * Waiting time adder method to the current Player
+     *
+     * @param 	duration 	Waiting duration of the current Player
+     */
+    public void addCurrentPlayerWaitingTime(int duration){
+        players.get(current_player_index).addWaitingTime(duration);
+    }
+
+    /**
+     * Average waiting time getter method from the current Player
+     *
+     * @return 	int        Average waiting time of the current Player
+     */
+    public int getAvgWaitingTime(){
+        return players.get(current_player_index).getAvgWaitingTime();
+    }
+
+    /**
      * Returns the AI stepping coordinates if the current Player is an AI or the game has not ended
      *
      * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available or game has finished, returns null

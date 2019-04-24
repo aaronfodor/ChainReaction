@@ -34,12 +34,13 @@ public interface IGameView {
     boolean ShowMessage(String msg);
 
     /**
-     * Shows the result of the game play
+     * Shows the result of the game play, displays GameOverFragment
      *
-     * @param    msg         Message
-     * @return 	boolean     True if succeed, false otherwise
+     * @param     winnerId    Id of the winner
+     * @param     avgWaiting  Average waiting time of the winner
+     * @return    boolean     True if succeed, false otherwise
      */
-    boolean ShowResult(String msg);
+    boolean ShowResult(int winnerId, int avgWaiting);
 
     /**
      * Shows the start text from the Presenter

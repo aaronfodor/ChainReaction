@@ -79,10 +79,11 @@ public class GamePresenter {
      *
      * @param   pos_y	   Y coordinate
      * @param   pos_x      X coordinate
+     * @param	duration   Duration of waiting
      */
-    public void StepRequest(int pos_y, int pos_x){
+    public void StepRequest(int pos_y, int pos_x, int duration){
         game_task = new GameLogicTask(model, this, showPropagation);
-        game_task.execute(pos_y, pos_x);
+        game_task.execute(pos_y, pos_x, duration);
     }
 
     /**
@@ -102,7 +103,7 @@ public class GamePresenter {
         }
 
         if(model.IsGameEnded()){
-            view.ShowResult("Player " + Math.abs(model.getActualPlayerId()) + " is the winner!");
+            view.ShowResult(Math.abs(model.getActualPlayerId()), model.getAvgWaitingTime());
         }
 
         else{

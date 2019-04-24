@@ -71,6 +71,13 @@ public interface IGameModel {
     Integer getLastPlayerId();
 
     /**
+     * Waiting time adder method to the current Player
+     *
+     * @param 	duration 	Waiting duration of the current Player
+     */
+    void addCurrentPlayerWaitingTime(int duration);
+
+    /**
      * Returns the automatic stepping coordinates
      *
      * @return 	Integer[]     Automatic stepping coordinates of the current Player: [0] is the y coordinate, [1] is the x coordinate. If not available, returns null
@@ -95,5 +102,19 @@ public interface IGameModel {
      * @return 	boolean     True means Game over, False otherwise
      */
     boolean IsGameEnded();
+
+    /**
+     * Returns the type of the winner
+     *
+     * @return 	String     AI or human
+     */
+    String WinnerType();
+
+    /**
+     * Average waiting time getter method from the current Player
+     *
+     * @return 	int        Average waiting time of the current Player
+     */
+    int getAvgWaitingTime();
 
 }

@@ -21,8 +21,17 @@ public abstract class Player {
     protected GamePlay gameplay;
 
     /**
+     * Waiting time of the Player
+     */
+    private int waitingTime;
+
+    /**
+     * Rounds of the Player
+     */
+    private int numberOfRounds;
+
+    /**
      * Player constructor
-     * Sets the Game that the Player is in
      *
      * @param	Id       	Id of the Player
      * @param	name       	Name of the Player
@@ -30,6 +39,8 @@ public abstract class Player {
     public Player(int Id, String name){
         this.Id = Id;
         this.name = name;
+        this.waitingTime = 0;
+        this.numberOfRounds = 0;
     }
 
     /**
@@ -69,6 +80,25 @@ public abstract class Player {
      */
     public int GetId(){
         return this.Id;
+    }
+
+    /**
+     * Waiting time adder method
+     *
+     * @param 	duration 	Waiting duration of the current Player
+     */
+    public void addWaitingTime(int duration){
+        this.waitingTime += duration;
+        this.numberOfRounds++;
+    }
+
+    /**
+     * Average waiting time getter method
+     *
+     * @return 	int        Average waiting time of the Player
+     */
+    public int getAvgWaitingTime(){
+        return (this.waitingTime / this.numberOfRounds);
     }
 
 }

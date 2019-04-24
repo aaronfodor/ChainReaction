@@ -28,6 +28,12 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private lateinit var tableLayoutPlayGround: TableLayout
 
+    /**
+     * Current times in milliseconds to calculate the duration of the waiting time of the Player
+     */
+    var previousClickTime: Long = 0
+    var currentClickTime: Long  = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -93,6 +99,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         presenter = GamePresenter(this, height, width, players, showPropagation)
+        //start waiting measurement
+        previousClickTime = System.currentTimeMillis()
 
     }
 
@@ -120,7 +128,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return   OnClickListener     Listener of the given object, or null
      */
     private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
-        presenter.StepRequest(pos_y, pos_x)
+        currentClickTime = System.currentTimeMillis()
+        var waiting = currentClickTime - previousClickTime
+        presenter.StepRequest(pos_y, pos_x, waiting.toInt())
+        previousClickTime = currentClickTime
         return null
     }
 
@@ -270,23 +281,36 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun ShowStart(Id: Int): Boolean {
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = getString(R.string.player_turn, Id)
-        Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.start_game, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
     }
 
     /**
-     * Shows the result of the game play
+     * Shows the result of the game play, displays GameOverFragment
      *
-     * @param     msg         Message
+     * @param     winnerId    Id of the winner
+     * @param     avgWaiting  Average waiting time of the winner
      * @return    boolean     True if succeed, false otherwise
      */
-    override fun ShowResult(msg: String): Boolean {
+    override fun ShowResult(winnerId: Int, avgWaiting: Int): Boolean {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        val text = getString(R.string.winner_text, winnerId)
 
-        if(infoText.text != msg){
-            infoText.text = msg
+        if(infoText.text != text){
+
+            infoText.text = text
             Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
+
+            val bundle = Bundle()
+            bundle.putInt("avgWaitingTime", avgWaiting)
+
+            val fragment = GameOverFragment()
+            fragment.arguments = bundle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.viewGame, fragment)
+            transaction.commit()
+
         }
 
         return true
