@@ -289,10 +289,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Shows the result of the game play, displays GameOverFragment
      *
      * @param     winnerId    Id of the winner
-     * @param     avgWaiting  Average waiting time of the winner
+     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
      * @return    boolean     True if succeed, false otherwise
      */
-    override fun ShowResult(winnerId: Int, avgWaiting: Int): Boolean {
+    override fun ShowResult(winnerId: Int, playersData: Array<IntArray>): Boolean {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         val text = getString(R.string.winner_text, winnerId)
@@ -302,8 +302,13 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             infoText.text = text
             Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
 
+            var playersNumber = playersData.size
             val bundle = Bundle()
-            bundle.putInt("avgWaitingTime", avgWaiting)
+            bundle.putInt("playersNumber", playersNumber)
+
+            for (i in 1..playersNumber) {
+                bundle.putString((i-1).toString(), getString(R.string.player_data, playersData[i-1][0], playersData[i-1][1], playersData[i-1][2]))
+            }
 
             val fragment = GameOverFragment()
             fragment.arguments = bundle

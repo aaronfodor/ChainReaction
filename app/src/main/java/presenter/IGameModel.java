@@ -113,8 +113,8 @@ public interface IGameModel {
     /**
      * Average waiting time getter method from the current Player
      *
-     * @return 	int        Average waiting time of the current Player
+     * @return 	int[][]     Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
      */
-    int getAvgWaitingTime();
+    int[][] getPlayersData();
 
 }

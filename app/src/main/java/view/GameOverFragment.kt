@@ -17,9 +17,18 @@ class GameOverFragment : Fragment() {
 
         val bundle = this.arguments
         if(bundle != null){
-            val avgWaiting = bundle.getInt("avgWaitingTime")
-            var tvGameOver = view.findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvGameOver)
-            tvGameOver.text = getString(R.string.response_time, avgWaiting)
+            val playersNumber = bundle.getInt("playersNumber")
+            val tvGameOver = view.findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvGameOver)
+            var playerText = getString(R.string.player_data_info)
+
+            for (i in 1..playersNumber) {
+                val key = (i-1).toString()
+                val newText = bundle.getString(key).toString()
+                playerText += "\n\n" + newText
+            }
+
+            tvGameOver.text = playerText
+
         }
 
         return view

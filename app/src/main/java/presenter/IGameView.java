@@ -37,10 +37,10 @@ public interface IGameView {
      * Shows the result of the game play, displays GameOverFragment
      *
      * @param     winnerId    Id of the winner
-     * @param     avgWaiting  Average waiting time of the winner
+     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
      * @return    boolean     True if succeed, false otherwise
      */
-    boolean ShowResult(int winnerId, int avgWaiting);
+    boolean ShowResult(int winnerId, int[][] playersData);
 
     /**
      * Shows the start text from the Presenter

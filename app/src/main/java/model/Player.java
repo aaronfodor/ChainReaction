@@ -101,4 +101,13 @@ public abstract class Player {
         return (this.waitingTime / this.numberOfRounds);
     }
 
+    /**
+     * Number of rounds Player had
+     *
+     * @return 	int        Number of rounds
+     */
+    public int getNumberOfRounds(){
+        return this.numberOfRounds;
+    }
+
 }

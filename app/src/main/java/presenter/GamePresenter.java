@@ -103,7 +103,7 @@ public class GamePresenter {
         }
 
         if(model.IsGameEnded()){
-            view.ShowResult(Math.abs(model.getActualPlayerId()), model.getAvgWaitingTime());
+            view.ShowResult(Math.abs(model.getActualPlayerId()), model.getPlayersData());
         }
 
         else{
