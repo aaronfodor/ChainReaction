@@ -1,5 +1,6 @@
 package view
 
+import android.app.ActivityManager
 import presenter.GamePresenter
 import presenter.IGameView
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import hu.bme.aut.android.chainreaction.R
 import android.widget.*
+import android.widget.TextView
 
 /**
  * Activity of a game play
@@ -300,7 +302,13 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         if(infoText.text != text){
 
             infoText.text = text
-            Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
+            //Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
+
+            val snackBar = Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE)
+            snackBar.setAction("LEAVE", View.OnClickListener {
+                this.finish()
+            })
+            snackBar.show()
 
             var playersNumber = playersData.size
             val bundle = Bundle()
