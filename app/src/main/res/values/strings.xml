@@ -28,10 +28,19 @@
     <string name="maximum_reached">Maximum player number reached</string>
     <string name="not_enough_player">Not enough player to start</string>
     <string name="player_added">Player %1$d\ added</string>
+    <string name="buttonAdd">+</string>
+    <string name="buttonExtract">-</string>
+    <string name="height_show">height: %1$d\</string>
+    <string name="width_show">width: %1$d\</string>
+    <string name="minimum_size">Minimum size reached</string>
 
     <string name="title_activity_stats">Statistics</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
+    <string name="winner_text">Player %1$d\ is the winner!</string>
+    <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
+    <string name="player_data_info">name / avg. step time / # of rounds</string>
+    <string name="player_data">Player %1$d\: %2$d\ms, %3$d\ round(s)</string>
 
 </resources>

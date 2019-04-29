@@ -1,7 +1,6 @@
 package presenter;
 
 import android.os.AsyncTask;
-import android.os.Looper;
 import model.GamePlay;
 import presenter.task.GameLogicTask;
 
@@ -66,9 +65,11 @@ public class GamePresenter {
         }
 
         this.model = new GamePlay(this, height, width, players);
+        this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), 0);
+        view.ShowStart(Integer.valueOf(players.get(0)[0]));
 
         game_task = new GameLogicTask(model, this, showPropagation);
-        game_task.execute();
+        game_task.cancel(true);
 
     }
 
@@ -78,16 +79,18 @@ public class GamePresenter {
      *
      * @param   pos_y	   Y coordinate
      * @param   pos_x      X coordinate
+     * @param	duration   Duration of waiting
      */
-    public void StepRequest(int pos_y, int pos_x){
+    public void StepRequest(int pos_y, int pos_x, int duration){
         game_task = new GameLogicTask(model, this, showPropagation);
-        game_task.execute(pos_y, pos_x);
+        game_task.execute(pos_y, pos_x, duration);
     }
 
     /**
      * Refreshes the Playground and tells the view to draw it
      *
      * @param   current_player_Id     Id of the current Player
+     * @param   propagation_depth     Id of the current Player
      */
     public void RefreshPlayground(int current_player_Id, int propagation_depth){
 
@@ -99,10 +102,12 @@ public class GamePresenter {
             return;
         }
 
-        view.ShowCurrentPlayer(Math.abs(current_player_Id));
-
         if(model.IsGameEnded()){
-            view.ShowResult("Player " + Math.abs(model.getActualPlayerId()) + " is the winner!");
+            view.ShowResult(Math.abs(model.getActualPlayerId()), model.getPlayersData());
+        }
+
+        else{
+            view.ShowCurrentPlayer(Math.abs(current_player_Id));
         }
 
         if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){

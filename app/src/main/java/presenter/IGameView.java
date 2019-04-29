@@ -34,12 +34,20 @@ public interface IGameView {
     boolean ShowMessage(String msg);
 
     /**
-     * Shows the result of the game play
+     * Shows the result of the game play, displays GameOverFragment
      *
-     * @param    msg         Message
-     * @return 	boolean     True if succeed, false otherwise
+     * @param     winnerId    Id of the winner
+     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
+     * @return    boolean     True if succeed, false otherwise
      */
-    boolean ShowResult(String msg);
+    boolean ShowResult(int winnerId, int[][] playersData);
 
+    /**
+     * Shows the start text from the Presenter
+     *
+     * @param       Id          Id of the current Player
+     * @return      boolean     True if succeed, false otherwise
+     */
+    boolean ShowStart(int Id);
 
 }

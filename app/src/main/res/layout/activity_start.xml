@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="view.AboutActivity">
-
-<android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        tools:context="view.AboutActivity" android:id="@+id/coordinatorLayout">
 
-</android.support.design.widget.AppBarLayout>
+    <android.support.design.widget.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,54 +24,104 @@ tools:context="view.AboutActivity">
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewPlayers"
                 android:layout_width="280dp"
-                android:layout_height="320dp"
+                android:layout_height="280dp"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintHorizontal_bias="0.493"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.481"
                 android:transcriptMode="alwaysScroll"
-                android:stackFromBottom="true"/>
+                android:stackFromBottom="true" android:layout_marginTop="2dp"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
                 android:id="@+id/buttonAddHumanPlayer"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="@string/button_add_human_player"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonClearPlayers"/>
+                android:layout_marginTop="2dp" app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"/>
 
+        <Button
+                android:id="@+id/buttonHeightMinus"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="@string/buttonExtract"
+                app:layout_constraintStart_toStartOf="@+id/buttonClearPlayers" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/buttonAddHumanPlayer" android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/buttonClearPlayers"/>
+        <Button
+                android:id="@+id/buttonWidthMinus"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="@string/buttonExtract"
+                app:layout_constraintStart_toStartOf="@+id/buttonClearPlayers" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/buttonHeightMinus" app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginTop="2dp" app:layout_constraintTop_toBottomOf="@+id/buttonHeightMinus"/>
         <Button
                 android:id="@+id/buttonAddAIPlayer"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="@string/button_add_ai_player"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonClearPlayers"/>
+                android:layout_marginTop="2dp" app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"/>
 
+        <Button
+                android:id="@+id/buttonHeightPlus"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="@string/buttonAdd"
+                app:layout_constraintEnd_toEndOf="@+id/buttonClearPlayers" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="@+id/buttonAddAIPlayer" android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/buttonClearPlayers"/>
+        <Button
+                android:id="@+id/buttonWidthPlus"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:text="@string/buttonAdd"
+                app:layout_constraintEnd_toEndOf="@+id/buttonClearPlayers" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="@+id/buttonHeightPlus"
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/buttonHeightPlus"/>
         <Button
                 android:id="@+id/buttonClearPlayers"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="@string/button_clear_players"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/buttonStartGame"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-        />
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="2dp" app:layout_constraintTop_toBottomOf="@+id/buttonAddAIPlayer"/>
 
         <Button
                 android:id="@+id/buttonStartGame"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="@string/button_start_game"
+                android:background="@color/colorMainButton"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintHorizontal_bias="1.0"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"/>
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginTop="2dp" app:layout_constraintTop_toBottomOf="@+id/buttonWidthMinus"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvHeight"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toTopOf="@+id/buttonHeightPlus"
+                app:layout_constraintEnd_toStartOf="@+id/buttonHeightPlus" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toEndOf="@+id/buttonHeightMinus" android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonWidthPlus"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvWidth"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toTopOf="@+id/buttonWidthPlus"
+                app:layout_constraintStart_toEndOf="@+id/buttonWidthMinus" android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/buttonWidthPlus" android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonWidthPlus"/>
 
     </android.support.constraint.ConstraintLayout>
 

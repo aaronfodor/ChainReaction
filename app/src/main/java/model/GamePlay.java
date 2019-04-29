@@ -23,6 +23,11 @@ public class GamePlay implements IGameModel {
     private ArrayList<Player> players;
 
     /**
+     * List of the defeated Players
+     */
+    private ArrayList<Player> defeatedPlayers;
+
+    /**
      * Current Player's position in players
      * State machine status which Player to come next
      */
@@ -67,7 +72,8 @@ public class GamePlay implements IGameModel {
     public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
 
         this.presenter = presenter;
-        ArrayList<Player> players = new ArrayList<Player>();
+        players = new ArrayList<Player>();
+        defeatedPlayers = new ArrayList<Player>();
 
         for(String[] raw_player_element : players_raw){
 
@@ -196,9 +202,7 @@ public class GamePlay implements IGameModel {
         for(int actual_height = 0; actual_height < this.playground.GetHeight(); actual_height++){
 
             for(int actual_width = 0; actual_width < this.playground.GetWidth(); actual_width++){
-
                 int temp_Id = this.playground.GetFieldAt(actual_height,actual_width).GetPlayerIdOnField();
-
                 if(temp_Id != 0){
                     field_number_of_players.put(temp_Id, field_number_of_players.get(temp_Id)+1);
                 }
@@ -216,6 +220,7 @@ public class GamePlay implements IGameModel {
 
                     if(player.GetId() == entry.getKey()){
                         players_to_remove.add(player);
+                        defeatedPlayers.add(player);
                     }
 
                 }
@@ -447,6 +452,49 @@ public class GamePlay implements IGameModel {
             return players.get(last_player_index).GetId();
         }
 
+    }
+
+    /**
+     * Waiting time adder method to the current Player
+     *
+     * @param 	duration 	Waiting duration of the current Player
+     */
+    public void addCurrentPlayerWaitingTime(int duration){
+        players.get(current_player_index).addWaitingTime(duration);
+    }
+
+    /**
+     * Average waiting time getter method from the current Player
+     *
+     * @return 	int[][]     Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
+     */
+    public int[][] getPlayersData(){
+
+        int[][] playerData = new int[defeatedPlayers.size()+1][3];
+
+        for(int i = 0; i < defeatedPlayers.size(); i++){
+
+            Player player = defeatedPlayers.get(i);
+            int[] data = new int[3];
+            data[0] = player.GetId();
+            data[1] = player.getAvgWaitingTime();
+            data[2] = player.getNumberOfRounds();
+            playerData[i] = data;
+
+        }
+
+        for(int i = 0; i < players.size(); i++){
+
+            Player player = players.get(i);
+            int[] data = new int[3];
+            data[0] = player.GetId();
+            data[1] = player.getAvgWaitingTime();
+            data[2] = player.getNumberOfRounds();
+            playerData[defeatedPlayers.size()+i] = data;
+
+        }
+
+        return playerData;
     }
 
     /**

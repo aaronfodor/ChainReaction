@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
@@ -17,12 +18,15 @@ import kotlinx.android.synthetic.main.activity_start.*
  */
 class StartActivity : AppCompatActivity() {
 
+    var playGroundHeight = 7
+    var playGroundWidth = 5
     private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
     private val MINIMUM_PLAYER_NUMBER_TO_START = 2
     var playerListData = ArrayList<PlayerListData>()
     private lateinit var adapter: PlayerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_start)
 
@@ -67,6 +71,8 @@ class StartActivity : AppCompatActivity() {
 
                 var myIntent = Intent(this, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", adapter.itemCount)
+                myIntent.putExtra("PlayGroundHeight", playGroundHeight)
+                myIntent.putExtra("PlayGroundWidth", playGroundWidth)
 
                 for(i in 0..adapter.itemCount-1){
                     myIntent.putExtra((i+1).toString(), adapter.StringElementAt(i))
@@ -90,13 +96,60 @@ class StartActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        val heightTextView = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvHeight)
+        heightTextView.text = getString(R.string.height_show, playGroundHeight)
+
+        val widthTextView = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvWidth)
+        widthTextView.text = getString(R.string.width_show, playGroundWidth)
+
+        val heightPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightPlus)
+        heightPlusButton.setOnClickListener {
+            playGroundHeight++
+            heightTextView.text = getString(R.string.height_show, playGroundHeight)
+        }
+
+        val heightMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightMinus)
+        heightMinusButton.setOnClickListener {
+
+            if(playGroundHeight == 3){
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
+            }
+
+            else{
+                playGroundHeight--
+                heightTextView.text = getString(R.string.height_show, playGroundHeight)
+            }
+
+        }
+
+        val widthPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthPlus)
+        widthPlusButton.setOnClickListener {
+            playGroundWidth++
+            widthTextView.text = getString(R.string.width_show, playGroundWidth)
+        }
+
+        val widthMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthMinus)
+        widthMinusButton.setOnClickListener {
+
+            if(playGroundWidth == 3){
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
+            }
+
+            else{
+                playGroundWidth--
+                widthTextView.text = getString(R.string.width_show, playGroundWidth)
+            }
+
+        }
+
     }
 
     private fun imageAdder(Id: Int): Int {
+
         return when (Id) {
             1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
-            2 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
-            3 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot1
+            2 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot1
+            3 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
             4 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1
             5 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot1
             6 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot1
@@ -106,6 +159,7 @@ class StartActivity : AppCompatActivity() {
                 hu.bme.aut.android.chainreaction.R.drawable.nothing
             }
         }
+
     }
 
 }
