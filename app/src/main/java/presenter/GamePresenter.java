@@ -5,6 +5,8 @@ import model.GamePlay;
 import presenter.task.GameLogicTask;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * presenter of a game play
@@ -29,32 +31,43 @@ public class GamePresenter {
     private GameLogicTask game_task;
 
     /**
-     * Unit in milliseconds to refresh propagation state
+     * TimerTask to execute limited time counting
+     */
+    private static TimerTask timerTask;
+
+    /**
+     * Game mode flags
      */
     private Boolean showPropagation;
+    private Boolean limitedTimeMode;
+
+    /**
+     * Constant to represent current state display intent
+     */
+    private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
 
     /**
      * GamePresenter constructor
      * Sets the view, the Players, the model, starts the game play
      *
-     * @param   view 	        IGameView object that holds the GamePresenter
-     * @param   height          height of the Playground
-     * @param   width 	        width of the Playground
-     * @param   players_input   ArrayList of Strings; "<Player type>-<Player name>" format
+     * @param   view 	            IGameView object that holds the GamePresenter
+     * @param   height              height of the Playground
+     * @param   width 	            width of the Playground
+     * @param   players_input       ArrayList of Strings; "<Player type>-<Player name>" format
+     * @param   showPropagation     Show propagation flag
+     * @param   limitedTimeMode     Limited time mode flag
      */
-    public GamePresenter(IGameView view, int height, int width, ArrayList<String> players_input, Boolean showPropagation){
+    public GamePresenter(IGameView view, int height, int width, ArrayList<String> players_input, Boolean showPropagation, Boolean limitedTimeMode){
 
         this.view = view;
         this.showPropagation = showPropagation;
-
+        this.limitedTimeMode = limitedTimeMode;
         int number_of_players = players_input.size();
-
         ArrayList<String[]> players = new ArrayList<String[]>();
 
         for(int i = 0; i < number_of_players; i++){
 
             String[] input_data = players_input.get(i).split("-");
-
             String[] player_data = new String[3];
             player_data[0] = String.valueOf(i+1);
             player_data[1] = input_data[1];
@@ -90,24 +103,19 @@ public class GamePresenter {
      * Refreshes the Playground and tells the view to draw it
      *
      * @param   current_player_Id     Id of the current Player
-     * @param   propagation_depth     Id of the current Player
+     * @param   propagation_depth     Number of propagation states
      */
     public void RefreshPlayground(int current_player_Id, int propagation_depth){
 
         int[] dimension = model.GetDimension();
         int[][][] state_matrix = new int[dimension[0]][dimension[1]][];
 
-        if(current_player_Id == 0 && !model.IsGameEnded()){
-            view.ShowMessage("Invalid click!");
-            return;
-        }
-
-        if(model.IsGameEnded()){
+        if(model.IsGameEnded() && propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE){
             view.ShowResult(Math.abs(model.getActualPlayerId()), model.getPlayersData());
         }
 
         else{
-            view.ShowCurrentPlayer(Math.abs(current_player_Id));
+            view.ShowCurrentPlayer(Math.abs(model.getActualPlayerId()));
         }
 
         if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
@@ -124,6 +132,41 @@ public class GamePresenter {
                 view.RefreshPlayground(actual_height, actual_width,
                         PlayerColor.GetColorById(state_matrix[actual_height][actual_width][0]),
                         state_matrix[actual_height][actual_width][1]);
+            }
+
+        }
+
+        if(!model.IsGameEnded() && limitedTimeMode){
+
+            if(timerTask != null){
+                timerTask.cancel();
+            }
+
+            if(propagation_depth <= 0){
+
+                timerTask = new TimerTask() {
+
+                    int counter = 0;
+
+                    @Override
+                    public void run() {
+
+                        if(counter < 100){
+                            view.RefreshProgressBar(counter);
+                            counter++;
+                        }
+
+                        else{
+                            Thread.currentThread().interrupt();
+                            return;
+                        }
+                    }
+                };
+
+                Timer timer = new Timer("MyTimer");
+                timer.scheduleAtFixedRate(timerTask, 20, 50);
+                timerTask.run();
+
             }
 
         }

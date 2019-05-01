@@ -50,4 +50,11 @@ public interface IGameView {
      */
     boolean ShowStart(int Id);
 
+    /**
+     * Refresh the progress bar state with the given value
+     *
+     * @param	value       The progress bar state value - between 0 and 100
+     */
+    void RefreshProgressBar(int value);
+
 }

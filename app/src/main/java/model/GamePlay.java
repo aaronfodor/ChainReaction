@@ -59,7 +59,7 @@ public class GamePlay implements IGameModel {
      */
     private GamePresenter presenter;
 
-    int[][][][] history_matrix;
+    private int[][][][] history_matrix;
 
     /**
      * GamePlay constructor
@@ -72,8 +72,8 @@ public class GamePlay implements IGameModel {
     public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
 
         this.presenter = presenter;
-        players = new ArrayList<Player>();
-        defeatedPlayers = new ArrayList<Player>();
+        this.players = new ArrayList<Player>();
+        this.defeatedPlayers = new ArrayList<Player>();
 
         for(String[] raw_player_element : players_raw){
 
@@ -87,7 +87,6 @@ public class GamePlay implements IGameModel {
 
         }
 
-        this.players = players;
         this.current_player_index = 0;
         this.last_player_index = 0;
         this.winner_Id = 0;
@@ -126,7 +125,7 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
      */
-    private int StepToNextPlayer(){
+    public int StepToNextPlayer(){
 
         this.last_player_index = current_player_index;
 
@@ -284,7 +283,8 @@ public class GamePlay implements IGameModel {
      * Second index is the X coordinate of Field
      * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
      *
-     * @return 	int[][][]   Field information matrix
+     * @param	propagation_depth   The index of the examined depth
+     * @return 	int[][][]           Field information matrix
      */
     public int[][][] HistoryPlaygroundInfoAt(int propagation_depth) {
 
@@ -293,7 +293,6 @@ public class GamePlay implements IGameModel {
         }
 
         int[] dim = this.GetDimension();
-
         int[][][] state_matrix = new int[dim[0]][dim[1]][3];
 
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
@@ -314,8 +313,6 @@ public class GamePlay implements IGameModel {
      * Second index is the X coordinate of Field
      * Third index contains the states during reaction propagation
      * Fourth index is the Field specific information: [0] is the current reaction propagation time, [1] is the owner Player's Id, [2] is the number of elements on the Field, [3] is the number of residual elements left before explosion
-     *
-     * @return 	int[][][][]   Field information matrix
      */
     public void HistoryPlaygroundBuilder() {
 
@@ -367,6 +364,40 @@ public class GamePlay implements IGameModel {
         }
 
         this.history_matrix = state_matrix;
+    }
+
+    /**
+     * Returns whether the current depth state is empty or not
+     *
+     * @param	propagation_depth   The index of the examined depth
+     * @return 	boolean             True if the indexed depth is empty, false otherwise
+     */
+    public boolean isCurrentHistoryStateEmpty(int propagation_depth){
+
+        if(this.history_matrix == null){
+            return true;
+        }
+
+        int[] dim = this.GetDimension();
+        int[][][] state_matrix = new int[dim[0]][dim[1]][3];
+
+        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+
+            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+
+                int[] actual_field_state = this.history_matrix[actual_height][actual_width][propagation_depth];
+                state_matrix[actual_height][actual_width] = actual_field_state;
+
+                if(actual_field_state[1] > 0){
+                    return false;
+                }
+
+            }
+
+        }
+
+        return true;
+
     }
 
     /**

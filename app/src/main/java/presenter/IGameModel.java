@@ -117,4 +117,20 @@ public interface IGameModel {
      */
     int[][] getPlayersData();
 
+    /**
+     * Triggers the AI Players to step in their order
+     * Sets the current Player Id to the actual Player's Id
+     *
+     * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
+     */
+    int StepToNextPlayer();
+
+    /**
+     * Returns whether the current depth state is empty or not
+     *
+     * @param	propagation_depth   The index of the examined depth
+     * @return 	boolean             True if the indexed depth is empty, false otherwise
+     */
+    boolean isCurrentHistoryStateEmpty(int propagation_depth);
+
 }

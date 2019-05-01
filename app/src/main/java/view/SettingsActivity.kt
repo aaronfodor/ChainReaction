@@ -16,15 +16,11 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     companion object {
 
         const val KEY_PROPAGATION = "show_propagation"
+        const val KEY_TIME_LIMIT = "time_limit"
 
         fun changeSettings(sharedPreferences: SharedPreferences, context: Context) {
-
             val showPropagation = sharedPreferences.getBoolean(KEY_PROPAGATION, true)
-
-            if (!showPropagation) {
-                //TODO
-            }
-
+            val difficulty = sharedPreferences.getBoolean(KEY_TIME_LIMIT, true)
         }
 
     }
@@ -58,6 +54,9 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         when(key) {
             KEY_PROPAGATION -> {
+                changeSettings(sharedPreferences, applicationContext)
+            }
+            KEY_TIME_LIMIT -> {
                 changeSettings(sharedPreferences, applicationContext)
             }
         }
