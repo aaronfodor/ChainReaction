@@ -21,7 +21,7 @@
     <string name="setting_show_propagation">Show propagation</string>
 
     <string name="title_about">About</string>
-    <string name="about">Created by Arpad Fodor, 2019</string>
+    <string name="about">Chain Reaction\nV0.8, 01/05/2019\n\nCreated by Arpad Fodor</string>
 
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
@@ -33,6 +33,7 @@
     <string name="height_show">height: %1$d\</string>
     <string name="width_show">width: %1$d\</string>
     <string name="minimum_size">Minimum size reached</string>
+    <string name="maximum_size">Maximum size reached</string>
 
     <string name="title_activity_stats">Statistics</string>
 
@@ -41,6 +42,9 @@
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
     <string name="player_data_info">name / avg. step time / # of rounds</string>
-    <string name="player_data">Player %1$d\: %2$d\ms, %3$d\ round(s)</string>
+    <string name="player_data">Player %1$d\:   %2$d\ms   %3$d\ round(s)</string>
+    <string name="setting_time_limit">Time limit</string>
+    <string name="label_time_limit_off">Player has no time limit to step</string>
+    <string name="label_time_limit_on">Player has limited time to step</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package view
 
-import android.app.ActivityManager
 import presenter.GamePresenter
 import presenter.IGameView
 import android.content.Intent
@@ -42,6 +41,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val showPropagation = settings.getBoolean("show_propagation", true)
+        val timeLimit = settings.getBoolean("time_limit", true)
         val players = ArrayList<String>()
         val extras = intent.extras
 
@@ -54,19 +54,19 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             width = extras.getInt("PlayGroundWidth")
             val number = extras.getInt("number_of_players")
             for(i in 1..number)
-            players.add(extras.getString(i.toString()))
+            players.add(extras.getString(i.toString())!!)
         }
 
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        createNxMGame(players, showPropagation, height, width)
+        createNxMGame(players, showPropagation, timeLimit, height, width)
 
     }
 
     /**
      * Creates the presenter with an intent of a NxM dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, height: Int, width: Int){
+    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, timeLimit: Boolean, height: Int, width: Int){
 
         tableLayoutPlayGround = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
@@ -80,7 +80,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             tableRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
             for(j in 0..(width-1)){
-                var ivField = ImageView(this)
+                val ivField = ImageView(this)
                 ivField.tag = "img-$i-$j"
                 ivField.adjustViewBounds = true
                 ivField.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
@@ -100,7 +100,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         }
 
-        presenter = GamePresenter(this, height, width, players, showPropagation)
+        presenter = GamePresenter(this, height, width, players, showPropagation, timeLimit)
         //start waiting measurement
         previousClickTime = System.currentTimeMillis()
 
@@ -131,7 +131,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
         currentClickTime = System.currentTimeMillis()
-        var waiting = currentClickTime - previousClickTime
+        val waiting = currentClickTime - previousClickTime
         presenter.StepRequest(pos_y, pos_x, waiting.toInt())
         previousClickTime = currentClickTime
         return null
@@ -241,7 +241,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = getString(R.string.player_turn, Id)
-
         when (Id) {
             1 -> tableLayoutPlayGround.setBackgroundColor(Color.RED)
             2 -> tableLayoutPlayGround.setBackgroundColor(Color.GREEN)
@@ -259,6 +258,18 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         tableLayoutPlayGround.invalidate()
         return true
+
+    }
+
+    /**
+     * Refresh the progress bar state with the given value
+     *
+     * @param	value       The progress bar state value - between 0 and 100
+     */
+    override fun RefreshProgressBar(value: Int) {
+
+        val progressBar = findViewById<ProgressBar>(R.id.progressBarPlayerTime)
+        progressBar.progress = value
 
     }
 
@@ -302,15 +313,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         if(infoText.text != text){
 
             infoText.text = text
-            //Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE).show()
 
             val snackBar = Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE)
-            snackBar.setAction("LEAVE", View.OnClickListener {
+            snackBar.setAction("LEAVE") {
                 this.finish()
-            })
+            }
             snackBar.show()
 
-            var playersNumber = playersData.size
+            val playersNumber = playersData.size
             val bundle = Bundle()
             bundle.putInt("playersNumber", playersNumber)
 
@@ -321,6 +331,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             val fragment = GameOverFragment()
             fragment.arguments = bundle
             val transaction = supportFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
             transaction.replace(R.id.viewGame, fragment)
             transaction.commit()
 

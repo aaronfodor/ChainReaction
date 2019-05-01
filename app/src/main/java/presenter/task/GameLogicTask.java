@@ -29,6 +29,9 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
      */
     private Boolean showPropagation;
 
+    /**
+     * Constant to represent current state display intent
+     */
     private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
 
     /**
@@ -171,8 +174,12 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
                         }
 
                         try {
-                            publishProgress(model.getLastPlayerId(), i);
-                            Thread.sleep(refresh_rate_milliseconds);
+
+                            if(!model.isCurrentHistoryStateEmpty(i)){
+                                publishProgress(model.getLastPlayerId(), i);
+                                Thread.sleep(refresh_rate_milliseconds);
+                            }
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

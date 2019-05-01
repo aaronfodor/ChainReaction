@@ -1,5 +1,6 @@
 package view
 
+import android.app.ActivityOptions
 import presenter.task.AILoaderTask
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSettings.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonAbout.setOnClickListener {

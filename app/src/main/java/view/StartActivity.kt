@@ -1,5 +1,6 @@
 package view
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -20,6 +21,8 @@ class StartActivity : AppCompatActivity() {
 
     var playGroundHeight = 7
     var playGroundWidth = 5
+    private val MAXIMUM_SIZE = 30
+    private val MINIMUM_SIZE = 3
     private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
     private val MINIMUM_PLAYER_NUMBER_TO_START = 2
     var playerListData = ArrayList<PlayerListData>()
@@ -69,16 +72,16 @@ class StartActivity : AppCompatActivity() {
 
             if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
 
-                var myIntent = Intent(this, GameActivity::class.java)
+                val myIntent = Intent(this, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", adapter.itemCount)
                 myIntent.putExtra("PlayGroundHeight", playGroundHeight)
                 myIntent.putExtra("PlayGroundWidth", playGroundWidth)
 
-                for(i in 0..adapter.itemCount-1){
+                for(i in 0 until adapter.itemCount){
                     myIntent.putExtra((i+1).toString(), adapter.StringElementAt(i))
                 }
 
-                startActivity(myIntent)
+                startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
             }
 
@@ -92,7 +95,7 @@ class StartActivity : AppCompatActivity() {
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 
-        var recyclerView = findViewById<RecyclerView>(hu.bme.aut.android.chainreaction.R.id.recyclerViewPlayers)
+        val recyclerView = findViewById<RecyclerView>(hu.bme.aut.android.chainreaction.R.id.recyclerViewPlayers)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -104,14 +107,22 @@ class StartActivity : AppCompatActivity() {
 
         val heightPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightPlus)
         heightPlusButton.setOnClickListener {
-            playGroundHeight++
-            heightTextView.text = getString(R.string.height_show, playGroundHeight)
+
+            if(playGroundHeight == MAXIMUM_SIZE){
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
+            }
+
+            else{
+                playGroundHeight++
+                heightTextView.text = getString(R.string.height_show, playGroundHeight)
+            }
+
         }
 
         val heightMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightMinus)
         heightMinusButton.setOnClickListener {
 
-            if(playGroundHeight == 3){
+            if(playGroundHeight == MINIMUM_SIZE){
                 Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
             }
 
@@ -124,14 +135,22 @@ class StartActivity : AppCompatActivity() {
 
         val widthPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthPlus)
         widthPlusButton.setOnClickListener {
-            playGroundWidth++
-            widthTextView.text = getString(R.string.width_show, playGroundWidth)
+
+            if(playGroundWidth == MAXIMUM_SIZE){
+                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
+            }
+
+            else{
+                playGroundWidth++
+                widthTextView.text = getString(R.string.width_show, playGroundWidth)
+            }
+
         }
 
         val widthMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthMinus)
         widthMinusButton.setOnClickListener {
 
-            if(playGroundWidth == 3){
+            if(playGroundWidth == MINIMUM_SIZE){
                 Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
             }
 
