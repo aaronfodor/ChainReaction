@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="view.GameActivity">
+        tools:context="view.GameActivity" android:id="@+id/coordinatorLayout2">
 
     <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
@@ -25,23 +25,30 @@
 
         <TextView
                 android:id="@+id/tvGameOver"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
                 android:paddingTop="30dp"
-                android:paddingBottom="30dp"
+                android:paddingBottom="10dp"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:background="@color/colorTransparentMessageBackground"
                 android:textSize="16sp"
                 android:textColor="@color/colorMessage"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginBottom="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/timeChart"
+                app:layout_constraintStart_toStartOf="@+id/timeChart"
+                app:layout_constraintEnd_toEndOf="@+id/timeChart"/>
+
+        <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/timeChart"
+                android:layout_width="320dp"
+                android:layout_height="320dp"
+                android:background="@color/colorTransparentMessageBackground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintVertical_bias="0.7"/>
 
     </android.support.constraint.ConstraintLayout>
 

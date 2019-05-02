@@ -1,6 +1,7 @@
 package view
 
 import presenter.GamePresenter
+import presenter.PlayerColor
 import presenter.IGameView
 import android.content.Intent
 import android.graphics.Color
@@ -241,22 +242,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = getString(R.string.player_turn, Id)
-        when (Id) {
-            1 -> tableLayoutPlayGround.setBackgroundColor(Color.RED)
-            2 -> tableLayoutPlayGround.setBackgroundColor(Color.GREEN)
-            3 -> tableLayoutPlayGround.setBackgroundColor(Color.BLUE)
-            4 -> tableLayoutPlayGround.setBackgroundColor(Color.YELLOW)
-            //orange
-            5 -> tableLayoutPlayGround.setBackgroundColor(Color.rgb(255,165,0))
-            6 -> tableLayoutPlayGround.setBackgroundColor(Color.MAGENTA)
-            //brown
-            7 -> tableLayoutPlayGround.setBackgroundColor(Color.rgb(210,180,140))
-            8 -> tableLayoutPlayGround.setBackgroundColor(Color.LTGRAY)
-            else -> { // Note the block
-            }
-        }
-
+        tableLayoutPlayGround.setBackgroundColor(PlayerColor.GetColorById(Id))
         tableLayoutPlayGround.invalidate()
+
         return true
 
     }
@@ -325,7 +313,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             bundle.putInt("playersNumber", playersNumber)
 
             for (i in 1..playersNumber) {
-                bundle.putString((i-1).toString(), getString(R.string.player_data, playersData[i-1][0], playersData[i-1][1], playersData[i-1][2]))
+                bundle.putInt((i-1).toString()+"Id", playersData[i-1][0])
+                bundle.putInt((i-1).toString()+"AvgStepTime", playersData[i-1][1])
+                bundle.putInt((i-1).toString()+"Rounds", playersData[i-1][2])
             }
 
             val fragment = GameOverFragment()

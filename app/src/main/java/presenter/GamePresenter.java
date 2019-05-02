@@ -2,6 +2,7 @@ package presenter;
 
 import android.os.AsyncTask;
 import model.GamePlay;
+import org.jetbrains.annotations.NotNull;
 import presenter.task.GameLogicTask;
 
 import java.util.ArrayList;
@@ -130,7 +131,7 @@ public class GamePresenter {
 
             for(int actual_width = 0; actual_width < dimension[1]; actual_width++){
                 view.RefreshPlayground(actual_height, actual_width,
-                        PlayerColor.GetColorById(state_matrix[actual_height][actual_width][0]),
+                        state_matrix[actual_height][actual_width][0],
                         state_matrix[actual_height][actual_width][1]);
             }
 
