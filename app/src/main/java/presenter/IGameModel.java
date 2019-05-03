@@ -64,6 +64,13 @@ public interface IGameModel {
     Integer getActualPlayerId();
 
     /**
+     * Returns the Type of the current Player
+     *
+     * @return 	Integer     Type of the current Player - 1 means human, 2 means AI
+     */
+    Integer getActualPlayerType();
+
+    /**
      * Returns the Id of the last Player
      *
      * @return 	Integer     Id of the last Player

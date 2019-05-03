@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
+import android.view.WindowManager
 import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
@@ -31,6 +32,7 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_start)
 
         val addHumanPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddHumanPlayer)
@@ -91,7 +93,7 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        adapter = PlayerListAdapter(playerListData)
+        adapter = PlayerListAdapter(applicationContext, playerListData)
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 

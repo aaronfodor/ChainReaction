@@ -290,7 +290,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Shows the result of the game play, displays GameOverFragment
      *
      * @param     winnerId    Id of the winner
-     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
+     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      * @return    boolean     True if succeed, false otherwise
      */
     override fun ShowResult(winnerId: Int, playersData: Array<IntArray>): Boolean {
@@ -316,6 +316,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 bundle.putInt((i-1).toString()+"Id", playersData[i-1][0])
                 bundle.putInt((i-1).toString()+"AvgStepTime", playersData[i-1][1])
                 bundle.putInt((i-1).toString()+"Rounds", playersData[i-1][2])
+                bundle.putInt((i-1).toString()+"TypeId", playersData[i-1][3])
             }
 
             val fragment = GameOverFragment()

@@ -31,14 +31,21 @@ public abstract class Player {
     private int numberOfRounds;
 
     /**
+     * Type Id of the Player
+     */
+    private int typeId;
+
+    /**
      * Player constructor
      *
      * @param	Id       	Id of the Player
-     * @param	name       	Name of the Player
+     * @param	name       	Name of the PlayerType Id of the Player
+     * @param	typeId      Type Id of the Player
      */
-    public Player(int Id, String name){
+    public Player(int Id, String name, int typeId){
         this.Id = Id;
         this.name = name;
+        this.typeId = typeId;
         this.waitingTime = 0;
         this.numberOfRounds = 0;
     }
@@ -108,6 +115,15 @@ public abstract class Player {
      */
     public int getNumberOfRounds(){
         return this.numberOfRounds;
+    }
+
+    /**
+     * Player type Id
+     *
+     * @return 	int        Type Id of the Player
+     */
+    public int getTypeId(){
+        return this.typeId;
     }
 
 }

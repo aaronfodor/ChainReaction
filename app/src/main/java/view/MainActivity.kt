@@ -5,10 +5,11 @@ import presenter.task.AILoaderTask
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
+import android.view.WindowManager
+import hu.bme.aut.android.chainreaction.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_start.*
 import model.ai.PlayerLogic
 
 /**
@@ -19,17 +20,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_main)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         SettingsActivity.changeSettings(sharedPreferences, this)
 
         buttonNewGame.setOnClickListener {
-            startActivity(Intent(this, StartActivity::class.java))
+            val intent = Intent(this, StartActivity::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonStats.setOnClickListener {
-            startActivity(Intent(this, StatsActivity::class.java))
+            val intent = Intent(this, StatsActivity::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonSettings.setOnClickListener {
@@ -38,21 +42,34 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonAbout.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonExit.setOnClickListener {
-            //showing the home screen - app is not visible but running
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+            exitDialog()
         }
 
     }
 
     override fun onBackPressed() {
-        Snackbar.make(constraintLayoutMainActivity, hu.bme.aut.android.chainreaction.R.string.how_to_exit, Snackbar.LENGTH_LONG).show()
+        exitDialog()
+    }
+
+    private fun exitDialog(){
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.confirm_exit))
+            .setMessage(getString(R.string.confirm_exit_description))
+            .setPositiveButton(android.R.string.yes) { dialog, which ->
+                //showing the home screen - app is not visible but running
+                val intent = Intent(Intent.ACTION_MAIN)
+                intent.addCategory(Intent.CATEGORY_HOME)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     override fun onResume() {

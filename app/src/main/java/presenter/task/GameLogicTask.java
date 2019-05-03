@@ -35,6 +35,11 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
     private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
 
     /**
+     * Represents whether time limit mode is on - if yes, false click means next Player comes
+     */
+    private boolean timeLimitMode;
+
+    /**
      * Static cancel flag of all GameLogicTask instances
      */
     static boolean cancelTask = true;
@@ -45,11 +50,13 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
      * @param   model                       model of the game play
      * @param   presenter                   presenter of the game play - the UI thread
      * @param   showPropagation             is UI refresh allowed while propagating
+     * @param   timeLimitMode               Time limit mode - if true, false click means next Player comes
      */
-    public GameLogicTask(IGameModel model, GamePresenter presenter, Boolean showPropagation){
+    public GameLogicTask(IGameModel model, GamePresenter presenter, Boolean showPropagation, Boolean timeLimitMode){
         this.model = model;
         this.presenter = presenter;
         this.showPropagation = showPropagation;
+        this.timeLimitMode = timeLimitMode;
         cancelTask = false;
     }
 
@@ -96,6 +103,43 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
 
             }
 
+            //time is up, Player is not allowed to step, next Player comes
+            else if(params.length == 1){
+
+                model.addCurrentPlayerWaitingTime(params[0]);
+                model.StepToNextPlayer();
+                PropagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE);
+
+                Integer[] coordinates = new Integer[2];
+
+                Long startTime = System.currentTimeMillis();
+                coordinates = model.getAutoCoordinates();
+                Long estimatedTime = System.currentTimeMillis() - startTime;
+                int estimated = estimatedTime.intValue();
+
+                while(coordinates != null) {
+
+                    if(cancelTask){
+                        break;
+                    }
+
+                    try {
+                        PropagationDisplayManager(coordinates[0], coordinates[1], estimated);
+                        Thread.sleep(refresh_rate_milliseconds);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    startTime = System.currentTimeMillis();
+                    coordinates = model.getAutoCoordinates();
+                    estimatedTime = System.currentTimeMillis() - startTime;
+                    estimated = estimatedTime.intValue();
+
+                }
+
+            }
+
+            //step request happened
             else{
 
                 Integer[] coordinates = new Integer[2];
@@ -160,9 +204,12 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
             else{
 
                 model.addCurrentPlayerWaitingTime(values[2]);
-                model.StepRequest(values[0], values[1]);
 
-                if(showPropagation){
+                if(model.StepRequest(values[0], values[1]) == 0 && timeLimitMode){
+                    model.StepToNextPlayer();
+                }
+
+                else if(showPropagation){
 
                     model.HistoryPlaygroundBuilder();
                     int propagation_depth = model.GetReactionPropagationDepth();

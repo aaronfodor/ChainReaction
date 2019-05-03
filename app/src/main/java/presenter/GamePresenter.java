@@ -43,6 +43,16 @@ public class GamePresenter {
     private Boolean limitedTimeMode;
 
     /**
+     * Type of the HUMAN Players
+     */
+    private final int HUMAN = 1;
+
+    /**
+     * Time limit in milliseconds
+     */
+    private int timeLimit = 4000;
+
+    /**
      * Constant to represent current state display intent
      */
     private static final int SHOW_CURRENT_PLAYGROUND_STATE = -1;
@@ -82,7 +92,7 @@ public class GamePresenter {
         this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), 0);
         view.ShowStart(Integer.valueOf(players.get(0)[0]));
 
-        game_task = new GameLogicTask(model, this, showPropagation);
+        game_task = new GameLogicTask(model, this, showPropagation, limitedTimeMode);
         game_task.cancel(true);
 
     }
@@ -96,8 +106,19 @@ public class GamePresenter {
      * @param	duration   Duration of waiting
      */
     public void StepRequest(int pos_y, int pos_x, int duration){
-        game_task = new GameLogicTask(model, this, showPropagation);
+        game_task = new GameLogicTask(model, this, showPropagation, limitedTimeMode);
         game_task.execute(pos_y, pos_x, duration);
+    }
+
+    /**
+     * Time is up handling
+     * Sets the current Player to the next one
+     *
+     * @param	duration   Duration of waiting
+     */
+    public void playerTimeIsUp(int duration){
+        game_task = new GameLogicTask(model, this, showPropagation, limitedTimeMode);
+        game_task.execute(duration);
     }
 
     /**
@@ -137,11 +158,13 @@ public class GamePresenter {
 
         }
 
-        if(!model.IsGameEnded() && limitedTimeMode){
+        if(timerTask != null){
+            timerTask.cancel();
+            view.RefreshProgressBar(0);
+        }
 
-            if(timerTask != null){
-                timerTask.cancel();
-            }
+        //when limited time mode is enabled, it only applies to human players when the game is not over
+        if(!model.IsGameEnded() && limitedTimeMode && model.getActualPlayerType() == HUMAN){
 
             if(propagation_depth <= 0){
 
@@ -157,15 +180,20 @@ public class GamePresenter {
                             counter++;
                         }
 
+                        else if(counter == 100){
+                            playerTimeIsUp(timeLimit);
+                        }
+
                         else{
                             Thread.currentThread().interrupt();
                             return;
                         }
+
                     }
                 };
 
                 Timer timer = new Timer("MyTimer");
-                timer.scheduleAtFixedRate(timerTask, 20, 50);
+                timer.scheduleAtFixedRate(timerTask, 50, timeLimit/100);
                 timerTask.run();
 
             }

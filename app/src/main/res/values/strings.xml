@@ -24,7 +24,7 @@
     <string name="label_time_limit_on">Player has limited time to step</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nV0.8, 01/05/2019\n\nCreated by Arpad Fodor</string>
+    <string name="about">Chain Reaction\nv0.8, 03/05/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
@@ -45,5 +45,10 @@
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
     <string name="game_over_data">Winner type: %1$s\ \n\nNumber of rounds: %2$d\ \n\nAvg. step time of Players [ms]</string>
+    <string name="type_ai">AI</string>
+    <string name="type_human">human</string>
+
+    <string name="confirm_exit">Confirm exit</string>
+    <string name="confirm_exit_description">Are you sure you want to exit?</string>
 
 </resources>

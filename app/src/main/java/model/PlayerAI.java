@@ -17,7 +17,7 @@ public class PlayerAI extends Player {
      * @param	name       	Name of the Player
      */
     public PlayerAI(int Id, String name){
-        super(Id, name);
+        super(Id, name, 2);
         AI = new PlayerLogic();
     }
 

@@ -15,18 +15,31 @@ import presenter.PlayerColor
 
 class GameOverFragment : Fragment() {
 
+    companion object {
+        const val HUMAN = 1
+        const val AI = 2
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment_gameover, container, false)
+        val view = inflater.inflate(R.layout.fragment_gameover, container, false)
 
         val bundle = this.arguments
         if(bundle != null){
 
             val playersNumber = bundle.getInt("playersNumber")
+            val winnerType = bundle.getInt((playersNumber-1).toString()+"TypeId")
             val textViewGameOver: TextView = view.findViewById(hu.bme.aut.android.chainreaction.R.id.tvGameOver)
             val keyRoundsOfWinner = (playersNumber-1).toString()+"Rounds"
-            textViewGameOver.text = getString(R.string.game_over_data, "Player", bundle.getInt(keyRoundsOfWinner))
+
+            var winnerTypeText: String = ""
+            when (winnerType) {
+                HUMAN -> winnerTypeText = getString(R.string.type_human)
+                AI -> winnerTypeText = getString(R.string.type_ai)
+            }
+
+            textViewGameOver.text = getString(R.string.game_over_data, winnerTypeText, bundle.getInt(keyRoundsOfWinner))
 
             val chart: BarChart = view.findViewById(hu.bme.aut.android.chainreaction.R.id.timeChart)
             val timeData = ArrayList<BarEntry>()
@@ -47,9 +60,9 @@ class GameOverFragment : Fragment() {
             chart.axisLeft.textSize = 12.0F
             chart.axisRight.textColor = resources.getColor(R.color.colorMessage)
             chart.axisRight.textSize = 12.0F
+            chart.xAxis.isEnabled = false
             chart.xAxis.textColor = resources.getColor(R.color.colorMessage)
             chart.xAxis.textSize = 12.0F
-            chart.xAxis.isEnabled = false
 
             for (i in 1..playersNumber) {
                 val keyAvgStepTime = (i-1).toString()+"AvgStepTime"

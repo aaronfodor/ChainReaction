@@ -18,40 +18,27 @@
 
         <activity
                 android:name="view.SettingsActivity"
+                android:theme="@style/Theme.AppCompat.NoActionBar"
                 android:label="@string/title_settings">
         </activity>
 
         <activity
                 android:name="view.AboutActivity"
-                android:label="@string/title_about"
-                android:parentActivityName="view.MainActivity"
-                android:theme="@style/Theme.AppCompat.Light.Dialog">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="view.MainActivity"/>
-        </activity>
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:label="@string/title_about"/>
 
         <activity
                 android:name="view.StatsActivity"
-                android:label="@string/title_activity_stats"
-                android:parentActivityName="view.MainActivity"
-                android:theme="@style/Theme.AppCompat.Light.Dialog">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="view.MainActivity"/>
-        </activity>
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:label="@string/title_activity_stats"/>
 
         <activity
                 android:name="view.StartActivity"
-                android:label="@string/title_activity_start"
-                android:parentActivityName="view.MainActivity"
-                android:theme="@style/Theme.AppCompat.Light.Dialog">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="view.MainActivity"/>
-        </activity>
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:label="@string/title_activity_start"/>
 
-        <activity android:name="view.MainActivity">
+        <activity android:name="view.MainActivity"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW" />

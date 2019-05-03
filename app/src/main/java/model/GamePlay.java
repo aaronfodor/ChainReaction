@@ -469,6 +469,15 @@ public class GamePlay implements IGameModel {
     }
 
     /**
+     * Returns the Type of the current Player
+     *
+     * @return 	Integer     Type of the current Player - 1 means human, 2 means AI
+     */
+    public Integer getActualPlayerType(){
+        return players.get(current_player_index).getTypeId();
+    }
+
+    /**
      * Returns the Id of the last Player
      *
      * @return 	Integer     Id of the last Player
@@ -497,7 +506,7 @@ public class GamePlay implements IGameModel {
     /**
      * Average waiting time getter method from the current Player
      *
-     * @return 	int[][]     Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player
+     * @return int[][]     [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      */
     public int[][] getPlayersData(){
 
@@ -506,10 +515,11 @@ public class GamePlay implements IGameModel {
         for(int i = 0; i < defeatedPlayers.size(); i++){
 
             Player player = defeatedPlayers.get(i);
-            int[] data = new int[3];
+            int[] data = new int[4];
             data[0] = player.GetId();
             data[1] = player.getAvgWaitingTime();
             data[2] = player.getNumberOfRounds();
+            data[3] = player.getTypeId();
             playerData[i] = data;
 
         }
@@ -517,10 +527,11 @@ public class GamePlay implements IGameModel {
         for(int i = 0; i < players.size(); i++){
 
             Player player = players.get(i);
-            int[] data = new int[3];
+            int[] data = new int[4];
             data[0] = player.GetId();
             data[1] = player.getAvgWaitingTime();
             data[2] = player.getNumberOfRounds();
+            data[3] = player.getTypeId();
             playerData[defeatedPlayers.size()+i] = data;
 
         }
