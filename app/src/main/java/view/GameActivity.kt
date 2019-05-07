@@ -333,10 +333,11 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Returns to the MainActivity
+     * Returns to the MainActivity, stops the current game instance
      */
     override fun onBackPressed() {
         startActivity(Intent(this, MainActivity::class.java))
+        this.finish()
     }
 
     /**
