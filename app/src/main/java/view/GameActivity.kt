@@ -1,7 +1,7 @@
 package view
 
 import presenter.GamePresenter
-import presenter.PlayerColor
+import presenter.PlayerVisualRepresentation
 import presenter.IGameView
 import android.content.Intent
 import android.graphics.Color
@@ -148,88 +148,11 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return   boolean     True if succeed, false otherwise
      */
     override fun RefreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
-
         val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
-
-        when (color) {
-            8 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.grey_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            7 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.brown_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            6 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.pink_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            5 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.orange_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            4 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.yellow_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            3 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.blue_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            2 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.green_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-
-            }
-            1 -> when (number) {
-                1 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot1)
-                2 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot2)
-                3 -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.red_dot3)
-                else -> { // Note the block
-                    field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-                }
-            }
-            else -> field.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
-        }
-
+        field.setImageResource(PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number))
         field.invalidate()
         return true
-
     }
 
     /**
@@ -242,7 +165,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         infoText.text = getString(R.string.player_turn, Id)
-        tableLayoutPlayGround.setBackgroundColor(PlayerColor.GetColorById(Id))
+        tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
 
         return true

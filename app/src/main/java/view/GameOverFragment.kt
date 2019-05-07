@@ -11,7 +11,7 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import presenter.PlayerColor
+import presenter.PlayerVisualRepresentation
 
 class GameOverFragment : Fragment() {
 
@@ -68,7 +68,7 @@ class GameOverFragment : Fragment() {
                 val keyAvgStepTime = (i-1).toString()+"AvgStepTime"
                 val keyId = (i-1).toString()+"Id"
                 timeData.add(BarEntry((i-1).toFloat(), bundle.getInt(keyAvgStepTime).toFloat()))
-                setColors.add((i-1), PlayerColor.GetColorById(bundle.getInt(keyId)))
+                setColors.add((i-1), PlayerVisualRepresentation.getColorById(bundle.getInt(keyId)))
             }
 
             val set = BarDataSet(timeData, "")

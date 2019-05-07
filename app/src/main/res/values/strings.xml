@@ -24,7 +24,7 @@
     <string name="label_time_limit_on">Player has limited time to step</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.8, 07/05/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.9, 07/05/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>

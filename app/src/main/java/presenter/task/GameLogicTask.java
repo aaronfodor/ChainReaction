@@ -284,11 +284,12 @@ public class GameLogicTask extends AsyncTask<Integer, Integer, Boolean> {
         if(!cancelTask){
 
             if(values.length == 1){
-                presenter.RefreshPlayground(model.getActualPlayerId(), values[0]);
+                presenter.RefreshPlayground(values[0]);
             }
 
             else{
-                presenter.RefreshPlayground(values[0], values[1]);
+                //values[0] is the Player Id which is not used
+                presenter.RefreshPlayground(values[1]);
             }
 
         }

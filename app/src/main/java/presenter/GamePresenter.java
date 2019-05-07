@@ -89,7 +89,7 @@ public class GamePresenter {
         }
 
         this.model = new GamePlay(this, height, width, players);
-        this.RefreshPlayground(Integer.valueOf(players.get(0)[0]), 0);
+        this.RefreshPlayground(SHOW_CURRENT_PLAYGROUND_STATE);
         view.ShowStart(Integer.valueOf(players.get(0)[0]));
 
         game_task = new GameLogicTask(model, this, showPropagation, limitedTimeMode);
@@ -114,7 +114,7 @@ public class GamePresenter {
      * Time is up handling
      * Sets the current Player to the next one
      *
-     * @param	duration   Duration of waiting
+     * @param	duration   Duration of waiting which is going to be recorded
      */
     public void playerTimeIsUp(int duration){
         game_task = new GameLogicTask(model, this, showPropagation, limitedTimeMode);
@@ -124,28 +124,26 @@ public class GamePresenter {
     /**
      * Refreshes the Playground and tells the view to draw it
      *
-     * @param   current_player_Id     Id of the current Player
      * @param   propagation_depth     Number of propagation states
      */
-    public void RefreshPlayground(int current_player_Id, int propagation_depth){
+    public void RefreshPlayground(int propagation_depth){
 
         int[] dimension = model.GetDimension();
         int[][][] state_matrix = new int[dimension[0]][dimension[1]][];
 
         if(model.IsGameEnded() && propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE){
+            state_matrix = model.ActualPlaygroundInfo();
+            view.ShowCurrentPlayer(Math.abs(model.getActualPlayerId()));
             view.ShowResult(Math.abs(model.getActualPlayerId()), model.getPlayersData());
         }
 
-        else{
-            view.ShowCurrentPlayer(Math.abs(model.getActualPlayerId()));
-        }
-
-        if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
+        else if(propagation_depth >= 0 && propagation_depth < model.GetReactionPropagationDepth()){
             state_matrix = model.HistoryPlaygroundInfoAt(propagation_depth);
         }
 
         else{
             state_matrix = model.ActualPlaygroundInfo();
+            view.ShowCurrentPlayer(Math.abs(model.getActualPlayerId()));
         }
 
         for(int actual_height = 0; actual_height < dimension[0]; actual_height++){
@@ -160,12 +158,13 @@ public class GamePresenter {
 
         if(timerTask != null){
             timerTask.cancel();
-            view.RefreshProgressBar(0);
         }
+        view.RefreshProgressBar(0);
 
         //when limited time mode is enabled, it only applies to human players when the game is not over
         if(!model.IsGameEnded() && limitedTimeMode && model.getActualPlayerType() == HUMAN){
 
+            //show the current state, not the propagation states
             if(propagation_depth <= 0){
 
                 timerTask = new TimerTask() {
@@ -181,12 +180,13 @@ public class GamePresenter {
                         }
 
                         else if(counter == 100){
+                            view.RefreshProgressBar(0);
                             playerTimeIsUp(timeLimit);
                         }
 
                         else{
                             Thread.currentThread().interrupt();
-                            return;
+                            view.RefreshProgressBar(0);
                         }
 
                     }
@@ -203,9 +203,9 @@ public class GamePresenter {
     }
 
     /**
-     * Returns the AsyncTask
+     * Returns the game AsyncTask
      *
-     * @return 	AsyncTask     Returns the AsyncTask. If empty, returns null
+     * @return 	AsyncTask     Returns the game AsyncTask. If empty, returns null
      */
     public AsyncTask getTask(){
 
