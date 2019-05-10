@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import hu.bme.aut.android.chainreaction.R
@@ -33,8 +35,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * Current times in milliseconds to calculate the duration of the waiting time of the Player
      */
-    var previousClickTime: Long = 0
-    var currentClickTime: Long  = 0
+    private var previousClickTime: Long = 0
+    private var currentClickTime: Long  = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -58,7 +60,17 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             players.add(extras.getString(i.toString())!!)
         }
 
-        setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_game)
+        setContentView(R.layout.activity_game)
+
+        val textSwitcher = findViewById<TextSwitcher>(R.id.textViewInfo)
+        textSwitcher.setFactory {
+            val textView = TextView(this@GameActivity)
+            textView.gravity = Gravity.CENTER_HORIZONTAL
+            textView.setTextColor(resources.getColor(R.color.colorMessage))
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            textView
+        }
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         createNxMGame(players, showPropagation, timeLimit, height, width)
 
@@ -133,7 +145,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
         currentClickTime = System.currentTimeMillis()
         val waiting = currentClickTime - previousClickTime
-        presenter.StepRequest(pos_y, pos_x, waiting.toInt())
+        presenter.stepRequest(pos_y, pos_x, waiting.toInt())
         previousClickTime = currentClickTime
         return null
     }
@@ -147,7 +159,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param    number      elements of the Field
      * @return   boolean     True if succeed, false otherwise
      */
-    override fun RefreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
+    override fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
         val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
         field.setImageResource(PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number))
@@ -161,10 +173,10 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param       Id          Id of the current Player
      * @return      boolean     True if succeed, false otherwise
      */
-    override fun ShowCurrentPlayer(Id: Int): Boolean {
+    override fun showCurrentPlayer(Id: Int): Boolean {
 
-        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.text = getString(R.string.player_turn, Id)
+        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        infoText.setText(getString(R.string.player_turn, Id))
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
 
@@ -177,7 +189,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      *
      * @param	value       The progress bar state value - between 0 and 100
      */
-    override fun RefreshProgressBar(value: Int) {
+    override fun refreshProgressBar(value: Int) {
 
         val progressBar = findViewById<ProgressBar>(R.id.progressBarPlayerTime)
         progressBar.progress = value
@@ -190,9 +202,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param       msg         Message
      * @return      boolean     True if succeed, false otherwise
      */
-    override fun ShowMessage(msg: String): Boolean {
-        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.text = msg
+    override fun showMessage(msg: String): Boolean {
+        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        infoText.setText(msg)
         return true
     }
 
@@ -202,9 +214,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param       Id          Id of the current Player
      * @return      boolean     True if succeed, false otherwise
      */
-    override fun ShowStart(Id: Int): Boolean {
-        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.text = getString(R.string.player_turn, Id)
+    override fun showStart(Id: Int): Boolean {
+        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        infoText.setText(getString(R.string.player_turn, Id))
         Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
     }
@@ -216,14 +228,16 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      * @return    boolean     True if succeed, false otherwise
      */
-    override fun ShowResult(winnerId: Int, playersData: Array<IntArray>): Boolean {
+    override fun showResult(winnerId: Int, playersData: Array<IntArray>): Boolean {
 
-        val infoText = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
         val text = getString(R.string.winner_text, winnerId)
 
-        if(infoText.text != text){
+        val currentText = infoText.currentView as TextView
 
-            infoText.text = text
+        if(currentText.text != text){
+
+            infoText.setText(text)
 
             val snackBar = Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("LEAVE") {
@@ -267,7 +281,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Stops the Presenter calculations
      */
     override fun onPause() {
-        presenter.task.cancel(true)
+        presenter.task?.cancel(true)
         super.onPause()
     }
 

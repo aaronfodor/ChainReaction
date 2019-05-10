@@ -30,10 +30,10 @@ class GameOverFragment : Fragment() {
 
             val playersNumber = bundle.getInt("playersNumber")
             val winnerType = bundle.getInt((playersNumber-1).toString()+"TypeId")
-            val textViewGameOver: TextView = view.findViewById(hu.bme.aut.android.chainreaction.R.id.tvGameOver)
+            val textViewGameOver: TextView = view.findViewById(R.id.tvGameOver)
             val keyRoundsOfWinner = (playersNumber-1).toString()+"Rounds"
 
-            var winnerTypeText: String = ""
+            var winnerTypeText = ""
             when (winnerType) {
                 HUMAN -> winnerTypeText = getString(R.string.type_human)
                 AI -> winnerTypeText = getString(R.string.type_ai)
@@ -41,7 +41,7 @@ class GameOverFragment : Fragment() {
 
             textViewGameOver.text = getString(R.string.game_over_data, winnerTypeText, bundle.getInt(keyRoundsOfWinner))
 
-            val chart: BarChart = view.findViewById(hu.bme.aut.android.chainreaction.R.id.timeChart)
+            val chart: BarChart = view.findViewById(R.id.timeChart)
             val timeData = ArrayList<BarEntry>()
             val setColors = ArrayList<Int>(playersNumber)
 

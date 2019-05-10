@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         SettingsActivity.changeSettings(sharedPreferences, this)

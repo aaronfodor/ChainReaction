@@ -68,7 +68,7 @@ public abstract class Player {
      * @return 	boolean     True if succeed, false otherwise
      */
     protected boolean ExecuteStep(int pos_y, int pos_x){
-        return this.gameplay.GetPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
+        return this.gameplay.getPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
     }
 
     /**

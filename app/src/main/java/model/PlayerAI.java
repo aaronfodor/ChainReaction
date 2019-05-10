@@ -28,8 +28,7 @@ public class PlayerAI extends Player {
      */
     @Override
     public Integer[] ExecuteStep() {
-        Integer[]coordinates = AI.CalculateStep(this.gameplay.ActualPlaygroundInfo(), this.GetId());
-        return coordinates;
+        return AI.CalculateStep(this.gameplay.actualPlaygroundInfo(), this.GetId());
     }
 
 }

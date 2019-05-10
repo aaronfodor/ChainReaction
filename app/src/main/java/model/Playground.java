@@ -4,7 +4,7 @@ package model;
  * The Playground in the GamePlay
  * The collection of Fields form the Playground
  */
-public class Playground {
+class Playground {
 
     /**
      * GamePlay that the Playground is part of
@@ -152,7 +152,7 @@ public class Playground {
      * @return 	boolean     True means Game over, False otherwise
      */
     protected boolean IsGameEnded(){
-        return this.gameplay.GameStateRefresh();
+        return this.gameplay.gameStateRefresh();
     }
 
     /**

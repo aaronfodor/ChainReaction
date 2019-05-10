@@ -14,28 +14,33 @@ import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
 import kotlinx.android.synthetic.main.activity_start.*
+import presenter.PlayerVisualRepresentation
+import java.util.*
 
 /**
  * Activity of settings of game play
  */
 class StartActivity : AppCompatActivity() {
 
-    var playGroundHeight = 7
-    var playGroundWidth = 5
-    private val MAXIMUM_SIZE = 30
-    private val MINIMUM_SIZE = 3
-    private val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
-    private val MINIMUM_PLAYER_NUMBER_TO_START = 2
-    var playerListData = ArrayList<PlayerListData>()
+    companion object {
+        private const val MAXIMUM_SIZE = 30
+        private const val MINIMUM_SIZE = 3
+        private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
+        private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
+    }
+
+    private var playGroundHeight = 7
+    private var playGroundWidth = 5
+    private var playerListData = ArrayList<PlayerListData>()
     private lateinit var adapter: PlayerListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(hu.bme.aut.android.chainreaction.R.layout.activity_start)
+        setContentView(R.layout.activity_start)
 
-        val addHumanPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddHumanPlayer)
+        val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
         addHumanPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
@@ -44,12 +49,12 @@ class StartActivity : AppCompatActivity() {
             }
 
             else{
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
             }
 
         }
 
-        val addAIPlayerButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonAddAIPlayer)
+        val addAIPlayerButton = findViewById<Button>(R.id.buttonAddAIPlayer)
         addAIPlayerButton.setOnClickListener {
 
             if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
@@ -58,18 +63,18 @@ class StartActivity : AppCompatActivity() {
             }
 
             else{
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
             }
 
         }
 
-        val clearPlayersButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonClearPlayers)
+        val clearPlayersButton = findViewById<Button>(R.id.buttonClearPlayers)
         clearPlayersButton.setOnClickListener {
-            adapter.Clear()
-            Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.list_clear, Snackbar.LENGTH_LONG).show()
+            adapter.clear()
+            Snackbar.make(recyclerViewPlayers, R.string.list_clear, Snackbar.LENGTH_LONG).show()
         }
 
-        val startGameButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonStartGame)
+        val startGameButton = findViewById<Button>(R.id.buttonStartGame)
         startGameButton.setOnClickListener {
 
             if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
@@ -80,7 +85,7 @@ class StartActivity : AppCompatActivity() {
                 myIntent.putExtra("PlayGroundWidth", playGroundWidth)
 
                 for(i in 0 until adapter.itemCount){
-                    myIntent.putExtra((i+1).toString(), adapter.StringElementAt(i))
+                    myIntent.putExtra((i+1).toString(), adapter.stringElementAt(i))
                 }
 
                 startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
@@ -88,7 +93,7 @@ class StartActivity : AppCompatActivity() {
             }
 
             else{
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(recyclerViewPlayers, R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
             }
 
         }
@@ -97,21 +102,21 @@ class StartActivity : AppCompatActivity() {
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 
-        val recyclerView = findViewById<RecyclerView>(hu.bme.aut.android.chainreaction.R.id.recyclerViewPlayers)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlayers)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val heightTextView = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvHeight)
+        val heightTextView = findViewById<TextView>(R.id.tvHeight)
         heightTextView.text = getString(R.string.height_show, playGroundHeight)
 
-        val widthTextView = findViewById<TextView>(hu.bme.aut.android.chainreaction.R.id.tvWidth)
+        val widthTextView = findViewById<TextView>(R.id.tvWidth)
         widthTextView.text = getString(R.string.width_show, playGroundWidth)
 
-        val heightPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightPlus)
+        val heightPlusButton = findViewById<Button>(R.id.buttonHeightPlus)
         heightPlusButton.setOnClickListener {
 
             if(playGroundHeight == MAXIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
             }
 
             else{
@@ -121,11 +126,11 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val heightMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonHeightMinus)
+        val heightMinusButton = findViewById<Button>(R.id.buttonHeightMinus)
         heightMinusButton.setOnClickListener {
 
             if(playGroundHeight == MINIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
             }
 
             else{
@@ -135,11 +140,11 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val widthPlusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthPlus)
+        val widthPlusButton = findViewById<Button>(R.id.buttonWidthPlus)
         widthPlusButton.setOnClickListener {
 
             if(playGroundWidth == MAXIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
             }
 
             else{
@@ -149,11 +154,11 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        val widthMinusButton = findViewById<Button>(hu.bme.aut.android.chainreaction.R.id.buttonWidthMinus)
+        val widthMinusButton = findViewById<Button>(R.id.buttonWidthMinus)
         widthMinusButton.setOnClickListener {
 
             if(playGroundWidth == MINIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, hu.bme.aut.android.chainreaction.R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
             }
 
             else{
@@ -166,21 +171,7 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun imageAdder(Id: Int): Int {
-
-        return when (Id) {
-            1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
-            2 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot1
-            3 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
-            4 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1
-            5 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot1
-            6 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot1
-            7 -> hu.bme.aut.android.chainreaction.R.drawable.brown_dot1
-            8 -> hu.bme.aut.android.chainreaction.R.drawable.grey_dot1
-            else -> { // Note the block
-                hu.bme.aut.android.chainreaction.R.drawable.nothing
-            }
-        }
-
+        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1)
     }
 
 }

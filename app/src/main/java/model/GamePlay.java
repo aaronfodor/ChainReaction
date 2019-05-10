@@ -1,5 +1,6 @@
 package model;
 
+import org.jetbrains.annotations.NotNull;
 import presenter.GamePresenter;
 import presenter.IGameModel;
 
@@ -104,13 +105,13 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int     Id of the Player to start the game with
      */
-    public int StartGame(){
+    public int startGame(){
 
         Integer[] coordinates = players.get(current_player_index).ExecuteStep();
 
         if(coordinates != null){
             players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
-            return StepToNextPlayer();
+            return stepToNextPlayer();
         }
 
         else{
@@ -125,7 +126,7 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
      */
-    public int StepToNextPlayer(){
+    public int stepToNextPlayer(){
 
         this.last_player_index = current_player_index;
 
@@ -153,7 +154,7 @@ public class GamePlay implements IGameModel {
      * @param	pos_x       X coordinate
      * @return 	int         minus value is the (-1)*Id of the winner; positive value is the Id of the current Player; 0 means step was unsuccessful
      */
-    public int StepRequest(int pos_y, int pos_x){
+    public int stepRequest(int pos_y, int pos_x){
 
         if(winner_Id != 0){
             return (-1)*winner_Id;
@@ -161,7 +162,7 @@ public class GamePlay implements IGameModel {
 
         if(players.get(current_player_index).ExecuteStep(pos_y,pos_x)){
 
-            if(this.GameStateRefresh()){
+            if(this.gameStateRefresh()){
                 return (-1)*winner_Id;
             }
 
@@ -171,7 +172,7 @@ public class GamePlay implements IGameModel {
             return 0;
         }
 
-        return StepToNextPlayer();
+        return stepToNextPlayer();
 
     }
 
@@ -180,15 +181,11 @@ public class GamePlay implements IGameModel {
      * Removes the Player from the players if no territory belongs to it anymore
      * Does not remove a Player during the first round
      * Sets winner_Id if there is a winner
-     *
-     * @return 	boolean     True means there was modification in the players list, false means there was no change
      */
-    private boolean UpdatePlayersInGame(){
-
-        boolean removed_flag = false;
+    private void updatePlayersInGame(){
 
         if(!first_round_ended){
-            return removed_flag;
+            return;
         }
 
         //key is the Id of the Player, value is the number of Fields it owns
@@ -228,10 +225,6 @@ public class GamePlay implements IGameModel {
 
         }
 
-        if(players_to_remove.size() > 0){
-            removed_flag = true;
-        }
-
         for(Player player : players_to_remove){
 
             if(players.indexOf(player) < current_player_index){
@@ -246,8 +239,6 @@ public class GamePlay implements IGameModel {
             winner_Id = players.get(current_player_index).GetId();
         }
 
-        return removed_flag;
-
     }
 
     /**
@@ -258,9 +249,10 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int[][][]   Field information matrix
      */
-    public int[][][] ActualPlaygroundInfo() {
+    @NotNull
+    public int[][][] actualPlaygroundInfo() {
 
-        int[] dim = this.GetDimension();
+        int[] dim = this.getDimension();
 
         int[][][] state_matrix = new int[dim[0]][dim[1]][3];
 
@@ -286,13 +278,14 @@ public class GamePlay implements IGameModel {
      * @param	propagation_depth   The index of the examined depth
      * @return 	int[][][]           Field information matrix
      */
-    public int[][][] HistoryPlaygroundInfoAt(int propagation_depth) {
+    @NotNull
+    public int[][][] historyPlaygroundInfoAt(int propagation_depth) {
 
         if(this.history_matrix == null){
-            return this.ActualPlaygroundInfo();
+            return this.actualPlaygroundInfo();
         }
 
-        int[] dim = this.GetDimension();
+        int[] dim = this.getDimension();
         int[][][] state_matrix = new int[dim[0]][dim[1]][3];
 
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
@@ -314,9 +307,9 @@ public class GamePlay implements IGameModel {
      * Third index contains the states during reaction propagation
      * Fourth index is the Field specific information: [0] is the current reaction propagation time, [1] is the owner Player's Id, [2] is the number of elements on the Field, [3] is the number of residual elements left before explosion
      */
-    public void HistoryPlaygroundBuilder() {
+    public void historyPlaygroundBuilder() {
 
-        int[] dim = this.GetDimension();
+        int[] dim = this.getDimension();
 
         int propagation_depth = this.playground.GetReactionPropagationDepth();
 
@@ -378,16 +371,13 @@ public class GamePlay implements IGameModel {
             return true;
         }
 
-        int[] dim = this.GetDimension();
-        int[][][] state_matrix = new int[dim[0]][dim[1]][3];
+        int[] dim = this.getDimension();
 
         for(int actual_height = 0; actual_height < dim[0]; actual_height++){
 
             for(int actual_width = 0; actual_width < dim[1]; actual_width++){
 
                 int[] actual_field_state = this.history_matrix[actual_height][actual_width][propagation_depth];
-                state_matrix[actual_height][actual_width] = actual_field_state;
-
                 if(actual_field_state[1] > 0){
                     return false;
                 }
@@ -407,7 +397,8 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int[]   Playground dimension info
      */
-    public int[] GetDimension() {
+    @NotNull
+    public int[] getDimension() {
         int[] dim = new int[2];
         dim[0] = playground.GetHeight();
         dim[1] = playground.GetWidth();
@@ -419,7 +410,7 @@ public class GamePlay implements IGameModel {
      *
      * @return  playground  Playground in the GamePlay
      */
-    protected Playground GetPlayground() {
+    protected Playground getPlayground() {
         return this.playground;
     }
 
@@ -428,9 +419,9 @@ public class GamePlay implements IGameModel {
      *
      * @return 	boolean     True means Game over, False otherwise
      */
-    protected boolean GameStateRefresh(){
-        this.UpdatePlayersInGame();
-        return this.IsGameEnded();
+    protected boolean gameStateRefresh(){
+        this.updatePlayersInGame();
+        return this.isGameEnded();
     }
 
     /**
@@ -438,7 +429,7 @@ public class GamePlay implements IGameModel {
      *
      * @return 	boolean     True means Game over, False otherwise
      */
-    public boolean IsGameEnded(){
+    public boolean isGameEnded(){
         return winner_Id != 0;
     }
 
@@ -447,7 +438,8 @@ public class GamePlay implements IGameModel {
      *
      * @return 	String     AI or human
      */
-    public String WinnerType(){
+    @NotNull
+    public String winnerType(){
 
         if(players.get(winner_Id).ExecuteStep() != null){
             return "AI";
@@ -546,7 +538,7 @@ public class GamePlay implements IGameModel {
      */
     public Integer[] getAutoCoordinates(){
 
-        if(IsGameEnded()){
+        if(isGameEnded()){
             return null;
         }
 
@@ -561,14 +553,14 @@ public class GamePlay implements IGameModel {
      *
      * @return 	int     Reaction propagation depth
      */
-    public int GetReactionPropagationDepth(){
+    public int getReactionPropagationDepth(){
         return this.playground.GetReactionPropagationDepth();
     }
 
     /**
      * Reaction propagation depth reset method
      */
-    public void ResetReactionPropagationDepth(){
+    public void resetReactionPropagationDepth(){
         this.playground.ResetReactionPropagationDepth();
     }
 

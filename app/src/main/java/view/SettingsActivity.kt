@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         fun changeSettings(sharedPreferences: SharedPreferences, context: Context) {
             val showPropagation = sharedPreferences.getBoolean(KEY_PROPAGATION, true)
-            val difficulty = sharedPreferences.getBoolean(KEY_TIME_LIMIT, true)
+            val timeLimit = sharedPreferences.getBoolean(KEY_TIME_LIMIT, true)
         }
 
     }
