@@ -1,4 +1,4 @@
-package model.ai;
+package ai;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -29,11 +29,9 @@ public class PlayerLogic {
      * @param	network	    The Neural Network object
      */
     public static void SetNeuralNetwork(MultiLayerNetwork network){
-
         if(NeuralNetwork == null){
             NeuralNetwork = network;
         }
-
     }
 
     /**

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/settingsPreferenceScreen"
+                  android:background="@drawable/background"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:focusable="true"
+                  android:focusableInTouchMode="true">
     <PreferenceCategory android:title="@string/title_settings">
         <SwitchPreference
                 android:key="show_propagation"
@@ -11,5 +17,9 @@
                 android:summaryOff="@string/label_time_limit_off"
                 android:summaryOn="@string/label_time_limit_on"
                 android:title="@string/setting_time_limit" />
+        <CheckBoxPreference
+                android:key="delete_database"
+                android:title="@string/setting_delete_database"
+                android:selectable="true"/>
     </PreferenceCategory>
 </PreferenceScreen>

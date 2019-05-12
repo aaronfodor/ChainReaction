@@ -10,7 +10,7 @@ import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
 import hu.bme.aut.android.chainreaction.R
 import kotlinx.android.synthetic.main.activity_main.*
-import model.ai.PlayerLogic
+import ai.PlayerLogic
 
 /**
  * Main Activity - entry point
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        SettingsActivity.changeSettings(sharedPreferences, this)
+        SettingsActivity.changeSettings(sharedPreferences)
 
         buttonNewGame.setOnClickListener {
             val intent = Intent(this, StartActivity::class.java)

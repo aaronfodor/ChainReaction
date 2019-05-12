@@ -1,5 +1,6 @@
 package view
 
+import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
 import presenter.IGameView
@@ -16,6 +17,9 @@ import android.view.WindowManager
 import hu.bme.aut.android.chainreaction.R
 import android.widget.*
 import android.widget.TextView
+import db.PlayerTypeStat
+import db.PlayerTypeStatsDatabase
+import hu.bme.aut.android.chainreaction.R.*
 
 /**
  * Activity of a game play
@@ -60,13 +64,13 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             players.add(extras.getString(i.toString())!!)
         }
 
-        setContentView(R.layout.activity_game)
+        setContentView(layout.activity_game)
 
-        val textSwitcher = findViewById<TextSwitcher>(R.id.textViewInfo)
+        val textSwitcher = findViewById<TextSwitcher>(id.textViewInfo)
         textSwitcher.setFactory {
             val textView = TextView(this@GameActivity)
             textView.gravity = Gravity.CENTER_HORIZONTAL
-            textView.setTextColor(resources.getColor(R.color.colorMessage))
+            textView.setTextColor(resources.getColor(color.colorMessage))
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             textView
         }
@@ -81,7 +85,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, timeLimit: Boolean, height: Int, width: Int){
 
-        tableLayoutPlayGround = findViewById(hu.bme.aut.android.chainreaction.R.id.TableLayoutPlayGround)
+        tableLayoutPlayGround = findViewById(id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
 
         val tableLayout = tableLayoutPlayGround.rootView
@@ -96,7 +100,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 val ivField = ImageView(this)
                 ivField.tag = "img-$i-$j"
                 ivField.adjustViewBounds = true
-                ivField.setImageResource(hu.bme.aut.android.chainreaction.R.drawable.nothing)
+                ivField.setImageResource(drawable.nothing)
                 ivField.setOnClickListener(this)
 
                 val lp = TableRow.LayoutParams(
@@ -175,8 +179,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun showCurrentPlayer(Id: Int): Boolean {
 
-        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.setText(getString(R.string.player_turn, Id))
+        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
+        infoText.setText(getString(string.player_turn, Id))
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
 
@@ -191,7 +195,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun refreshProgressBar(value: Int) {
 
-        val progressBar = findViewById<ProgressBar>(R.id.progressBarPlayerTime)
+        val progressBar = findViewById<ProgressBar>(id.progressBarPlayerTime)
         progressBar.progress = value
 
     }
@@ -203,7 +207,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun showMessage(msg: String): Boolean {
-        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
+        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
         infoText.setText(msg)
         return true
     }
@@ -215,23 +219,24 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun showStart(Id: Int): Boolean {
-        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        infoText.setText(getString(R.string.player_turn, Id))
-        Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.start_game, Snackbar.LENGTH_SHORT).show()
+        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
+        infoText.setText(getString(string.player_turn, Id))
+        Snackbar.make(tableLayoutPlayGround, string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
     }
 
     /**
-     * Shows the result of the game play, displays GameOverFragment
+     * Shows the result of the game play, displays GameOverFragment, writes the database
      *
-     * @param     winnerId    Id of the winner
-     * @param     playersData Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
-     * @return    boolean     True if succeed, false otherwise
+     * @param     winnerId          Id of the winner
+     * @param     playersData       Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
+     * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
+     * @return    boolean           True if succeed, false otherwise
      */
-    override fun showResult(winnerId: Int, playersData: Array<IntArray>): Boolean {
+    override fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean): Boolean {
 
-        val infoText = findViewById<TextSwitcher>(hu.bme.aut.android.chainreaction.R.id.textViewInfo)
-        val text = getString(R.string.winner_text, winnerId)
+        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
+        val text = getString(string.winner_text, winnerId)
 
         val currentText = infoText.currentView as TextView
 
@@ -239,7 +244,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
             infoText.setText(text)
 
-            val snackBar = Snackbar.make(tableLayoutPlayGround, hu.bme.aut.android.chainreaction.R.string.game_over, Snackbar.LENGTH_INDEFINITE)
+            val snackBar = Snackbar.make(tableLayoutPlayGround, string.game_over, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("LEAVE") {
                 this.finish()
             }
@@ -256,16 +261,60 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 bundle.putInt((i-1).toString()+"TypeId", playersData[i-1][3])
             }
 
+            //show the fragment
             val fragment = GameOverFragment()
             fragment.arguments = bundle
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
-            transaction.replace(R.id.viewGame, fragment)
+            transaction.setCustomAnimations(anim.abc_grow_fade_in_from_bottom, anim.abc_shrink_fade_out_from_bottom)
+            transaction.replace(id.viewGame, fragment)
             transaction.commit()
+
+            //update the database
+            databaseUpdater(playersData[playersNumber-1][3], humanVsAiGame)
 
         }
 
         return true
+
+    }
+
+    /**
+     * Updates the database
+     * Increments the overall number of victories of the winner's type and saves it, increments all games counter
+     * @param     playerType    Type of the winner. 1 means human, 2 means AI
+     * @param     humanVsAiGame True is human and AI played in the game, false otherwise
+     */
+    private fun databaseUpdater(playerType: Int, humanVsAiGame: Boolean){
+
+        val db = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db").build()
+
+        Thread {
+
+            val playerTypeStats = db.playerTypeStatDAO().getAll().toMutableList()
+
+            if(playerTypeStats.isEmpty()){
+                playerTypeStats.add(0, PlayerTypeStat(1,"human",0))
+                playerTypeStats.add(0, PlayerTypeStat(2,"ai",0))
+                playerTypeStats.add(0, PlayerTypeStat(3,"all_games",0))
+                db.playerTypeStatDAO().insert(playerTypeStats[0])
+                db.playerTypeStatDAO().insert(playerTypeStats[1])
+                db.playerTypeStatDAO().insert(playerTypeStats[2])
+            }
+
+            if(humanVsAiGame){
+                when (playerType) {
+                    1 -> {
+                        db.playerTypeStatDAO().update(playerTypeStats[0].NumberOfVictories + 1, "human")
+                    }
+                    2 -> {
+                        db.playerTypeStatDAO().update(playerTypeStats[1].NumberOfVictories + 1, "ai")
+                    }
+                }
+            }
+
+            db.playerTypeStatDAO().update(playerTypeStats[2].NumberOfVictories + 1, "all_games")
+
+        }.start()
 
     }
 

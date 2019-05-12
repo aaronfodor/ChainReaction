@@ -3,7 +3,7 @@ package presenter.task
 import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.Button
-import model.ai.PlayerLogic
+import ai.PlayerLogic
 import android.content.Context
 import android.os.AsyncTask
 import hu.bme.aut.android.chainreaction.R

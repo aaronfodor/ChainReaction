@@ -1,12 +1,15 @@
 package view
 
-import android.content.Context
+import android.arch.persistence.room.Room
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.WindowManager
+import db.PlayerTypeStatsDatabase
 import hu.bme.aut.android.chainreaction.R
 
 /**
@@ -18,13 +21,23 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         const val KEY_PROPAGATION = "show_propagation"
         const val KEY_TIME_LIMIT = "time_limit"
+        const val KEY_DELETE_DATABASE = "delete_database"
 
-        fun changeSettings(sharedPreferences: SharedPreferences, context: Context) {
-            val showPropagation = sharedPreferences.getBoolean(KEY_PROPAGATION, true)
-            val timeLimit = sharedPreferences.getBoolean(KEY_TIME_LIMIT, true)
+        fun changeSettings(sharedPreferences: SharedPreferences) {
+            with (sharedPreferences.edit()) {
+                remove(KEY_PROPAGATION)
+                putBoolean(KEY_PROPAGATION, sharedPreferences.getBoolean(KEY_PROPAGATION, true))
+                remove(KEY_TIME_LIMIT)
+                putBoolean(KEY_TIME_LIMIT, sharedPreferences.getBoolean(KEY_TIME_LIMIT, false))
+                remove(KEY_DELETE_DATABASE)
+                putBoolean(KEY_DELETE_DATABASE, false)
+                apply()
+            }
         }
 
     }
+
+    var deleteDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,6 +46,33 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, FragmentSettingsBasic())
             .commit()
+
+    }
+
+    private fun deleteDialog(){
+
+        if(deleteDialog == null) {
+
+            deleteDialog = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.confirm_delete))
+                .setMessage(getString(R.string.confirm_delete_database))
+                .setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                    val db = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db").build()
+                    Thread {
+                        db.playerTypeStatDAO().deleteAll()
+                    }.start()
+                    deleteDialog = null
+                    Snackbar.make(findViewById(android.R.id.content), "Statistics are cleared", Snackbar.LENGTH_SHORT).show()
+
+                }
+                .setNegativeButton(android.R.string.no) {dialog, which ->
+                    deleteDialog = null
+                }
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+
+        }
 
     }
 
@@ -56,10 +96,14 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         when(key) {
             KEY_PROPAGATION -> {
-                changeSettings(sharedPreferences, applicationContext)
+                changeSettings(sharedPreferences)
             }
             KEY_TIME_LIMIT -> {
-                changeSettings(sharedPreferences, applicationContext)
+                changeSettings(sharedPreferences)
+            }
+            KEY_DELETE_DATABASE -> {
+                changeSettings(sharedPreferences)
+                deleteDialog()
             }
         }
 

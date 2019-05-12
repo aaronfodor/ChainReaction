@@ -142,10 +142,12 @@ class GamePresenter
         if (model.isGameEnded() && propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE) {
             stateMatrix = model.actualPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
-            view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!)
-        } else if (propagation_depth >= 0 && propagation_depth < model.getReactionPropagationDepth()) {
+            view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
+        }
+        else if (propagation_depth >= 0 && propagation_depth < model.getReactionPropagationDepth()) {
             stateMatrix = model.historyPlaygroundInfoAt(propagation_depth)
-        } else {
+        }
+        else {
             stateMatrix = model.actualPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
         }

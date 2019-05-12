@@ -1,6 +1,6 @@
 package model;
 
-import model.ai.PlayerLogic;
+import ai.PlayerLogic;
 
 /**
  * An AI Player in a GamePlay which communicates with it's LogicAI component.

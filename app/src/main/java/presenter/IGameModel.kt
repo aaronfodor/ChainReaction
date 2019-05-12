@@ -140,4 +140,11 @@ interface IGameModel {
      */
     fun isCurrentHistoryStateEmpty(propagation_depth: Int): Boolean
 
+    /**
+     * Returns whether the current game has AI and human Players too
+     *
+     * @return    boolean       True if AI and human Players also play, false otherwise
+     */
+    fun isAiVsHumanGame(): Boolean
+
 }

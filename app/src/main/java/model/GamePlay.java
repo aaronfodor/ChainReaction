@@ -56,6 +56,11 @@ public class GamePlay implements IGameModel {
     private boolean first_round_ended = false;
 
     /**
+     * True if AI and human Players also play, false otherwise
+     */
+    private boolean is_ai_vs_human_game = false;
+
+    /**
      * MVP presenter
      */
     private GamePresenter presenter;
@@ -76,16 +81,25 @@ public class GamePlay implements IGameModel {
         this.players = new ArrayList<Player>();
         this.defeatedPlayers = new ArrayList<Player>();
 
+        boolean humanPlayerPlays = false;
+        boolean aiPlayerPlays = false;
+
         for(String[] raw_player_element : players_raw){
 
             if(raw_player_element[2].equals("human")){
                 players.add(new PlayerHuman(Integer.valueOf(raw_player_element[0]),raw_player_element[1]));
+                humanPlayerPlays = true;
             }
 
             else{
                 players.add(new PlayerAI(Integer.valueOf(raw_player_element[0]),raw_player_element[1]));
+                aiPlayerPlays = true;
             }
 
+        }
+
+        if(humanPlayerPlays && aiPlayerPlays){
+            this.is_ai_vs_human_game = true;
         }
 
         this.current_player_index = 0;
@@ -564,4 +578,12 @@ public class GamePlay implements IGameModel {
         this.playground.ResetReactionPropagationDepth();
     }
 
+    /**
+     * Returns whether the current game has AI and human Players too
+     *
+     * @return    boolean       True if AI and human Players also play, false otherwise
+     */
+    public boolean isAiVsHumanGame() {
+        return this.is_ai_vs_human_game;
+    }
 }

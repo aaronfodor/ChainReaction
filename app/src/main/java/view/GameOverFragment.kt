@@ -35,8 +35,12 @@ class GameOverFragment : Fragment() {
 
             var winnerTypeText = ""
             when (winnerType) {
-                HUMAN -> winnerTypeText = getString(R.string.type_human)
-                AI -> winnerTypeText = getString(R.string.type_ai)
+                HUMAN -> {
+                    winnerTypeText = getString(R.string.type_human)
+                }
+                AI -> {
+                    winnerTypeText = getString(R.string.type_ai)
+                }
             }
 
             textViewGameOver.text = getString(R.string.game_over_data, winnerTypeText, bundle.getInt(keyRoundsOfWinner))
@@ -49,7 +53,7 @@ class GameOverFragment : Fragment() {
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.setFitBars(true)
-            chart.setDrawValueAboveBar(false)
+            chart.setDrawValueAboveBar(true)
             chart.setScaleEnabled(false)
             chart.setDrawGridBackground(false)
             chart.legend.isWordWrapEnabled = true
@@ -73,7 +77,10 @@ class GameOverFragment : Fragment() {
 
             val set = BarDataSet(timeData, "")
             set.colors = setColors
+
             val dataSet = BarData(set)
+            dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))
+
             chart.data = dataSet
             chart.invalidate()
 
