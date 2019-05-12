@@ -137,10 +137,15 @@ public class GamePlay implements IGameModel {
     /**
      * Triggers the AI Players to step in their order
      * Sets the current Player Id to the actual Player's Id
+     * Nothing happens if the game is over
      *
      * @return 	int     minus value is the (-1)*Id of the winner; positive value is the Id of the current Player
      */
     public int stepToNextPlayer(){
+
+        if(winner_Id != 0){
+            return (-1)*winner_Id;
+        }
 
         this.last_player_index = current_player_index;
 
@@ -195,10 +200,14 @@ public class GamePlay implements IGameModel {
      * Removes the Player from the players if no territory belongs to it anymore
      * Does not remove a Player during the first round
      * Sets winner_Id if there is a winner
+     * Nothing happens if the game has already ended
      */
     private void updatePlayersInGame(){
 
         if(!first_round_ended){
+            return;
+        }
+        if(isGameEnded()){
             return;
         }
 
@@ -430,10 +439,14 @@ public class GamePlay implements IGameModel {
 
     /**
      * Called to refresh the game state
+     * Nothing happens if the game is over
      *
      * @return 	boolean     True means Game over, False otherwise
      */
     protected boolean gameStateRefresh(){
+        if(isGameEnded()){
+            return true;
+        }
         this.updatePlayersInGame();
         return this.isGameEnded();
     }
@@ -502,10 +515,14 @@ public class GamePlay implements IGameModel {
 
     /**
      * Waiting time adder method to the current Player
+     * Nothing happens is the game is over
      *
      * @param 	duration 	Waiting duration of the current Player
      */
     public void addCurrentPlayerWaitingTime(int duration){
+        if(isGameEnded()){
+            return;
+        }
         players.get(current_player_index).addWaitingTime(duration);
     }
 

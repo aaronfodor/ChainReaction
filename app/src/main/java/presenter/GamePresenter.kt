@@ -69,6 +69,11 @@ class GamePresenter
     private val timeLimit = 4000
 
     /**
+     * Has the result been displayed flag
+     */
+    private var resultDisplayed: Boolean
+
+    /**
      * Returns the game AsyncTask
      *
      * @return    AsyncTask     Returns the game AsyncTask. If empty, returns null
@@ -83,6 +88,7 @@ class GamePresenter
     init {
         val numberOfPlayers = players_input.size
         val players = ArrayList<Array<String?>>()
+        resultDisplayed = false
 
         for (i in 0 until numberOfPlayers) {
 
@@ -131,10 +137,15 @@ class GamePresenter
 
     /**
      * Refreshes the Playground and tells the view to draw it
+     * If the result has been displayed, refresh nothing
      *
      * @param   propagation_depth     Number of propagation states
      */
     fun refreshPlayground(propagation_depth: Int) {
+
+        if(resultDisplayed){
+            return
+        }
 
         val dimension = model.getDimension()
         val stateMatrix: Array<Array<IntArray>>
@@ -143,6 +154,7 @@ class GamePresenter
             stateMatrix = model.actualPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
             view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
+            resultDisplayed = true
         }
         else if (propagation_depth >= 0 && propagation_depth < model.getReactionPropagationDepth()) {
             stateMatrix = model.historyPlaygroundInfoAt(propagation_depth)
