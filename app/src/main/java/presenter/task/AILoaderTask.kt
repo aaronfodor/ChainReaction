@@ -3,7 +3,7 @@ package presenter.task
 import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.Button
-import ai.PlayerLogic
+import model.ai.PlayerLogic
 import android.content.Context
 import android.os.AsyncTask
 import hu.bme.aut.android.chainreaction.R
@@ -29,14 +29,14 @@ class AILoaderTask
     /**
      * View of the UI thread
      */
-    internal var rootView: View
+    private var rootView: View
 ) : AsyncTask<Void, Int, Boolean>() {
 
     /**
      * Loads and sets the Neural Network of PlayerLogic
      *
      * @param   params      none
-     * @return    Boolean 	True when AI component loading is finished
+     * @return  Boolean 	True when AI component loading is finished
      */
     override fun doInBackground(vararg params: Void): Boolean? {
 
@@ -47,6 +47,7 @@ class AILoaderTask
             PlayerLogic.SetNeuralNetwork(network)
         } catch (e: IOException) {
             e.printStackTrace()
+            return false
         }
 
         return true
@@ -54,15 +55,26 @@ class AILoaderTask
     }
 
     /**
-     * Accesses the UI thread - notifies the user that AI loading was successful
+     * Accesses the UI thread - notifies the user about AI loading result
      *
      * @param   result      Result of doInBackground
      */
-    override fun onPostExecute(result: Boolean?) {
+    override fun onPostExecute(result: Boolean) {
+
         val btn = rootView.findViewById<Button>(R.id.buttonNewGame)
-        btn.setText(R.string.button_new_game)
-        btn.isEnabled = true
-        Snackbar.make(rootView, hu.bme.aut.android.chainreaction.R.string.ai_loaded, Snackbar.LENGTH_LONG).show()
+
+        if(result){
+            btn.setText(R.string.button_new_game)
+            btn.isEnabled = true
+            Snackbar.make(rootView, R.string.ai_loaded, Snackbar.LENGTH_LONG).show()
+        }
+
+        else{
+            btn.setText(R.string.ai_load_error)
+            btn.isEnabled = false
+            Snackbar.make(rootView, R.string.ai_load_error, Snackbar.LENGTH_LONG).show()
+        }
+
     }
 
     override fun onPreExecute() {

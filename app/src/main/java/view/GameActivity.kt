@@ -3,7 +3,6 @@ package view
 import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
-import presenter.IGameView
 import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -14,12 +13,12 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import hu.bme.aut.android.chainreaction.R
 import android.widget.*
 import android.widget.TextView
-import db.PlayerTypeStat
-import db.PlayerTypeStatsDatabase
+import model.db.PlayerTypeStat
+import model.db.PlayerTypeStatsDatabase
 import hu.bme.aut.android.chainreaction.R.*
+import presenter.IGameView
 
 /**
  * Activity of a game play
@@ -91,12 +90,12 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val tableLayout = tableLayoutPlayGround.rootView
         tableLayout.setBackgroundColor(Color.BLACK)
 
-        for (i in 0..(height-1)) {
+        for (i in 0 .. (height-1)) {
 
             val tableRow = TableRow(this)
             tableRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
-            for(j in 0..(width-1)){
+            for(j in 0 .. (width-1)){
                 val ivField = ImageView(this)
                 ivField.tag = "img-$i-$j"
                 ivField.adjustViewBounds = true

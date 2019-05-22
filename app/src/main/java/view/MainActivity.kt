@@ -10,7 +10,7 @@ import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
 import hu.bme.aut.android.chainreaction.R
 import kotlinx.android.synthetic.main.activity_main.*
-import ai.PlayerLogic
+import model.ai.PlayerLogic
 
 /**
  * Main Activity - entry point
@@ -72,9 +72,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    override fun onResume() {
-
-        super.onResume()
+    private fun startAILoading(){
 
         if(!PlayerLogic.isNeuralNetworkLoaded()){
             //loading the AI component
@@ -82,6 +80,11 @@ class MainActivity : AppCompatActivity() {
             taskAILoad.execute()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAILoading()
     }
 
 }

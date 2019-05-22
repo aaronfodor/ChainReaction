@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 /**
  * A human Player in a GamePlay.

@@ -59,7 +59,7 @@ class GameLogicTask
      * Does the model calculation and refreshes UI periodically via publish events
      *
      * @param   params      The selected coordinates where the Player wants to step; if empty, the game will be started
-     * @return    Boolean     True when the calculation has finished
+     * @return  Boolean     True when the calculation has finished
      */
     override fun doInBackground(vararg params: Int?): Boolean? {
 
@@ -137,17 +137,17 @@ class GameLogicTask
                 var coordinates: Array<Int>? = arrayOf(0, 0)
 
                 var startTime: Long? = System.currentTimeMillis()
-                val auto_coordinates: Array<Int>? = model.autoCoordinates
+                val autoCoordinates: Array<Int>? = model.autoCoordinates
                 var estimatedTime: Long? = System.currentTimeMillis() - startTime!!
                 var estimated = estimatedTime!!.toInt()
 
-                if (auto_coordinates == null) {
+                if (autoCoordinates == null) {
                     coordinates?.set(0, params[0]!!)
                     coordinates?.set(1, params[1]!!)
                     estimated = params[2]!!
                 } else {
-                    coordinates?.set(0, auto_coordinates[0])
-                    coordinates?.set(1, auto_coordinates[1])
+                    coordinates?.set(0, autoCoordinates[0])
+                    coordinates?.set(1, autoCoordinates[1])
                 }
 
                 while (coordinates != null) {
@@ -199,9 +199,9 @@ class GameLogicTask
                 } else if (showPropagation!!) {
 
                     model.historyPlaygroundBuilder()
-                    val propagation_depth = model.getReactionPropagationDepth()
+                    val propagationDepth = model.getReactionPropagationDepth()
 
-                    for (i in propagation_depth - 2 downTo 1) {
+                    for (i in propagationDepth - 2 downTo 1) {
 
                         if (cancelTask) {
                             break

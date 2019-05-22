@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 /**
  * An abstract Player who can step and therefore takes part in a GamePlay.
@@ -18,7 +18,7 @@ public abstract class Player {
     /**
      * GamePlay that the Player is in
      */
-    protected GamePlay gameplay;
+    protected GamePlay gamePlay;
 
     /**
      * Waiting time of the Player
@@ -68,16 +68,16 @@ public abstract class Player {
      * @return 	boolean     True if succeed, false otherwise
      */
     protected boolean ExecuteStep(int pos_y, int pos_x){
-        return this.gameplay.getPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
+        return this.gamePlay.getPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
     }
 
     /**
      * GamePlay setter method
      *
-     * @param 	gameplay 	GamePlay the Player is in
+     * @param 	gamePlay 	GamePlay the Player is in
      */
-    public void SetGamePlay(GamePlay gameplay){
-        this.gameplay= gameplay;
+    public void SetGamePlay(GamePlay gamePlay){
+        this.gamePlay= gamePlay;
     }
 
     /**

@@ -6,10 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import hu.bme.aut.android.chainreaction.R
 
@@ -78,17 +76,10 @@ class PlayerListAdapter
         /**
          * properties
          */
-        val imageView: ImageView
-        val nameView: TextView
-        val typeView: TextView
-        private val playerHolder: CardView
-
-        init {
-            this.imageView = itemView.findViewById(R.id.imageViewPlayer)
-            this.nameView = itemView.findViewById(R.id.nameView)
-            this.typeView = itemView.findViewById(R.id.typeView)
-            this.playerHolder = itemView.findViewById(R.id.cvPlayerHolder)
-        }
+        val imageView: ImageView = itemView.findViewById(R.id.imageViewPlayer)
+        val nameView: TextView = itemView.findViewById(R.id.nameView)
+        val typeView: TextView = itemView.findViewById(R.id.typeView)
+        private val playerHolder: CardView = itemView.findViewById(R.id.cvPlayerHolder)
 
     }
 

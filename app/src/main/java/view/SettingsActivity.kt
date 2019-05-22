@@ -9,7 +9,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.view.WindowManager
-import db.PlayerTypeStatsDatabase
+import model.db.PlayerTypeStatsDatabase
 import hu.bme.aut.android.chainreaction.R
 
 /**
@@ -37,7 +37,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
     }
 
-    var deleteDialog: AlertDialog? = null
+    private var deleteDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

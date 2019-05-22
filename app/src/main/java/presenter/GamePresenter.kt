@@ -1,7 +1,6 @@
 package presenter
 
-import android.os.AsyncTask
-import model.GamePlay
+import model.game.GamePlay
 import presenter.task.GameLogicTask
 
 import java.util.ArrayList
@@ -78,7 +77,7 @@ class GamePresenter
      *
      * @return    AsyncTask     Returns the game AsyncTask. If empty, returns null
      */
-    val task: AsyncTask<*, *, *>?
+    val task: GameLogicTask?
         get() = if (gameTask != null) {
             gameTask
         } else {

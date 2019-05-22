@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 /**
  * Possible Directions in which the Particles can spread

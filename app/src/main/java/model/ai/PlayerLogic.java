@@ -1,4 +1,4 @@
-package ai;
+package model.ai;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -124,6 +124,7 @@ public class PlayerLogic {
 
     /**
      * Weights the sureness of the selected step with the global goodness value of it
+     * Only does weighting when the selected step leads to explosion
      *
      * @param  result                   Local info of the Field to step on the input matrix: [0] is Y, [1] is X coordinate, [2] is the prediction value - 1 is the greatest
      * @param	playground_state        [i] is Y coordinate, [][j] is X coordinate, [][][0] is the Id of the owner, [][][1] is the number of elements on the Field, [][][2] is the number of elements can be placed onto the Field before explosion
@@ -131,80 +132,82 @@ public class PlayerLogic {
      */
     private Double[] weightDecisionGlobally(Double[] result, int[][][] playground_state) {
 
+        //if the selection leads to explosion
         if(playground_state[result[0].intValue()][result[1].intValue()][2] == 0){
 
             int player = playground_state[result[0].intValue()][result[1].intValue()][0];
 
-            int cntr = result[0].intValue();
-            while(cntr-1 >= 0){
-                double neighbor = 1-(0.25*(playground_state[cntr-1][result[1].intValue()][2]));
+            int counter = result[0].intValue();
+            while(counter-1 >= 0){
+                double neighbor = 1-(0.25*(playground_state[counter-1][result[1].intValue()][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[cntr-1][result[1].intValue()][0]){
+                    if(player != playground_state[counter-1][result[1].intValue()][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[cntr-1][result[1].intValue()][0] != 0 && playground_state[cntr-1][result[1].intValue()][0] != player){
+                    if(playground_state[counter-1][result[1].intValue()][0] != 0 && playground_state[counter-1][result[1].intValue()][0] != player){
                         result[2] += neighbor;
                     }
                     break;
                 }
-                cntr--;
+                counter--;
             }
 
-            cntr = result[0].intValue();
-            while(cntr+1 < playground_state.length){
-                double neighbor = 1-(0.25*(playground_state[cntr+1][result[1].intValue()][2]));
+            counter = result[0].intValue();
+            while(counter+1 < playground_state.length){
+                double neighbor = 1-(0.25*(playground_state[counter+1][result[1].intValue()][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[cntr+1][result[1].intValue()][0]){
+                    if(player != playground_state[counter+1][result[1].intValue()][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[cntr+1][result[1].intValue()][0] != 0 && playground_state[cntr+1][result[1].intValue()][0] != player){
+                    if(playground_state[counter+1][result[1].intValue()][0] != 0 && playground_state[counter+1][result[1].intValue()][0] != player){
                         result[2] += neighbor;
                     }
                     break;
                 }
-                cntr++;
+                counter++;
             }
 
-            cntr = result[1].intValue();
-            while(cntr-1 >= 0){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr-1][2]));
+            counter = result[1].intValue();
+            while(counter-1 >= 0){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][counter-1][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[result[0].intValue()][cntr-1][0]){
+                    if(player != playground_state[result[0].intValue()][counter-1][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[result[0].intValue()][cntr-1][0] != 0 && playground_state[result[0].intValue()][cntr-1][0] != player){
+                    if(playground_state[result[0].intValue()][counter-1][0] != 0 && playground_state[result[0].intValue()][counter-1][0] != player){
                         result[2] += neighbor;
                     }
                     break;
                 }
-                cntr--;
+                counter--;
             }
 
-            cntr = result[1].intValue();
-            while(cntr+1 < playground_state[0].length){
-                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][cntr+1][2]));
+            counter = result[1].intValue();
+            while(counter+1 < playground_state[0].length){
+                double neighbor = 1-(0.25*(playground_state[result[0].intValue()][counter+1][2]));
                 if(player != 0 && neighbor == 1){
-                    if(player != playground_state[result[0].intValue()][cntr+1][0]){
+                    if(player != playground_state[result[0].intValue()][counter+1][0]){
                         result[2] += neighbor;
                     }
                 }
                 else{
-                    if(playground_state[result[0].intValue()][cntr+1][0] != 0 && playground_state[result[0].intValue()][cntr+1][0] != player){
+                    if(playground_state[result[0].intValue()][counter+1][0] != 0 && playground_state[result[0].intValue()][counter+1][0] != player){
                         result[2] += neighbor;
                     }
                     break;
                 }
-                cntr++;
+                counter++;
             }
 
         }
 
+        //the selection does not lead to explosion - do not weight the selection
         else{
             //result[2] *= 1-(0.25*(playground_state[result[0].intValue()][result[1].intValue()][2]));
         }

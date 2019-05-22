@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 import org.jetbrains.annotations.NotNull;
 import presenter.GamePresenter;
@@ -78,8 +78,8 @@ public class GamePlay implements IGameModel {
     public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
 
         this.presenter = presenter;
-        this.players = new ArrayList<Player>();
-        this.defeatedPlayers = new ArrayList<Player>();
+        this.players = new ArrayList<>();
+        this.defeatedPlayers = new ArrayList<>();
 
         boolean humanPlayerPlays = false;
         boolean aiPlayerPlays = false;
@@ -212,7 +212,7 @@ public class GamePlay implements IGameModel {
         }
 
         //key is the Id of the Player, value is the number of Fields it owns
-        HashMap<Integer,Integer> field_number_of_players = new HashMap<Integer, Integer>();
+        HashMap<Integer,Integer> field_number_of_players = new HashMap<>();
 
         for(Player player : players) {
             field_number_of_players.put(player.GetId(),0);
@@ -229,7 +229,7 @@ public class GamePlay implements IGameModel {
 
         }
 
-        ArrayList<Player> players_to_remove = new ArrayList<Player>();
+        ArrayList<Player> players_to_remove = new ArrayList<>();
 
         for(HashMap.Entry<Integer,Integer> entry : field_number_of_players.entrySet()){
 

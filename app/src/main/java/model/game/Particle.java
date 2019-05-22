@@ -1,4 +1,4 @@
-package model;
+package model.game;
 
 /**
  * An element on a Field which has an owner and a state. It is able to explode.

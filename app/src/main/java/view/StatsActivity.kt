@@ -11,8 +11,8 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import hu.bme.aut.android.chainreaction.R
 import com.github.mikephil.charting.components.Legend
-import db.PlayerTypeStat
-import db.PlayerTypeStatsDatabase
+import model.db.PlayerTypeStat
+import model.db.PlayerTypeStatsDatabase
 
 
 class StatsActivity : AppCompatActivity() {
@@ -38,19 +38,19 @@ class StatsActivity : AppCompatActivity() {
 
             runOnUiThread {
 
-                val TextViewStats = findViewById<TextView>(R.id.textViewStats)
-                val TextViewWinners = findViewById<TextView>(R.id.textViewWinningStats)
+                val textViewStats = findViewById<TextView>(R.id.textViewStats)
+                val textViewWinners = findViewById<TextView>(R.id.textViewWinningStats)
 
                 if(playerTypeStats.isEmpty()){
-                    TextViewStats.text = getString(R.string.empty_db)
-                    TextViewWinners.text = ""
+                    textViewStats.text = getString(R.string.empty_db)
+                    textViewWinners.text = ""
                 }
 
                 else{
                     val humanVictories = playerTypeStats[0].NumberOfVictories
                     val aiVictories = playerTypeStats[1].NumberOfVictories
-                    TextViewStats.text = getString(R.string.stats_data, playerTypeStats[2].NumberOfVictories, humanVictories+aiVictories)
-                    TextViewWinners.text = getString(R.string.winning_data, humanVictories, aiVictories)
+                    textViewStats.text = getString(R.string.stats_data, playerTypeStats[2].NumberOfVictories, humanVictories+aiVictories)
+                    textViewWinners.text = getString(R.string.winning_data, humanVictories, aiVictories)
                     displayChart(humanVictories, aiVictories)
                 }
 

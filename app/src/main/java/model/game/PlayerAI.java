@@ -1,6 +1,6 @@
-package model;
+package model.game;
 
-import ai.PlayerLogic;
+import model.ai.PlayerLogic;
 
 /**
  * An AI Player in a GamePlay which communicates with it's LogicAI component.
@@ -28,7 +28,7 @@ public class PlayerAI extends Player {
      */
     @Override
     public Integer[] ExecuteStep() {
-        return AI.CalculateStep(this.gameplay.actualPlaygroundInfo(), this.GetId());
+        return AI.CalculateStep(this.gamePlay.actualPlaygroundInfo(), this.GetId());
     }
 
 }
