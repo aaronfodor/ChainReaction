@@ -82,10 +82,13 @@ class GameLogicTask
                     }
 
                     try {
+
                         propagationDisplayManager(coordinates[0], coordinates[1], estimated)
                         Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
+
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
+                        handleOnCancelled()
                     }
 
                     startTime = System.currentTimeMillis()
@@ -119,10 +122,13 @@ class GameLogicTask
                     }
 
                     try {
+
                         propagationDisplayManager(coordinates[0], coordinates[1], estimated)
                         Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
+
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
+                        handleOnCancelled()
                     }
 
                     startTime = System.currentTimeMillis()
@@ -157,10 +163,13 @@ class GameLogicTask
                     }
 
                     try {
+
                         propagationDisplayManager(coordinates[0], coordinates[1], estimated)
                         Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
+
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
+                        handleOnCancelled()
                     }
 
                     startTime = System.currentTimeMillis()
@@ -170,7 +179,8 @@ class GameLogicTask
 
                 }
 
-            }//step request happened
+            }
+            //step request happened
             //time is up, Player is not allowed to step, next Player comes
 
         }
@@ -201,7 +211,7 @@ class GameLogicTask
                     model.historyPlaygroundBuilder()
                     val propagationDepth = model.getReactionPropagationDepth()
 
-                    for (i in propagationDepth - 2 downTo 1) {
+                    for (i in propagationDepth - 1 downTo 0) {
 
                         if (cancelTask) {
                             break
@@ -216,6 +226,7 @@ class GameLogicTask
 
                         } catch (e: InterruptedException) {
                             e.printStackTrace()
+                            handleOnCancelled()
                         }
 
                     }

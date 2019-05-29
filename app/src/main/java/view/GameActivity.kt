@@ -266,7 +266,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(anim.abc_grow_fade_in_from_bottom, anim.abc_shrink_fade_out_from_bottom)
             transaction.replace(id.viewGame, fragment)
-            transaction.commit()
+            //transaction.commit() can lead to IllegalStateException as state loss can happen here
+            //fragment state is not important for us, state loss is acceptable here
+            transaction.commitAllowingStateLoss()
 
             //update the database
             databaseUpdater(playersData[playersNumber-1][3], humanVsAiGame)
@@ -312,6 +314,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             }
 
             db.playerTypeStatDAO().update(playerTypeStats[2].NumberOfVictories + 1, "all_games")
+            db.close()
 
         }.start()
 

@@ -109,7 +109,7 @@ public class GamePlay implements IGameModel {
         this.playground = new Playground(this, height, width);
 
         for(Player player : this.players){
-            player.SetGamePlay(this);
+            player.setGamePlay(this);
         }
 
     }
@@ -121,15 +121,15 @@ public class GamePlay implements IGameModel {
      */
     public int startGame(){
 
-        Integer[] coordinates = players.get(current_player_index).ExecuteStep();
+        Integer[] coordinates = players.get(current_player_index).executeStep();
 
         if(coordinates != null){
-            players.get(current_player_index).ExecuteStep(coordinates[0], coordinates[1]);
+            players.get(current_player_index).executeStep(coordinates[0], coordinates[1]);
             return stepToNextPlayer();
         }
 
         else{
-            return players.get(current_player_index).GetId();
+            return players.get(current_player_index).getId();
         }
 
     }
@@ -162,7 +162,7 @@ public class GamePlay implements IGameModel {
             current_player_index++;
         }
 
-        return players.get(current_player_index).GetId();
+        return players.get(current_player_index).getId();
 
     }
 
@@ -179,7 +179,7 @@ public class GamePlay implements IGameModel {
             return (-1)*winner_Id;
         }
 
-        if(players.get(current_player_index).ExecuteStep(pos_y,pos_x)){
+        if(players.get(current_player_index).executeStep(pos_y,pos_x)){
 
             if(this.gameStateRefresh()){
                 return (-1)*winner_Id;
@@ -215,13 +215,13 @@ public class GamePlay implements IGameModel {
         HashMap<Integer,Integer> field_number_of_players = new HashMap<>();
 
         for(Player player : players) {
-            field_number_of_players.put(player.GetId(),0);
+            field_number_of_players.put(player.getId(),0);
         }
 
-        for(int actual_height = 0; actual_height < this.playground.GetHeight(); actual_height++){
+        for(int actual_height = 0; actual_height < this.playground.getHeight(); actual_height++){
 
-            for(int actual_width = 0; actual_width < this.playground.GetWidth(); actual_width++){
-                int temp_Id = this.playground.GetFieldAt(actual_height,actual_width).GetPlayerIdOnField();
+            for(int actual_width = 0; actual_width < this.playground.getWidth(); actual_width++){
+                int temp_Id = this.playground.getFieldAt(actual_height,actual_width).getPlayerIdOnField();
                 if(temp_Id != 0){
                     field_number_of_players.put(temp_Id, field_number_of_players.get(temp_Id)+1);
                 }
@@ -237,7 +237,7 @@ public class GamePlay implements IGameModel {
 
                 for(Player player : players){
 
-                    if(player.GetId() == entry.getKey()){
+                    if(player.getId() == entry.getKey()){
                         players_to_remove.add(player);
                         defeatedPlayers.add(player);
                     }
@@ -259,7 +259,7 @@ public class GamePlay implements IGameModel {
         }
 
         if(players.size() == 1){
-            winner_Id = players.get(current_player_index).GetId();
+            winner_Id = players.get(current_player_index).getId();
         }
 
     }
@@ -273,18 +273,18 @@ public class GamePlay implements IGameModel {
      * @return 	int[][][]   Field information matrix
      */
     @NotNull
-    public int[][][] actualPlaygroundInfo() {
+    public int[][][] currentPlaygroundInfo() {
 
         int[] dim = this.getDimension();
 
         int[][][] state_matrix = new int[dim[0]][dim[1]][3];
 
-        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+        for(int current_height = 0; current_height < dim[0]; current_height++){
 
-            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
-                state_matrix[actual_height][actual_width][0] = playground.GetFieldAt(actual_height, actual_width).GetPlayerIdOnField();
-                state_matrix[actual_height][actual_width][1] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
-                state_matrix[actual_height][actual_width][2] = playground.GetFieldAt(actual_height, actual_width).GetParticle().GetNumberLeftBeforeExplosion();
+            for(int current_width = 0; current_width < dim[1]; current_width++){
+                state_matrix[current_height][current_width][0] = playground.getFieldAt(current_height, current_width).getPlayerIdOnField();
+                state_matrix[current_height][current_width][1] = playground.getFieldAt(current_height, current_width).getParticle().getSize();
+                state_matrix[current_height][current_width][2] = playground.getFieldAt(current_height, current_width).getParticle().getNumberLeftBeforeExplosion();
             }
 
         }
@@ -305,7 +305,7 @@ public class GamePlay implements IGameModel {
     public int[][][] historyPlaygroundInfoAt(int propagation_depth) {
 
         if(this.history_matrix == null){
-            return this.actualPlaygroundInfo();
+            return this.currentPlaygroundInfo();
         }
 
         int[] dim = this.getDimension();
@@ -334,7 +334,7 @@ public class GamePlay implements IGameModel {
 
         int[] dim = this.getDimension();
 
-        int propagation_depth = this.playground.GetReactionPropagationDepth();
+        int propagation_depth = this.playground.getReactionPropagationDepth();
 
         if(propagation_depth == 0){
             propagation_depth++;
@@ -342,38 +342,38 @@ public class GamePlay implements IGameModel {
 
         int[][][][] state_matrix = new int[dim[0]][dim[1]][propagation_depth][3];
 
-        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+        for(int current_height = 0; current_height < dim[0]; current_height++){
 
-            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+            for(int current_width = 0; current_width < dim[1]; current_width++){
 
-                if(playground.GetFieldAt(actual_height, actual_width).NumberOfStates() == 0){
+                if(playground.getFieldAt(current_height, current_width).numberOfStates() == 0){
 
                     int[] current_state = new int[3];
-                    current_state[0] = this.playground.GetFieldAt(actual_height, actual_width).GetParticle().GetOwnerId();
-                    current_state[1] = this.playground.GetFieldAt(actual_height, actual_width).GetParticle().GetSize();
-                    current_state[2] = this.playground.GetFieldAt(actual_height, actual_width).GetParticle().GetNumberLeftBeforeExplosion();
+                    current_state[0] = this.playground.getFieldAt(current_height, current_width).getParticle().getOwnerId();
+                    current_state[1] = this.playground.getFieldAt(current_height, current_width).getParticle().getSize();
+                    current_state[2] = this.playground.getFieldAt(current_height, current_width).getParticle().getNumberLeftBeforeExplosion();
 
                     for(int i = 0; i < propagation_depth; i++){
-                        state_matrix[actual_height][actual_width][i] = current_state;
+                        state_matrix[current_height][current_width][i] = current_state;
                     }
 
                 }
 
                 else{
 
-                    int current_propagation_depth = playground.GetFieldAt(actual_height, actual_width).NumberOfStates();
+                    int current_propagation_depth = playground.getFieldAt(current_height, current_width).numberOfStates();
 
                     if(current_propagation_depth > propagation_depth){
                         current_propagation_depth = propagation_depth;
                     }
 
                     for(int propagation_time = 0; propagation_time < current_propagation_depth; propagation_time++){
-                        state_matrix[actual_height][actual_width][propagation_time] = playground.GetFieldAt(actual_height, actual_width).GetStateAt(propagation_time);
+                        state_matrix[current_height][current_width][propagation_time] = playground.getFieldAt(current_height, current_width).getStateAt(propagation_time);
                     }
 
                 }
 
-                playground.GetFieldAt(actual_height, actual_width).Clear();
+                playground.getFieldAt(current_height, current_width).clearHistory();
 
             }
 
@@ -396,12 +396,12 @@ public class GamePlay implements IGameModel {
 
         int[] dim = this.getDimension();
 
-        for(int actual_height = 0; actual_height < dim[0]; actual_height++){
+        for(int current_height = 0; current_height < dim[0]; current_height++){
 
-            for(int actual_width = 0; actual_width < dim[1]; actual_width++){
+            for(int current_width = 0; current_width < dim[1]; current_width++){
 
-                int[] actual_field_state = this.history_matrix[actual_height][actual_width][propagation_depth];
-                if(actual_field_state[1] > 0){
+                int[] current_field_state = this.history_matrix[current_height][current_width][propagation_depth];
+                if(current_field_state[1] > 0){
                     return false;
                 }
 
@@ -423,8 +423,8 @@ public class GamePlay implements IGameModel {
     @NotNull
     public int[] getDimension() {
         int[] dim = new int[2];
-        dim[0] = playground.GetHeight();
-        dim[1] = playground.GetWidth();
+        dim[0] = playground.getHeight();
+        dim[1] = playground.getWidth();
         return dim;
     }
 
@@ -468,7 +468,7 @@ public class GamePlay implements IGameModel {
     @NotNull
     public String winnerType(){
 
-        if(players.get(winner_Id).ExecuteStep() != null){
+        if(players.get(winner_Id).executeStep() != null){
             return "AI";
         }
 
@@ -484,7 +484,7 @@ public class GamePlay implements IGameModel {
      * @return 	Integer     Id of the current Player
      */
     public Integer getActualPlayerId(){
-        return players.get(current_player_index).GetId();
+        return players.get(current_player_index).getId();
     }
 
     /**
@@ -508,7 +508,7 @@ public class GamePlay implements IGameModel {
         }
 
         else{
-            return players.get(last_player_index).GetId();
+            return players.get(last_player_index).getId();
         }
 
     }
@@ -539,7 +539,7 @@ public class GamePlay implements IGameModel {
 
             Player player = defeatedPlayers.get(i);
             int[] data = new int[4];
-            data[0] = player.GetId();
+            data[0] = player.getId();
             data[1] = player.getAvgWaitingTime();
             data[2] = player.getNumberOfRounds();
             data[3] = player.getTypeId();
@@ -551,7 +551,7 @@ public class GamePlay implements IGameModel {
 
             Player player = players.get(i);
             int[] data = new int[4];
-            data[0] = player.GetId();
+            data[0] = player.getId();
             data[1] = player.getAvgWaitingTime();
             data[2] = player.getNumberOfRounds();
             data[3] = player.getTypeId();
@@ -574,7 +574,7 @@ public class GamePlay implements IGameModel {
         }
 
         else{
-            return players.get(current_player_index).ExecuteStep();
+            return players.get(current_player_index).executeStep();
         }
 
     }
@@ -585,14 +585,14 @@ public class GamePlay implements IGameModel {
      * @return 	int     Reaction propagation depth
      */
     public int getReactionPropagationDepth(){
-        return this.playground.GetReactionPropagationDepth();
+        return this.playground.getReactionPropagationDepth();
     }
 
     /**
      * Reaction propagation depth reset method
      */
     public void resetReactionPropagationDepth(){
-        this.playground.ResetReactionPropagationDepth();
+        this.playground.resetReactionPropagationDepth();
     }
 
     /**

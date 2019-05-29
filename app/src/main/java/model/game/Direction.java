@@ -15,7 +15,7 @@ public enum Direction {
      *
      * @return 	Direction	Opposite Direction
      */
-    Direction GetOpposite(){
+    Direction getOpposite(){
 
         switch (this){
             case Down: return Up;

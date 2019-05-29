@@ -82,33 +82,33 @@ class Playground {
 
         }
 
-        SetNeighborsOnPlayground();
+        setNeighborsOnPlayground();
 
     }
 
     /**
      * Sets all neighbors on the playground
      */
-    private void SetNeighborsOnPlayground(){
+    private void setNeighborsOnPlayground(){
 
         for(int actual_height = 0; actual_height < this.height; actual_height++){
 
             for(int actual_width = 0; actual_width < this.width; actual_width++){
 
                 if(actual_height+1 < this.height){
-                    fields[actual_height][actual_width].SetNeighbor(fields[actual_height+1][actual_width],Direction.Down);
+                    fields[actual_height][actual_width].setNeighbor(fields[actual_height+1][actual_width],Direction.Down);
                 }
 
                 if(actual_width-1 >= 0){
-                    fields[actual_height][actual_width].SetNeighbor(fields[actual_height][actual_width-1],Direction.Left);
+                    fields[actual_height][actual_width].setNeighbor(fields[actual_height][actual_width-1],Direction.Left);
                 }
 
                 if(actual_height-1 >= 0){
-                    fields[actual_height][actual_width].SetNeighbor(fields[actual_height-1][actual_width],Direction.Up);
+                    fields[actual_height][actual_width].setNeighbor(fields[actual_height-1][actual_width],Direction.Up);
                 }
 
                 if(actual_width+1 < this.width){
-                    fields[actual_height][actual_width].SetNeighbor(fields[actual_height][actual_width+1],Direction.Right);
+                    fields[actual_height][actual_width].setNeighbor(fields[actual_height][actual_width+1],Direction.Right);
                 }
 
             }
@@ -124,7 +124,7 @@ class Playground {
      * @param	pos_x       X coordinate
      * @return 	Field       The result Field
      */
-    protected Field GetFieldAt(int pos_y, int pos_x){
+    protected Field getFieldAt(int pos_y, int pos_x){
         return fields[pos_y][pos_x];
     }
 
@@ -133,7 +133,7 @@ class Playground {
      *
      * @return 	width   Width of the Playground
      */
-    protected int GetWidth(){
+    protected int getWidth(){
         return this.width;
     }
 
@@ -142,7 +142,7 @@ class Playground {
      *
      * @return 	height   Height of the Playground
      */
-    protected int GetHeight(){
+    protected int getHeight(){
         return this.height;
     }
 
@@ -151,7 +151,7 @@ class Playground {
      *
      * @return 	boolean     True means Game over, False otherwise
      */
-    protected boolean IsGameEnded(){
+    protected boolean isGameEnded(){
         return this.gameplay.gameStateRefresh();
     }
 
@@ -160,7 +160,7 @@ class Playground {
      *
      * @return 	int     Reaction propagation depth
      */
-    protected int GetReactionPropagationDepth(){
+    protected int getReactionPropagationDepth(){
         return this.propagation_depth;
     }
 
@@ -169,14 +169,14 @@ class Playground {
      *
      * @param 	value       The value to be set as reaction propagation depth
      */
-    protected void SetReactionPropagationDepth(int value){
+    protected void setReactionPropagationDepth(int value){
         this.propagation_depth = value;
     }
 
     /**
      * Reaction propagation depth reset method
      */
-    protected void ResetReactionPropagationDepth(){
+    protected void resetReactionPropagationDepth(){
         this.propagation_depth = 0;
     }
 

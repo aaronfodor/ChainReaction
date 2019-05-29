@@ -61,6 +61,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
                     val db = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db").build()
                     Thread {
                         db.playerTypeStatDAO().deleteAll()
+                        db.close()
                     }.start()
                     deleteDialog = null
                     Snackbar.make(findViewById(android.R.id.content), "Statistics are cleared", Snackbar.LENGTH_SHORT).show()

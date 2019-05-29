@@ -65,7 +65,7 @@ interface IGameModel {
      *
      * @return    int[][][]   Field information matrix
      */
-    fun actualPlaygroundInfo(): Array<Array<IntArray>>
+    fun currentPlaygroundInfo(): Array<Array<IntArray>>
 
     /**
      * History playground info builder

@@ -55,7 +55,7 @@ public abstract class Player {
      *
      * @return 	Integer[]     Returns null by default
      */
-    public Integer[] ExecuteStep() {
+    public Integer[] executeStep() {
         return null;
     }
 
@@ -67,8 +67,8 @@ public abstract class Player {
      * @param	pos_x       X coordinate
      * @return 	boolean     True if succeed, false otherwise
      */
-    protected boolean ExecuteStep(int pos_y, int pos_x){
-        return this.gamePlay.getPlayground().GetFieldAt(pos_y, pos_x).ElementAdd(this);
+    protected boolean executeStep(int pos_y, int pos_x){
+        return this.gamePlay.getPlayground().getFieldAt(pos_y, pos_x).ElementAdd(this);
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class Player {
      *
      * @param 	gamePlay 	GamePlay the Player is in
      */
-    public void SetGamePlay(GamePlay gamePlay){
+    public void setGamePlay(GamePlay gamePlay){
         this.gamePlay= gamePlay;
     }
 
@@ -85,7 +85,7 @@ public abstract class Player {
      *
      * @return 	int     Id of the Player
      */
-    public int GetId(){
+    public int getId(){
         return this.Id;
     }
 

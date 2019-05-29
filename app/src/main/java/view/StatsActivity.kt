@@ -34,6 +34,7 @@ class StatsActivity : AppCompatActivity() {
         var playerTypeStats: MutableList<PlayerTypeStat>
 
         Thread {
+
             playerTypeStats = db.playerTypeStatDAO().getAll().toMutableList()
 
             runOnUiThread {
@@ -55,6 +56,8 @@ class StatsActivity : AppCompatActivity() {
                 }
 
             }
+
+            db.close()
 
         }.start()
 

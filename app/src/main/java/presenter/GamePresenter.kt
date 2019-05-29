@@ -138,7 +138,7 @@ class GamePresenter
      * Refreshes the Playground and tells the view to draw it
      * If the result has been displayed, refresh nothing
      *
-     * @param   propagation_depth     Number of propagation states
+     * @param   propagation_depth     Current propagation state
      */
     fun refreshPlayground(propagation_depth: Int) {
 
@@ -150,7 +150,7 @@ class GamePresenter
         val stateMatrix: Array<Array<IntArray>>
 
         if (model.isGameEnded() && propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE) {
-            stateMatrix = model.actualPlaygroundInfo()
+            stateMatrix = model.currentPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
             view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
             resultDisplayed = true
@@ -159,7 +159,7 @@ class GamePresenter
             stateMatrix = model.historyPlaygroundInfoAt(propagation_depth)
         }
         else {
-            stateMatrix = model.actualPlaygroundInfo()
+            stateMatrix = model.currentPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
         }
 
@@ -175,6 +175,18 @@ class GamePresenter
 
         }
 
+        timeLeftCalculator(propagation_depth)
+
+    }
+
+    /**
+     * Starts the timerTask and refreshes the time left progress bar when the current state is displayed
+     * Calculates when limited time mode is enabled, only applies to human players when the game is not over
+     *
+     * @param   propagation_depth     Current propagation state
+     */
+    private fun timeLeftCalculator(propagation_depth: Int) {
+
         if (timerTask != null) {
             timerTask!!.cancel()
         }
@@ -183,8 +195,7 @@ class GamePresenter
         //when limited time mode is enabled, it only applies to human players when the game is not over
         if (!model.isGameEnded() && limitedTimeMode!! && model.actualPlayerType == HUMAN) {
 
-            //show the current state, not the propagation states
-            if (propagation_depth <= 0) {
+            if (propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE){
 
                 timerTask = object : TimerTask() {
 
@@ -208,6 +219,12 @@ class GamePresenter
                         }
 
                     }
+
+                    override fun cancel(): Boolean {
+                        view.refreshProgressBar(0)
+                        return super.cancel()
+                    }
+
                 }
 
                 val timer = Timer("MyTimer")

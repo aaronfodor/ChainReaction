@@ -27,8 +27,8 @@ public class PlayerAI extends Player {
      * @return 	Integer[]     Coordinates of the selected Field to step on by AI
      */
     @Override
-    public Integer[] ExecuteStep() {
-        return AI.CalculateStep(this.gamePlay.actualPlaygroundInfo(), this.GetId());
+    public Integer[] executeStep() {
+        return AI.CalculateStep(this.gamePlay.currentPlaygroundInfo(), this.getId());
     }
 
 }

@@ -47,22 +47,22 @@ public class Particle {
      * @param	owner	    Player who tries to increase
      * @return 	boolean     True if the action was successful, false otherwise
      */
-    protected boolean React(Player owner){
+    protected boolean react(Player owner){
 
         if((this.owner == owner) || (this.owner == null)){
 
             int propagation_depth = 1;
-            //this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+            //this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
             this.owner = owner;
 
             if(current_size == max_size){
-                this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), 0, max_size);
-                this.Explode(propagation_depth);
+                //this.field.addStateToHistory(propagation_depth+1, this.getOwnerId(), 0, max_size);
+                this.explode(propagation_depth);
             }
 
             else{
                 current_size++;
-                this.field.AddStateToHistory(propagation_depth+1, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+                this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
             }
 
             return true;
@@ -81,18 +81,18 @@ public class Particle {
      *
      * @param	owner   Player who increases it
      */
-    private void Increase(Player owner, int propagation_depth){
+    private void increase(Player owner, int propagation_depth){
 
         this.owner = owner;
 
         if(current_size == max_size){
-            this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
-            this.Explode(propagation_depth);
+            //this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
+            this.explode(propagation_depth);
         }
 
         else{
             current_size++;
-            this.field.AddStateToHistory(propagation_depth, this.GetOwnerId(), this.GetSize(), this.GetNumberLeftBeforeExplosion());
+            this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
         }
 
 
@@ -103,11 +103,13 @@ public class Particle {
      * Does nothing if the game is over
      * It sets its value to zero, and sets its owner to null
      */
-    private void Explode(int propagation_depth){
+    private void explode(int propagation_depth){
 
-        if(IsGameEnded()){
+        if(isGameEnded()){
             return;
         }
+
+        this.field.addStateToHistory(propagation_depth, this.getOwnerId(), 0, max_size);
 
         Player exploder = this.owner;
         this.current_size = 0;
@@ -115,8 +117,8 @@ public class Particle {
 
         for (Direction dir : Direction.values()) {
 
-            if(field.GetNeighborAt(dir) != null){
-                field.GetNeighborAt(dir).GetParticle().Increase(exploder, propagation_depth+1);
+            if(field.getNeighborAt(dir) != null){
+                field.getNeighborAt(dir).getParticle().increase(exploder, propagation_depth+1);
             }
 
         }
@@ -128,10 +130,10 @@ public class Particle {
      *
      * @return 	int    Id of the owner, or 0 if there is no owner
      */
-    protected int GetOwnerId(){
+    protected int getOwnerId(){
 
         if(owner != null){
-            return owner.GetId();
+            return owner.getId();
         }
 
         else{
@@ -145,7 +147,7 @@ public class Particle {
      *
      * @return 	int    Current size of the Particle
      */
-    protected int GetSize(){
+    protected int getSize(){
         return this.current_size;
     }
 
@@ -154,7 +156,7 @@ public class Particle {
      *
      * @return 	int    Number of elements before explosion
      */
-    protected int GetNumberLeftBeforeExplosion(){
+    protected int getNumberLeftBeforeExplosion(){
         return (max_size - current_size);
     }
 
@@ -163,8 +165,8 @@ public class Particle {
      *
      * @return 	boolean     True means Game is over - computation is not necessary, False otherwise
      */
-    private boolean IsGameEnded(){
-        return this.field.IsGameEnded();
+    private boolean isGameEnded(){
+        return this.field.isGameEnded();
     }
 
 }
