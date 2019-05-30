@@ -211,7 +211,7 @@ class GameLogicTask
                     model.historyPlaygroundBuilder()
                     val propagationDepth = model.getReactionPropagationDepth()
 
-                    for (i in propagationDepth - 1 downTo 0) {
+                    for (i in 1 until propagationDepth) {
 
                         if (cancelTask) {
                             break

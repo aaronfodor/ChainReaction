@@ -50,23 +50,10 @@ public class Particle {
     protected boolean react(Player owner){
 
         if((this.owner == owner) || (this.owner == null)){
-
             int propagation_depth = 1;
-            //this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
             this.owner = owner;
-
-            if(current_size == max_size){
-                //this.field.addStateToHistory(propagation_depth+1, this.getOwnerId(), 0, max_size);
-                this.explode(propagation_depth);
-            }
-
-            else{
-                current_size++;
-                this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
-            }
-
+            this.increase(owner, propagation_depth);
             return true;
-
         }
 
         else{
@@ -78,24 +65,36 @@ public class Particle {
     /**
      * Called to tell a Particle to increase it's value
      * If maximum value has been reached, it explodes
+     * If the state history of the particle is empty, adds the start state
      *
      * @param	owner   Player who increases it
      */
     private void increase(Player owner, int propagation_depth){
 
+        addStartStateToHistory();
+
         this.owner = owner;
 
         if(current_size == max_size){
-            //this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
+            this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
             this.explode(propagation_depth);
         }
 
         else{
-            current_size++;
+            current_size+=1;
             this.field.addStateToHistory(propagation_depth, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
         }
 
 
+    }
+
+    /**
+     * Adds the start state to the state history on the Field where the Particle is
+     */
+    private void addStartStateToHistory() {
+        if(this.field.numberOfStates() == 0){
+            this.field.addStateToHistory(0, this.getOwnerId(), this.getSize(), this.getNumberLeftBeforeExplosion());
+        }
     }
 
     /**
@@ -109,11 +108,11 @@ public class Particle {
             return;
         }
 
-        this.field.addStateToHistory(propagation_depth, this.getOwnerId(), 0, max_size);
-
         Player exploder = this.owner;
         this.current_size = 0;
         this.owner = null;
+
+        this.field.addStateToHistory(propagation_depth+1, this.getOwnerId(), 0, max_size);
 
         for (Direction dir : Direction.values()) {
 

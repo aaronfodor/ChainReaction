@@ -361,13 +361,7 @@ public class GamePlay implements IGameModel {
 
                 else{
 
-                    int current_propagation_depth = playground.getFieldAt(current_height, current_width).numberOfStates();
-
-                    if(current_propagation_depth > propagation_depth){
-                        current_propagation_depth = propagation_depth;
-                    }
-
-                    for(int propagation_time = 0; propagation_time < current_propagation_depth; propagation_time++){
+                    for(int propagation_time = 0; propagation_time < propagation_depth; propagation_time++){
                         state_matrix[current_height][current_width][propagation_time] = playground.getFieldAt(current_height, current_width).getStateAt(propagation_time);
                     }
 

@@ -118,10 +118,10 @@ public class Field {
     /**
      * State adder method. Adds the state to the Field's state history
      *
-     * @param 	propagation_depth		        Depth value to add
-     * @param 	Id 		                        Id of the owner Player
-     * @param 	current_size 		            Current size
-     * @param 	numberLeftBeforeExplosion 		Number left before explosion
+     * @param 	propagation_depth           Depth value to add
+     * @param 	Id 		                    Id of the owner Player
+     * @param 	current_size                Current size
+     * @param 	numberLeftBeforeExplosion   Number left before explosion
      */
     public void addStateToHistory(int propagation_depth, int Id, int current_size, int numberLeftBeforeExplosion) {
 
