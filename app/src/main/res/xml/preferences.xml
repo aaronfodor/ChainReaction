@@ -17,9 +17,9 @@
                 android:summaryOff="@string/label_time_limit_off"
                 android:summaryOn="@string/label_time_limit_on"
                 android:title="@string/setting_time_limit" />
-        <CheckBoxPreference
+        <Preference
                 android:key="delete_database"
                 android:title="@string/setting_delete_database"
-                android:selectable="true"/>
+                android:summary="Click here to delete recorded statistics"/>
     </PreferenceCategory>
 </PreferenceScreen>
