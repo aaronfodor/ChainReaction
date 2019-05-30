@@ -25,6 +25,7 @@
     <string name="confirm_delete_database">Are you sure you want to delete the database?</string>
     <string name="confirm_delete">Confirm delete</string>
     <string name="empty_db">Statistics are empty</string>
+    <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
     <string name="about">Chain Reaction\nv0.16, 30/05/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>

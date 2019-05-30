@@ -20,6 +20,6 @@
         <Preference
                 android:key="delete_database"
                 android:title="@string/setting_delete_database"
-                android:summary="Click here to delete recorded statistics"/>
+                android:summary="@string/delete_database_guide"/>
     </PreferenceCategory>
 </PreferenceScreen>
