@@ -1,6 +1,7 @@
 package presenter
 
 import android.graphics.Color
+import hu.bme.aut.android.chainreaction.R
 
 /**
  * Player Id and Color connection
@@ -42,77 +43,77 @@ object PlayerVisualRepresentation {
 
         when (color) {
             8 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.grey_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.grey_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.grey_dot3
+                1 -> R.drawable.grey_dot1
+                2 -> R.drawable.grey_dot2
+                3 -> R.drawable.grey_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             7 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.brown_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.brown_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.brown_dot3
+                1 -> R.drawable.brown_dot1
+                2 -> R.drawable.brown_dot2
+                3 -> R.drawable.brown_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             6 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.pink_dot3
+                1 -> R.drawable.pink_dot1
+                2 -> R.drawable.pink_dot2
+                3 -> R.drawable.pink_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             5 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.orange_dot3
+                1 -> R.drawable.orange_dot1
+                2 -> R.drawable.orange_dot2
+                3 -> R.drawable.orange_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             4 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.yellow_dot3
+                1 -> R.drawable.yellow_dot1
+                2 -> R.drawable.yellow_dot2
+                3 -> R.drawable.yellow_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             3 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.blue_dot3
+                1 -> R.drawable.blue_dot1
+                2 -> R.drawable.blue_dot2
+                3 -> R.drawable.blue_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             2 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.green_dot3
+                1 -> R.drawable.green_dot1
+                2 -> R.drawable.green_dot2
+                3 -> R.drawable.green_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
 
             }
             1 -> drawableId = when (number) {
-                1 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot1
-                2 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot2
-                3 -> hu.bme.aut.android.chainreaction.R.drawable.red_dot3
+                1 -> R.drawable.red_dot1
+                2 -> R.drawable.red_dot2
+                3 -> R.drawable.red_dot3
                 else -> { // Note the block
-                    hu.bme.aut.android.chainreaction.R.drawable.nothing
+                    R.drawable.nothing
                 }
             }
-            else -> drawableId = hu.bme.aut.android.chainreaction.R.drawable.nothing
+            else -> drawableId = R.drawable.nothing
         }
 
         return drawableId

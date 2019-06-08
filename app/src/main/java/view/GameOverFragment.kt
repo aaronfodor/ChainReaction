@@ -1,5 +1,6 @@
 package view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,9 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import nl.dionsegijn.konfetti.KonfettiView
+import nl.dionsegijn.konfetti.models.Shape
+import nl.dionsegijn.konfetti.models.Size
 import presenter.PlayerVisualRepresentation
 
 class GameOverFragment : Fragment() {
@@ -32,18 +36,6 @@ class GameOverFragment : Fragment() {
             val winnerType = bundle.getInt((playersNumber-1).toString()+"TypeId")
             val textViewGameOver: TextView = view.findViewById(R.id.tvGameOver)
             val keyRoundsOfWinner = (playersNumber-1).toString()+"Rounds"
-
-            var winnerTypeText = ""
-            when (winnerType) {
-                HUMAN -> {
-                    winnerTypeText = getString(R.string.type_human)
-                }
-                AI -> {
-                    winnerTypeText = getString(R.string.type_ai)
-                }
-            }
-
-            textViewGameOver.text = getString(R.string.game_over_data, winnerTypeText, bundle.getInt(keyRoundsOfWinner))
 
             val chart: BarChart = view.findViewById(R.id.timeChart)
             val timeData = ArrayList<BarEntry>()
@@ -84,10 +76,37 @@ class GameOverFragment : Fragment() {
             chart.data = dataSet
             chart.invalidate()
 
+            var winnerTypeText = ""
+            when (winnerType) {
+                HUMAN -> {
+                    winnerTypeText = getString(R.string.type_human)
+                    buildConfetti(view, setColors[playersNumber-1])
+                }
+                AI -> {
+                    winnerTypeText = getString(R.string.type_ai)
+                }
+            }
+            textViewGameOver.text = getString(R.string.game_over_data, winnerTypeText, bundle.getInt(keyRoundsOfWinner))
+
         }
 
         return view
 
+    }
+
+    private fun buildConfetti(view: View, winnerColorId: Int){
+        val confetti: KonfettiView = view.findViewById(R.id.viewConfetti)
+        confetti.build()
+            .addColors(Color.YELLOW, winnerColorId, Color.MAGENTA, winnerColorId)
+            .setDirection(0.0, 359.0)
+            .setSpeed(1f, 5f)
+            .setFadeOutEnabled(true)
+            .setTimeToLive(2000L)
+            .addShapes(Shape.RECT, Shape.CIRCLE)
+            .addSizes(Size(12))
+            //hacking needed as confetti.width returns false value
+            .setPosition(-50f, confetti.width + 5000f, -50f, -50f)
+            .streamFor(300, 5000L)
     }
 
 }
