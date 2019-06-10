@@ -23,7 +23,7 @@ import java.util.*
 class StartActivity : AppCompatActivity() {
 
     companion object {
-        private const val MAXIMUM_SIZE = 30
+        private const val MAXIMUM_SIZE = 20
         private const val MINIMUM_SIZE = 3
         private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
         private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
@@ -171,7 +171,7 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun imageAdder(Id: Int): Int {
-        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1)
+        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1, false)
     }
 
 }

@@ -14,6 +14,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
     companion object {
 
         const val KEY_PROPAGATION = "show_propagation"
+        const val KEY_GIF = "gif_enabled"
         const val KEY_TIME_LIMIT = "time_limit"
         const val KEY_DELETE_DATABASE = "delete_database"
 
@@ -21,6 +22,8 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             with (sharedPreferences.edit()) {
                 remove(KEY_PROPAGATION)
                 putBoolean(KEY_PROPAGATION, sharedPreferences.getBoolean(KEY_PROPAGATION, true))
+                remove(KEY_GIF)
+                putBoolean(KEY_GIF, sharedPreferences.getBoolean(KEY_GIF, true))
                 remove(KEY_TIME_LIMIT)
                 putBoolean(KEY_TIME_LIMIT, sharedPreferences.getBoolean(KEY_TIME_LIMIT, false))
                 remove(KEY_DELETE_DATABASE)
@@ -61,6 +64,9 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
 
         when(key) {
             KEY_PROPAGATION -> {
+                changeSettings(sharedPreferences)
+            }
+            KEY_GIF -> {
                 changeSettings(sharedPreferences)
             }
             KEY_TIME_LIMIT -> {

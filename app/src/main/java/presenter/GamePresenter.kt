@@ -32,7 +32,7 @@ class GamePresenter
     /**
      * Game mode flags
      */
-    private val showPropagation: Boolean?, private val limitedTimeMode: Boolean?
+    private val showPropagation: Boolean, private val gifEnabled: Boolean, private val limitedTimeMode: Boolean
 ) {
 
     companion object {
@@ -169,7 +169,8 @@ class GamePresenter
                 view.refreshPlayground(
                     actual_height, actual_width,
                     stateMatrix[actual_height][actual_width][0],
-                    stateMatrix[actual_height][actual_width][1]
+                    stateMatrix[actual_height][actual_width][1],
+                    gifEnabled
                 )
             }
 
@@ -193,7 +194,7 @@ class GamePresenter
         view.refreshProgressBar(0)
 
         //when limited time mode is enabled, it only applies to human players when the game is not over
-        if (!model.isGameEnded() && limitedTimeMode!! && model.actualPlayerType == HUMAN) {
+        if (!model.isGameEnded() && limitedTimeMode && model.actualPlayerType == HUMAN) {
 
             if (propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE){
 

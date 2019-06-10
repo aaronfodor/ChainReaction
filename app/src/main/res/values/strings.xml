@@ -18,6 +18,7 @@
     <string name="label_on">On</string>
     <string name="label_off">Off</string>
     <string name="setting_show_propagation">Show propagation</string>
+    <string name="setting_gif_enabled">Particle animation</string>
     <string name="setting_time_limit">Time limit</string>
     <string name="label_time_limit_off">Player has no time limit to step</string>
     <string name="label_time_limit_on">Player has limited time to step</string>
@@ -28,7 +29,7 @@
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.17, 08/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.19, 10/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
@@ -57,5 +58,8 @@
     <string name="confirm_exit">Confirm exit</string>
     <string name="confirm_exit_description">Are you sure you want to exit?</string>
     <string name="ai_load_error">Error loading AI</string>
+
+    <string name="KEY_COORDINATES">2</string>
+    <string name="KEY_CURRENT_IMAGE">3</string>
 
 </resources>

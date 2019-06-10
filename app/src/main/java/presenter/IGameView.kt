@@ -13,9 +13,10 @@ interface IGameView {
      * @param    pos_x       X coordinate
      * @param    color       Color of the Field
      * @param    number      elements of the Field
-     * @return    boolean     True if succeed, false otherwise
+     * @param    gifEnabled  whether moving image is enabled or not
+     * @return   boolean     True if succeed, false otherwise
      */
-    fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean
+    fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int, gifEnabled: Boolean): Boolean
 
     /**
      * Shows whose turn is now

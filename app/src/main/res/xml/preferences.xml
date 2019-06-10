@@ -13,6 +13,11 @@
                 android:summaryOn="@string/label_on"
                 android:title="@string/setting_show_propagation" />
         <SwitchPreference
+                android:key="gif_enabled"
+                android:summaryOff="@string/label_off"
+                android:summaryOn="@string/label_on"
+                android:title="@string/setting_gif_enabled" />
+        <SwitchPreference
                 android:key="time_limit"
                 android:summaryOff="@string/label_time_limit_off"
                 android:summaryOn="@string/label_time_limit_on"

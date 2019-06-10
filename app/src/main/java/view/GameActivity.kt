@@ -15,6 +15,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideOption
 import model.db.PlayerTypeStat
 import model.db.PlayerTypeStatsDatabase
 import hu.bme.aut.android.chainreaction.R.*
@@ -41,19 +43,20 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     private var previousClickTime: Long = 0
     private var currentClickTime: Long  = 0
 
+    //default values to generate PlayGround
+    private var height = 7
+    private var width = 5
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val showPropagation = settings.getBoolean("show_propagation", true)
-        val timeLimit = settings.getBoolean("time_limit", true)
+        val gifEnabled = settings.getBoolean("gif_enabled", true)
+        val timeLimit = settings.getBoolean("time_limit", false)
         val players = ArrayList<String>()
         val extras = intent.extras
-
-        //default values to generate PlayGround
-        var height = 7
-        var width = 5
 
         if (extras != null) {
             height = extras.getInt("PlayGroundHeight")
@@ -75,14 +78,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        createNxMGame(players, showPropagation, timeLimit, height, width)
+        createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width)
 
     }
 
     /**
      * Creates the presenter with an intent of a NxM dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, timeLimit: Boolean, height: Int, width: Int){
+    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, gifEnabled: Boolean, timeLimit: Boolean, height: Int, width: Int){
 
         tableLayoutPlayGround = findViewById(id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
@@ -96,10 +99,19 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             tableRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
 
             for(j in 0 .. (width-1)){
+
                 val ivField = ImageView(this)
-                ivField.tag = "img-$i-$j"
+                val defaultImage = drawable.nothing
+
+                Glide
+                    .with(applicationContext)
+                    .load(defaultImage)
+                    .placeholder(defaultImage)
+                    .into(ivField)
+
+                ivField.setTag(string.KEY_CURRENT_IMAGE ,"$defaultImage")
+                ivField.setTag(string.KEY_COORDINATES,"img-$i-$j")
                 ivField.adjustViewBounds = true
-                ivField.setImageResource(drawable.nothing)
                 ivField.setOnClickListener(this)
 
                 val lp = TableRow.LayoutParams(
@@ -110,13 +122,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                 ivField.layoutParams = lp
 
                 tableRow.addView(ivField)
+
             }
 
             tableLayoutPlayGround.addView(tableRow)
 
         }
 
-        presenter = GamePresenter(this, height, width, players, showPropagation, timeLimit)
+        presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit)
         //start waiting measurement
         previousClickTime = System.currentTimeMillis()
 
@@ -130,7 +143,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onClick(v: View?) {
 
         if(v != null){
-            val values = v.tag.toString().split("-").toTypedArray()
+            val values = v.getTag(string.KEY_COORDINATES).toString().split("-").toTypedArray()
             val numberX = Integer.valueOf(values[1])
             val numberY = Integer.valueOf(values[2])
             onPlayGroundElementClicked(numberX, numberY)
@@ -154,20 +167,38 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Draws the selected Playground Field
+     * Draws the selected Playground Field if a new image is required to be set
      *
      * @param    pos_y       Y coordinate
      * @param    pos_x       X coordinate
      * @param    color       Color of the Field
      * @param    number      elements of the Field
+     * @param    gifEnabled  whether moving image is enabled or not
      * @return   boolean     True if succeed, false otherwise
      */
-    override fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int): Boolean {
+    override fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int, gifEnabled: Boolean): Boolean {
+
         val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
-        field.setImageResource(PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number))
-        field.invalidate()
+        val imageToSet = PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number, gifEnabled)
+        val currentImageId = Integer.valueOf(field.getTag(string.KEY_CURRENT_IMAGE).toString())
+
+        //if the image to set is not the same as the current image, change it and store it's Id as tag value
+        if(currentImageId != imageToSet){
+
+            Glide
+                .with(applicationContext)
+                .load(imageToSet)
+                .placeholder(drawable.nothing)
+                .into(field)
+
+            field.setTag(string.KEY_CURRENT_IMAGE, "$imageToSet")
+            field.invalidate()
+
+        }
+
         return true
+
     }
 
     /**
@@ -332,8 +363,12 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Stops the Presenter calculations
      */
     override fun onPause() {
-        presenter.task?.cancel(true)
         super.onPause()
+        presenter.task?.cancel(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }

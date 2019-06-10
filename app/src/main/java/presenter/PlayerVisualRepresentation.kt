@@ -35,9 +35,27 @@ object PlayerVisualRepresentation {
      *
      * @param       color       Color Id of the Player
      * @param       number      Number of dots of Player
+     * @param       gifEnabled  True means gif is needed, false means standing image is required
      * @return      Int         Drawable resource Id of the image
      */
-    fun getDotsImageIdByColorAndNumber(color: Int, number: Int): Int {
+    fun getDotsImageIdByColorAndNumber(color: Int, number: Int, gifEnabled: Boolean): Int {
+
+        return if(gifEnabled){
+            getDotsGifImageId(color, number)
+        } else{
+            getDotsStandingImageId(color, number)
+        }
+
+    }
+
+    /**
+     * Returns the Drawable resource standing image Id based on the input parameters
+     *
+     * @param       color       Color Id of the Player
+     * @param       number      Number of dots of Player
+     * @return      Int         Drawable resource Id of the image
+     */
+    private fun getDotsStandingImageId(color: Int, number: Int): Int {
 
         val drawableId: Int
 
@@ -109,6 +127,96 @@ object PlayerVisualRepresentation {
                 1 -> R.drawable.red_dot1
                 2 -> R.drawable.red_dot2
                 3 -> R.drawable.red_dot3
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+            }
+            else -> drawableId = R.drawable.nothing
+        }
+
+        return drawableId
+
+    }
+
+    /**
+     * Returns the Drawable resource gif image Id based on the input parameters
+     *
+     * @param       color       Color Id of the Player
+     * @param       number      Number of dots of Player
+     * @return      Int         Drawable resource Id of the image
+     */
+    private fun getDotsGifImageId(color: Int, number: Int): Int {
+
+        val drawableId: Int
+
+        when (color) {
+            8 -> drawableId = when (number) {
+                1 -> R.drawable.grey_dot1gif
+                2 -> R.drawable.grey_dot2gif
+                3 -> R.drawable.grey_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            7 -> drawableId = when (number) {
+                1 -> R.drawable.brown_dot1gif
+                2 -> R.drawable.brown_dot2gif
+                3 -> R.drawable.brown_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            6 -> drawableId = when (number) {
+                1 -> R.drawable.pink_dot1gif
+                2 -> R.drawable.pink_dot2gif
+                3 -> R.drawable.pink_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            5 -> drawableId = when (number) {
+                1 -> R.drawable.orange_dot1gif
+                2 -> R.drawable.orange_dot2gif
+                3 -> R.drawable.orange_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            4 -> drawableId = when (number) {
+                1 -> R.drawable.yellow_dot1gif
+                2 -> R.drawable.yellow_dot2gif
+                3 -> R.drawable.yellow_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            3 -> drawableId = when (number) {
+                1 -> R.drawable.blue_dot1gif
+                2 -> R.drawable.blue_dot2gif
+                3 -> R.drawable.blue_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            2 -> drawableId = when (number) {
+                1 -> R.drawable.green_dot1gif
+                2 -> R.drawable.green_dot2gif
+                3 -> R.drawable.green_dot3gif
+                else -> { // Note the block
+                    R.drawable.nothing
+                }
+
+            }
+            1 -> drawableId = when (number) {
+                1 -> R.drawable.red_dot1gif
+                2 -> R.drawable.red_dot2gif
+                3 -> R.drawable.red_dot3gif
                 else -> { // Note the block
                     R.drawable.nothing
                 }

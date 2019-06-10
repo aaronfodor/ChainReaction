@@ -105,7 +105,7 @@ class GameOverFragment : Fragment() {
             .addShapes(Shape.RECT, Shape.CIRCLE)
             .addSizes(Size(12))
             //hacking needed as confetti.width returns false value
-            .setPosition(-50f, confetti.width + 5000f, -50f, -50f)
+            .setPosition(-50f, confetti.width + 2000f, -50f, -50f)
             .streamFor(300, 5000L)
     }
 
