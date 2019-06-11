@@ -101,8 +101,8 @@ class GameLogicTask
             } else if (params.size == 1) {
 
                 model.addCurrentPlayerWaitingTime(params[0]!!)
-                model.stepToNextPlayer()
                 propagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE)
+                model.stepToNextPlayer()
 
                 var coordinates: Array<Int>?
 
@@ -211,7 +211,8 @@ class GameLogicTask
                     model.historyPlaygroundBuilder()
                     val propagationDepth = model.getReactionPropagationDepth()
 
-                    for (i in 1 until propagationDepth) {
+                    //start from state 2 to show propagation events without delay - the previously displayed end state is the start state too
+                    for (i in 2 until propagationDepth) {
 
                         if (cancelTask) {
                             break

@@ -11,17 +11,28 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import hu.bme.aut.android.chainreaction.R
 import com.github.mikephil.charting.components.Legend
+import com.google.android.gms.ads.AdView
 import model.db.PlayerTypeStat
 import model.db.PlayerTypeStatsDatabase
-
+import presenter.AdPresenter
 
 class StatsActivity : AppCompatActivity() {
+
+    /**
+     * Advertisement of the activity
+     */
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_stats)
         databaseReader()
+
+        mAdView = findViewById(R.id.statsAdView)
+        //loading the advertisement
+        AdPresenter.loadAd(mAdView)
+
     }
 
     /**
@@ -113,6 +124,30 @@ class StatsActivity : AppCompatActivity() {
         chart.data = dataSet
         chart.invalidate()
 
+    }
+
+    /**
+     * Called when leaving the activity - stops the presenter calculations too
+     */
+    override fun onPause() {
+        mAdView.pause()
+        super.onPause()
+    }
+
+    /**
+     * Called when returning to the activity
+     */
+    override fun onResume() {
+        super.onResume()
+        mAdView.resume()
+    }
+
+    /**
+     * Called before the activity is destroyed
+     */
+    override fun onDestroy() {
+        mAdView.destroy()
+        super.onDestroy()
     }
 
 }

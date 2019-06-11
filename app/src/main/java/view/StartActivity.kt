@@ -10,10 +10,12 @@ import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
 import android.view.WindowManager
 import android.widget.TextView
+import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
 import kotlinx.android.synthetic.main.activity_start.*
+import presenter.AdPresenter
 import presenter.PlayerVisualRepresentation
 import java.util.*
 
@@ -33,6 +35,11 @@ class StartActivity : AppCompatActivity() {
     private var playGroundWidth = 5
     private var playerListData = ArrayList<PlayerListData>()
     private lateinit var adapter: PlayerListAdapter
+
+    /**
+     * Advertisement of the activity
+     */
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -168,10 +175,38 @@ class StartActivity : AppCompatActivity() {
 
         }
 
+        mAdView = findViewById(R.id.startAdView)
+        //loading the advertisement
+        AdPresenter.loadAd(mAdView)
+
     }
 
     private fun imageAdder(Id: Int): Int {
         return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1, false)
+    }
+
+    /**
+     * Called when leaving the activity - stops the presenter calculations too
+     */
+    override fun onPause() {
+        mAdView.pause()
+        super.onPause()
+    }
+
+    /**
+     * Called when returning to the activity
+     */
+    override fun onResume() {
+        super.onResume()
+        mAdView.resume()
+    }
+
+    /**
+     * Called before the activity is destroyed
+     */
+    override fun onDestroy() {
+        mAdView.destroy()
+        super.onDestroy()
     }
 
 }

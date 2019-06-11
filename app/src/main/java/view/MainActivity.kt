@@ -8,14 +8,21 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
+import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
 import kotlinx.android.synthetic.main.activity_main.*
 import model.ai.PlayerLogic
+import presenter.AdPresenter
 
 /**
  * Main Activity - entry point
  */
 class MainActivity : AppCompatActivity() {
+
+    /**
+     * Advertisement of the activity
+     */
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,6 +57,10 @@ class MainActivity : AppCompatActivity() {
             exitDialog()
         }
 
+        mAdView = findViewById(R.id.mainAdView)
+        //loading the advertisement
+        AdPresenter.loadAd(mAdView)
+
     }
 
     override fun onBackPressed() {
@@ -82,9 +93,29 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Called when leaving the activity - stops the presenter calculations too
+     */
+    override fun onPause() {
+        mAdView.pause()
+        super.onPause()
+    }
+
+    /**
+     * Called when returning to the activity
+     */
     override fun onResume() {
         super.onResume()
+        mAdView.resume()
         startAILoading()
+    }
+
+    /**
+     * Called before the activity is destroyed
+     */
+    override fun onDestroy() {
+        mAdView.destroy()
+        super.onDestroy()
     }
 
 }

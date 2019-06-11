@@ -3,6 +3,8 @@ package view
 import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
+import presenter.IGameView
+import presenter.AdPresenter
 import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -13,14 +15,15 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.*
 import android.widget.TextView
+import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideOption
+import com.google.android.gms.ads.AdView
+import hu.bme.aut.android.chainreaction.R
 import model.db.PlayerTypeStat
 import model.db.PlayerTypeStatsDatabase
-import hu.bme.aut.android.chainreaction.R.*
-import presenter.IGameView
 
 /**
  * Activity of a game play
@@ -43,9 +46,16 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     private var previousClickTime: Long = 0
     private var currentClickTime: Long  = 0
 
-    //default values to generate PlayGround
+    /**
+     * Default values to generate PlayGround
+     */
     private var height = 7
     private var width = 5
+
+    /**
+     * Advertisement of the activity
+     */
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -66,19 +76,23 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             players.add(extras.getString(i.toString())!!)
         }
 
-        setContentView(layout.activity_game)
+        setContentView(R.layout.activity_game)
 
-        val textSwitcher = findViewById<TextSwitcher>(id.textViewInfo)
+        val textSwitcher = findViewById<TextSwitcher>(R.id.textViewInfo)
         textSwitcher.setFactory {
             val textView = TextView(this@GameActivity)
             textView.gravity = Gravity.CENTER_HORIZONTAL
-            textView.setTextColor(resources.getColor(color.colorMessage))
+            textView.setTextColor(resources.getColor(R.color.colorMessage))
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
             textView
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width)
+
+        mAdView = findViewById(R.id.gameAdView)
+        //loading the advertisement
+        AdPresenter.loadAd(mAdView)
 
     }
 
@@ -87,7 +101,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, gifEnabled: Boolean, timeLimit: Boolean, height: Int, width: Int){
 
-        tableLayoutPlayGround = findViewById(id.TableLayoutPlayGround)
+        tableLayoutPlayGround = findViewById(R.id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
 
         val tableLayout = tableLayoutPlayGround.rootView
@@ -101,7 +115,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             for(j in 0 .. (width-1)){
 
                 val ivField = ImageView(this)
-                val defaultImage = drawable.nothing
+                val defaultImage = R.drawable.nothing
 
                 Glide
                     .with(applicationContext)
@@ -109,8 +123,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
                     .placeholder(defaultImage)
                     .into(ivField)
 
-                ivField.setTag(string.KEY_CURRENT_IMAGE ,"$defaultImage")
-                ivField.setTag(string.KEY_COORDINATES,"img-$i-$j")
+                ivField.setTag(R.string.KEY_CURRENT_IMAGE ,"$defaultImage")
+                ivField.setTag(R.string.KEY_COORDINATES,"img-$i-$j")
                 ivField.adjustViewBounds = true
                 ivField.setOnClickListener(this)
 
@@ -130,7 +144,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit)
-        //start waiting measurement
+        //start waiting time counting
         previousClickTime = System.currentTimeMillis()
 
     }
@@ -143,7 +157,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     override fun onClick(v: View?) {
 
         if(v != null){
-            val values = v.getTag(string.KEY_COORDINATES).toString().split("-").toTypedArray()
+            val values = v.getTag(R.string.KEY_COORDINATES).toString().split("-").toTypedArray()
             val numberX = Integer.valueOf(values[1])
             val numberY = Integer.valueOf(values[2])
             onPlayGroundElementClicked(numberX, numberY)
@@ -181,7 +195,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
         val imageToSet = PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number, gifEnabled)
-        val currentImageId = Integer.valueOf(field.getTag(string.KEY_CURRENT_IMAGE).toString())
+        val currentImageId = Integer.valueOf(field.getTag(R.string.KEY_CURRENT_IMAGE).toString())
 
         //if the image to set is not the same as the current image, change it and store it's Id as tag value
         if(currentImageId != imageToSet){
@@ -189,10 +203,12 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             Glide
                 .with(applicationContext)
                 .load(imageToSet)
-                .placeholder(drawable.nothing)
+                .placeholder(R.drawable.nothing)
                 .into(field)
 
-            field.setTag(string.KEY_CURRENT_IMAGE, "$imageToSet")
+            field.startAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in))
+
+            field.setTag(R.string.KEY_CURRENT_IMAGE, "$imageToSet")
             field.invalidate()
 
         }
@@ -209,8 +225,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun showCurrentPlayer(Id: Int): Boolean {
 
-        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
-        infoText.setText(getString(string.player_turn, Id))
+        val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
+        infoText.setText(getString(R.string.player_turn, Id))
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
 
@@ -225,7 +241,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun refreshProgressBar(value: Int) {
 
-        val progressBar = findViewById<ProgressBar>(id.progressBarPlayerTime)
+        val progressBar = findViewById<ProgressBar>(R.id.progressBarPlayerTime)
         progressBar.progress = value
 
     }
@@ -237,7 +253,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun showMessage(msg: String): Boolean {
-        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
+        val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
         infoText.setText(msg)
         return true
     }
@@ -249,9 +265,9 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun showStart(Id: Int): Boolean {
-        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
-        infoText.setText(getString(string.player_turn, Id))
-        Snackbar.make(tableLayoutPlayGround, string.start_game, Snackbar.LENGTH_SHORT).show()
+        val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
+        infoText.setText(getString(R.string.player_turn, Id))
+        Snackbar.make(tableLayoutPlayGround, R.string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
     }
 
@@ -265,8 +281,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     override fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean): Boolean {
 
-        val infoText = findViewById<TextSwitcher>(id.textViewInfo)
-        val text = getString(string.winner_text, winnerId)
+        val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
+        val text = getString(R.string.winner_text, winnerId)
 
         val currentText = infoText.currentView as TextView
 
@@ -274,7 +290,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
             infoText.setText(text)
 
-            val snackBar = Snackbar.make(tableLayoutPlayGround, string.game_over, Snackbar.LENGTH_INDEFINITE)
+            val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("LEAVE") {
                 this.finish()
             }
@@ -295,8 +311,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             val fragment = GameOverFragment()
             fragment.arguments = bundle
             val transaction = supportFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(anim.abc_grow_fade_in_from_bottom, anim.abc_shrink_fade_out_from_bottom)
-            transaction.replace(id.viewGame, fragment)
+            transaction.setCustomAnimations(R.anim.abc_grow_fade_in_from_bottom, R.anim.abc_shrink_fade_out_from_bottom)
+            transaction.replace(R.id.viewGame, fragment)
             //transaction.commit() can lead to IllegalStateException as state loss can happen here
             //fragment state is not important for us, state loss is acceptable here
             transaction.commitAllowingStateLoss()
@@ -360,14 +376,27 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Stops the Presenter calculations
+     * Called when leaving the activity - stops the presenter calculations too
      */
     override fun onPause() {
-        super.onPause()
+        mAdView.pause()
         presenter.task?.cancel(true)
+        super.onPause()
     }
 
+    /**
+     * Called when returning to the activity
+     */
+    override fun onResume() {
+        super.onResume()
+        mAdView.resume()
+    }
+
+    /**
+     * Called before the activity is destroyed
+     */
     override fun onDestroy() {
+        mAdView.destroy()
         super.onDestroy()
     }
 

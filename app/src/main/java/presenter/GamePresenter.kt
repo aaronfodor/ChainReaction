@@ -177,7 +177,6 @@ class GamePresenter
         }
 
         timeLeftCalculator(propagation_depth)
-
     }
 
     /**

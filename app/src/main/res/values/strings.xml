@@ -29,7 +29,7 @@
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.19, 10/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.21, 11/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
