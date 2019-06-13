@@ -39,7 +39,7 @@ class GamePresenter
         /**
          * TimerTask to execute limited time counting
          */
-        private var timerTask: TimerTask? = null
+        private var progressBarTimerTask: TimerTask? = null
 
         /**
          * Constant to represent current state display intent
@@ -153,18 +153,33 @@ class GamePresenter
             stateMatrix = model.currentPlaygroundInfo()
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
             view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
+            refreshPlaygroundFields(dimension, stateMatrix)
             resultDisplayed = true
         }
         else if (propagation_depth >= 0 && propagation_depth < model.getReactionPropagationDepth()) {
             stateMatrix = model.historyPlaygroundInfoAt(propagation_depth)
+            refreshPlaygroundFields(dimension, stateMatrix)
         }
         else {
             stateMatrix = model.currentPlaygroundInfo()
+            refreshPlaygroundFields(dimension, stateMatrix)
             view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
         }
 
-        for (actual_height in 0 until dimension[0]) {
+        timeLeftCalculator(propagation_depth)
 
+    }
+
+    /**
+     * Refreshes all Playground Fields and draws it
+     *
+     * @param   dimension     Playground dimension info - [0] is the width, [1] is the height
+     * @param   stateMatrix   First index is the Y coordinate of Field, second index is the X coordinate of Field,
+     * Third index is the Field specific information: [0] is the owner Player's Id, [1] is the number of elements on the Field, [2] is the number of residual elements left before explosion
+     */
+    private fun refreshPlaygroundFields(dimension: IntArray, stateMatrix: Array<Array<IntArray>>) {
+
+        for (actual_height in 0 until dimension[0]) {
             for (actual_width in 0 until dimension[1]) {
                 view.refreshPlayground(
                     actual_height, actual_width,
@@ -173,31 +188,29 @@ class GamePresenter
                     gifEnabled
                 )
             }
-
         }
 
-        timeLeftCalculator(propagation_depth)
     }
 
     /**
      * Starts the timerTask and refreshes the time left progress bar when the current state is displayed
      * Calculates when limited time mode is enabled, only applies to human players when the game is not over
      *
-     * @param   propagation_depth     Current propagation state
+     * @param   propagationDepth     Current propagation state
      */
-    private fun timeLeftCalculator(propagation_depth: Int) {
+    private fun timeLeftCalculator(propagationDepth: Int) {
 
-        if (timerTask != null) {
-            timerTask!!.cancel()
+        if (progressBarTimerTask != null) {
+            progressBarTimerTask!!.cancel()
         }
         view.refreshProgressBar(0)
 
         //when limited time mode is enabled, it only applies to human players when the game is not over
         if (!model.isGameEnded() && limitedTimeMode && model.actualPlayerType == HUMAN) {
 
-            if (propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE){
+            if (propagationDepth == SHOW_CURRENT_PLAYGROUND_STATE){
 
-                timerTask = object : TimerTask() {
+                progressBarTimerTask = object : TimerTask() {
 
                     var counter = 0
 
@@ -227,14 +240,23 @@ class GamePresenter
 
                 }
 
-                val timer = Timer("MyTimer")
-                timer.scheduleAtFixedRate(timerTask, 50, (timeLimit / 100).toLong())
-                timerTask!!.run()
+                val timer = Timer("ProgressBarTimer")
+                timer.scheduleAtFixedRate(progressBarTimerTask, 50, (timeLimit / 100).toLong())
+                progressBarTimerTask!!.run()
 
             }
 
         }
 
+    }
+
+    /**
+     * Result displayed getter method
+     *
+     * @return    Boolean       True if the result has been displayed, false otherwise
+     */
+    fun isResultDisplayed(): Boolean {
+        return resultDisplayed
     }
 
 }

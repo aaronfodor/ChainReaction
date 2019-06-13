@@ -1,5 +1,6 @@
 package view
 
+import android.app.ActivityOptions
 import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -229,7 +231,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         infoText.setText(getString(R.string.player_turn, Id))
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
-
         return true
 
     }
@@ -240,10 +241,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param	value       The progress bar state value - between 0 and 100
      */
     override fun refreshProgressBar(value: Int) {
-
         val progressBar = findViewById<ProgressBar>(R.id.progressBarPlayerTime)
         progressBar.progress = value
-
     }
 
     /**
@@ -368,11 +367,32 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Returns to the MainActivity, stops the current game instance
+     * Displays a dialog if the game is running or returns to the MainActivity and stops the current game instance if the game is over
      */
     override fun onBackPressed() {
-        startActivity(Intent(this, MainActivity::class.java))
-        this.finish()
+
+        if(presenter.isResultDisplayed()){
+            startActivity(Intent(this, MainActivity::class.java))
+            this.finish()
+        }
+        else{
+            leaveDialog()
+        }
+
+    }
+
+    private fun leaveDialog(){
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.confirm_leave_game))
+            .setMessage(getString(R.string.confirm_leave_game_description))
+            .setPositiveButton(android.R.string.yes) { dialog, which ->
+                //leaving the current game play
+                startActivity(Intent(this, MainActivity::class.java))
+                this.finish()
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     /**
