@@ -31,6 +31,13 @@
     <string name="title_about">About</string>
     <string name="about">Chain Reaction\nv0.22, 13/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
+    <string name="title_activity_mode">Game modes</string>
+    <string name="title_custom_game">Customize your game</string>
+    <string name="title_campaign">Go through different challenges</string>
+    <string name="button_classic_game">Classic</string>
+    <string name="button_dynamic_game">Dynamic</string>
+    <string name="button_campaign_game">Campaign</string>
+
     <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
     <string name="maximum_reached">Maximum player number reached</string>
@@ -58,10 +65,10 @@
     <string name="confirm_exit">Confirm exit</string>
     <string name="confirm_exit_description">Are you sure you want to exit?</string>
     <string name="ai_load_error">Error loading AI</string>
+    <string name="confirm_leave_game">Leave current game</string>
+    <string name="confirm_leave_game_description">Are you sure you want to leave the current game?</string>
 
     <string name="KEY_COORDINATES">2</string>
     <string name="KEY_CURRENT_IMAGE">3</string>
-    <string name="confirm_leave_game">Leave current game</string>
-    <string name="confirm_leave_game_description">Are you sure you want to leave the current game?</string>
 
 </resources>

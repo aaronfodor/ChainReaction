@@ -171,7 +171,7 @@ class GamePresenter
     }
 
     /**
-     * Refreshes all Playground Fields and draws it
+     * Refreshes all Playground Fields and draws it, sets progressbar value to zero
      *
      * @param   dimension     Playground dimension info - [0] is the width, [1] is the height
      * @param   stateMatrix   First index is the Y coordinate of Field, second index is the X coordinate of Field,
@@ -190,6 +190,8 @@ class GamePresenter
             }
         }
 
+        progressBarReset()
+
     }
 
     /**
@@ -200,10 +202,7 @@ class GamePresenter
      */
     private fun timeLeftCalculator(propagationDepth: Int) {
 
-        if (progressBarTimerTask != null) {
-            progressBarTimerTask!!.cancel()
-        }
-        view.refreshProgressBar(0)
+        progressBarReset()
 
         //when limited time mode is enabled, it only applies to human players when the game is not over
         if (!model.isGameEnded() && limitedTimeMode && model.actualPlayerType == HUMAN) {
@@ -248,6 +247,16 @@ class GamePresenter
 
         }
 
+    }
+
+    /**
+     * Resets the progress bar timer task, sets progressBar value to zero
+     */
+    private fun progressBarReset(){
+        if (progressBarTimerTask != null) {
+            progressBarTimerTask!!.cancel()
+        }
+        view.refreshProgressBar(0)
     }
 
     /**

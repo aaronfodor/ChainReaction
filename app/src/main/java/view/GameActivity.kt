@@ -1,6 +1,5 @@
 package view
 
-import android.app.ActivityOptions
 import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
@@ -20,12 +19,12 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.*
 import android.widget.TextView
-import com.bumptech.glide.GenericTransitionOptions
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
 import model.db.PlayerTypeStat
 import model.db.PlayerTypeStatsDatabase
+import android.widget.TextSwitcher
 
 /**
  * Activity of a game play
@@ -68,8 +67,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val gifEnabled = settings.getBoolean("gif_enabled", true)
         val timeLimit = settings.getBoolean("time_limit", false)
         val players = ArrayList<String>()
-        val extras = intent.extras
 
+        val extras = intent.extras
         if (extras != null) {
             height = extras.getInt("PlayGroundHeight")
             width = extras.getInt("PlayGroundWidth")
@@ -175,11 +174,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return   OnClickListener     Listener of the given object, or null
      */
     private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
+
         currentClickTime = System.currentTimeMillis()
         val waiting = currentClickTime - previousClickTime
         presenter.stepRequest(pos_y, pos_x, waiting.toInt())
         previousClickTime = currentClickTime
+
         return null
+
     }
 
     /**
@@ -291,6 +293,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
             val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("LEAVE") {
+                //leaving the current game play
+                startActivity(Intent(this, ModeActivity::class.java))
                 this.finish()
             }
             snackBar.show()
@@ -396,7 +400,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Called when leaving the activity - stops the presenter calculations too
+     * Called when leaving the activity
      */
     override fun onPause() {
         mAdView.pause()

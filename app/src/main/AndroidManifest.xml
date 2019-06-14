@@ -42,6 +42,11 @@
                 android:theme="@style/Theme.AppCompat.NoActionBar"
                 android:label="@string/title_activity_start"/>
 
+        <activity
+                android:name="view.ModeActivity"
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:label="@string/title_activity_mode"/>
+
         <activity android:name="view.MainActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>

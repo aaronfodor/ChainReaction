@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         SettingsActivity.changeSettings(sharedPreferences)
 
         buttonNewGame.setOnClickListener {
-            val intent = Intent(this, StartActivity::class.java)
+            val intent = Intent(this, ModeActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 

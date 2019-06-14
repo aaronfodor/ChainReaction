@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
 import android.view.WindowManager
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
@@ -29,12 +30,16 @@ class StartActivity : AppCompatActivity() {
         private const val MINIMUM_SIZE = 3
         private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
         private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
+        private const val CLASSIC_GAME = 1
+        private const val DYNAMIC_GAME = 2
+        private const val CAMPAIGN_GAME = 3
     }
 
     private var playGroundHeight = 7
     private var playGroundWidth = 5
     private var playerListData = ArrayList<PlayerListData>()
     private lateinit var adapter: PlayerListAdapter
+    private var gameType = 1
 
     /**
      * Advertisement of the activity
@@ -46,6 +51,25 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start)
+
+        val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartView)
+        gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.classic_game_icon))
+
+        val extras = intent.extras
+        if (extras != null) {
+
+            gameType = extras.getInt("GameType")
+            when (gameType) {
+                CLASSIC_GAME -> {
+                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.classic_game_icon))
+                }
+                DYNAMIC_GAME -> {
+                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.dynamic_game_icon))
+                }
+                else -> {}
+            }
+
+        }
 
         val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
         addHumanPlayerButton.setOnClickListener {
@@ -90,6 +114,7 @@ class StartActivity : AppCompatActivity() {
                 myIntent.putExtra("number_of_players", adapter.itemCount)
                 myIntent.putExtra("PlayGroundHeight", playGroundHeight)
                 myIntent.putExtra("PlayGroundWidth", playGroundWidth)
+                myIntent.putExtra("GameType", gameType)
 
                 for(i in 0 until adapter.itemCount){
                     myIntent.putExtra((i+1).toString(), adapter.stringElementAt(i))
