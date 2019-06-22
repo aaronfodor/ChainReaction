@@ -38,14 +38,19 @@
                 android:label="@string/title_activity_stats"/>
 
         <activity
-                android:name="view.StartActivity"
+                android:name="view.StartCustomActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_activity_start"/>
+                android:label="@string/title_custom_game"/>
 
         <activity
-                android:name="view.ModeActivity"
+                android:name="view.StartCampaignActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_activity_mode"/>
+                android:label="@string/title_campaign"/>
+
+        <activity
+                android:name="view.TypeActivity"
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:label="@string/title_activity_type"/>
 
         <activity android:name="view.MainActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar">

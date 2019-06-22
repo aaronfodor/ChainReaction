@@ -15,7 +15,7 @@ import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
 import presenter.PlayerListAdapter
 import presenter.PlayerListData
-import kotlinx.android.synthetic.main.activity_start.*
+import kotlinx.android.synthetic.main.activity_start_custom.*
 import presenter.AdPresenter
 import presenter.PlayerVisualRepresentation
 import java.util.*
@@ -23,23 +23,25 @@ import java.util.*
 /**
  * Activity of settings of game play
  */
-class StartActivity : AppCompatActivity() {
+class StartCustomActivity : AppCompatActivity() {
 
     companion object {
         private const val MAXIMUM_SIZE = 20
         private const val MINIMUM_SIZE = 3
         private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
         private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
-        private const val CLASSIC_GAME = 1
-        private const val DYNAMIC_GAME = 2
-        private const val CAMPAIGN_GAME = 3
+        private const val CUSTOM_GAME = 1
+        private const val RANDOM_GAME = 2
+        private const val NORMAL_MODE = 1
+        private const val DYNAMIC_MODE = 2
     }
 
     private var playGroundHeight = 7
     private var playGroundWidth = 5
     private var playerListData = ArrayList<PlayerListData>()
     private lateinit var adapter: PlayerListAdapter
-    private var gameType = 1
+    private var gameType = CUSTOM_GAME
+    private var gameMode = NORMAL_MODE
 
     /**
      * Advertisement of the activity
@@ -50,21 +52,22 @@ class StartActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_start)
+        setContentView(R.layout.activity_start_custom)
 
-        val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartView)
-        gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.classic_game_icon))
+        val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCustomView)
+        gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
 
         val extras = intent.extras
         if (extras != null) {
 
             gameType = extras.getInt("GameType")
             when (gameType) {
-                CLASSIC_GAME -> {
-                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.classic_game_icon))
+                CUSTOM_GAME -> {
+                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
                 }
-                DYNAMIC_GAME -> {
-                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.dynamic_game_icon))
+                RANDOM_GAME -> {
+                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_random))
+                    //TODO random property generating
                 }
                 else -> {}
             }
@@ -115,6 +118,8 @@ class StartActivity : AppCompatActivity() {
                 myIntent.putExtra("PlayGroundHeight", playGroundHeight)
                 myIntent.putExtra("PlayGroundWidth", playGroundWidth)
                 myIntent.putExtra("GameType", gameType)
+                myIntent.putExtra("GameMode", gameMode)
+                myIntent.putExtra("CampaignLevel", 0)
 
                 for(i in 0 until adapter.itemCount){
                     myIntent.putExtra((i+1).toString(), adapter.stringElementAt(i))
@@ -200,7 +205,7 @@ class StartActivity : AppCompatActivity() {
 
         }
 
-        mAdView = findViewById(R.id.startAdView)
+        mAdView = findViewById(R.id.startCustomAdView)
         //loading the advertisement
         AdPresenter.loadAd(mAdView)
 

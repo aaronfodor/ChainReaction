@@ -1,7 +1,6 @@
 package model.game;
 
 import org.jetbrains.annotations.NotNull;
-import presenter.GamePresenter;
 import presenter.IGameModel;
 
 import java.util.ArrayList;
@@ -61,10 +60,12 @@ public class GamePlay implements IGameModel {
     private boolean is_ai_vs_human_game = false;
 
     /**
-     * MVP presenter
+     * History matrix
+     * First index is the Y coordinate of Field
+     * Second index is the X coordinate of Field
+     * Third index contains the states during reaction propagation
+     * Fourth index is the Field specific information: [0] is the current reaction propagation time, [1] is the owner Player's Id, [2] is the number of elements on the Field, [3] is the number of residual elements left before explosion
      */
-    private GamePresenter presenter;
-
     private int[][][][] history_matrix;
 
     /**
@@ -75,9 +76,8 @@ public class GamePlay implements IGameModel {
      * @param	width	        Width of the Playground
      * @param	players_raw	    Players represented by ArrayList of String arrays of 3 elements
      */
-    public GamePlay(GamePresenter presenter, int height, int width, ArrayList<String[]> players_raw){
+    public GamePlay(int height, int width, ArrayList<String[]> players_raw){
 
-        this.presenter = presenter;
         this.players = new ArrayList<>();
         this.defeatedPlayers = new ArrayList<>();
 
@@ -597,4 +597,5 @@ public class GamePlay implements IGameModel {
     public boolean isAiVsHumanGame() {
         return this.is_ai_vs_human_game;
     }
+
 }

@@ -1,6 +1,7 @@
 package presenter
 
 import model.game.GamePlay
+import model.game.GamePlayDynamic
 import presenter.task.GameLogicTask
 
 import java.util.ArrayList
@@ -30,9 +31,17 @@ class GamePresenter
      */
     private val view: IGameView, height: Int, width: Int, players_input: ArrayList<String>,
     /**
-     * Game mode flags
+     * Game property flags
      */
-    private val showPropagation: Boolean, private val gifEnabled: Boolean, private val limitedTimeMode: Boolean
+    private val showPropagation: Boolean, private val gifEnabled: Boolean, private val limitedTimeMode: Boolean,
+    /**
+     * Game type flag
+     */
+    private val gameType: Int,
+    /**
+     * Game mode and campaign level flags
+     */
+    private val gameMode: Int, private val campaignLevel: Int
 ) {
 
     companion object {
@@ -50,6 +59,19 @@ class GamePresenter
          * Type of the HUMAN Players
          */
         private const val HUMAN = 1
+
+        /**
+         * Game type constants
+         */
+        private const val CUSTOM_GAME = 1
+        private const val RANDOM_GAME = 2
+        private const val CAMPAIGN_GAME = 3
+
+        /**
+         * Game mode constants
+         */
+        private const val NORMAL_MODE = 1
+        private const val DYNAMIC_MODE = 2
     }
 
     /**
@@ -85,6 +107,7 @@ class GamePresenter
         }
 
     init {
+
         val numberOfPlayers = players_input.size
         val players = ArrayList<Array<String?>>()
         resultDisplayed = false
@@ -101,7 +124,13 @@ class GamePresenter
 
         }
 
-        this.model = GamePlay(this, height, width, players)
+        //classic game type starts a classic game, dynamic type starts dynamic game, otherwise classic game will be started
+        when (gameType) {
+            NORMAL_MODE -> this.model = GamePlay(height, width, players)
+            DYNAMIC_MODE -> this.model = GamePlayDynamic(height, width, players)
+            else -> this.model = GamePlay(height, width, players)
+        }
+
         this.refreshPlayground(SHOW_CURRENT_PLAYGROUND_STATE)
         view.showStart(Integer.valueOf(players[0][0]!!))
 
@@ -137,6 +166,7 @@ class GamePresenter
     /**
      * Refreshes the Playground and tells the view to draw it
      * If the result has been displayed, refresh nothing
+     * Handles game over
      *
      * @param   propagation_depth     Current propagation state
      */
@@ -150,11 +180,7 @@ class GamePresenter
         val stateMatrix: Array<Array<IntArray>>
 
         if (model.isGameEnded() && propagation_depth == SHOW_CURRENT_PLAYGROUND_STATE) {
-            stateMatrix = model.currentPlaygroundInfo()
-            view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
-            view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
-            refreshPlaygroundFields(dimension, stateMatrix)
-            resultDisplayed = true
+            handleGameOver()
         }
         else if (propagation_depth >= 0 && propagation_depth < model.getReactionPropagationDepth()) {
             stateMatrix = model.historyPlaygroundInfoAt(propagation_depth)
@@ -167,6 +193,29 @@ class GamePresenter
         }
 
         timeLeftCalculator(propagation_depth)
+
+    }
+
+    /**
+     * Shows game over state properly
+     * Updates statistics database
+     * Updates campaign database if the gameMode flag is CAMPAIGN_GAME
+     * Sets resultDisplayed flag true
+     */
+    private fun handleGameOver() {
+
+        val stateMatrix = model.currentPlaygroundInfo()
+        view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
+        view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
+        refreshPlaygroundFields(model.getDimension(), stateMatrix)
+
+        //update the databases
+        view.statisticsDatabaseUpdater(model.playersData!![model.playersData!!.size - 1][3], model.isAiVsHumanGame())
+        if (gameMode == CAMPAIGN_GAME) {
+            view.campaignDatabaseUpdater(campaignLevel)
+        }
+
+        resultDisplayed = true
 
     }
 

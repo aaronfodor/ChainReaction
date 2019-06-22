@@ -1,4 +1,4 @@
-package model.db
+package model.db.stats
 
 import android.arch.persistence.room.*
 import java.io.Serializable

@@ -59,4 +59,21 @@ interface IGameView {
      */
     fun refreshProgressBar(value: Int)
 
+    /**
+     * Updates statistics the database
+     * Increments the overall number of victories of the winner's type and saves it, increments all games counter
+     * Updates campaign database if the game was a campaign game
+     *
+     * @param     playerType    Type of the winner. 1 means human, 2 means AI
+     * @param     humanVsAiGame True is human and AI played in the game, false otherwise
+     */
+    fun statisticsDatabaseUpdater(playerType: Int, humanVsAiGame: Boolean)
+
+    /**
+     * Updates campaign database
+     *
+     * @param     campaignLevel Campaign level to save that it has been completed
+     */
+    fun campaignDatabaseUpdater(campaignLevel: Int)
+
 }

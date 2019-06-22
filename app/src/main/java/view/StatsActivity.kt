@@ -12,8 +12,8 @@ import com.github.mikephil.charting.data.*
 import hu.bme.aut.android.chainreaction.R
 import com.github.mikephil.charting.components.Legend
 import com.google.android.gms.ads.AdView
-import model.db.PlayerTypeStat
-import model.db.PlayerTypeStatsDatabase
+import model.db.stats.PlayerTypeStat
+import model.db.stats.PlayerTypeStatsDatabase
 import presenter.AdPresenter
 
 class StatsActivity : AppCompatActivity() {
@@ -29,7 +29,7 @@ class StatsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_stats)
         databaseReader()
 
-        mAdView = findViewById(R.id.statsAdView)
+        mAdView = this.findViewById(R.id.statsAdView)
         //loading the advertisement
         AdPresenter.loadAd(mAdView)
 
@@ -41,12 +41,12 @@ class StatsActivity : AppCompatActivity() {
      */
     private fun databaseReader(){
 
-        val db = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db").build()
+        val dbStats = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db_stats").build()
         var playerTypeStats: MutableList<PlayerTypeStat>
 
         Thread {
 
-            playerTypeStats = db.playerTypeStatDAO().getAll().toMutableList()
+            playerTypeStats = dbStats.playerTypeStatDAO().getAll().toMutableList()
 
             runOnUiThread {
 
@@ -68,7 +68,7 @@ class StatsActivity : AppCompatActivity() {
 
             }
 
-            db.close()
+            dbStats.close()
 
         }.start()
 
@@ -76,7 +76,7 @@ class StatsActivity : AppCompatActivity() {
 
     private fun displayChart(humanVictories: Int, aiVictories: Int){
 
-        val chart: PieChart = findViewById(R.id.statsChart)
+        val chart: PieChart = this.findViewById(R.id.statsChart)
         val victoryData = ArrayList<PieEntry>(2)
         val setColors = ArrayList<Int>(2)
 

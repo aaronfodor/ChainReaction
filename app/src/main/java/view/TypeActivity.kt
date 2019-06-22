@@ -7,17 +7,17 @@ import android.os.Bundle
 import android.view.WindowManager
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
-import kotlinx.android.synthetic.main.activity_mode.*
+import kotlinx.android.synthetic.main.activity_type.*
 import presenter.AdPresenter
 
 /**
- * Main Activity - entry point
+ * Type Activity - selects the game type to play
  */
-class ModeActivity : AppCompatActivity() {
+class TypeActivity : AppCompatActivity() {
 
     companion object {
-        private const val CLASSIC_GAME = 1
-        private const val DYNAMIC_GAME = 2
+        private const val CUSTOM_GAME = 1
+        private const val RANDOM_GAME = 2
         private const val CAMPAIGN_GAME = 3
     }
 
@@ -30,23 +30,23 @@ class ModeActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_mode)
+        setContentView(R.layout.activity_type)
 
         buttonCampaignGame.setOnClickListener {
-            val intent = Intent(this, StartActivity::class.java)
+            val intent = Intent(this, StartCampaignActivity::class.java)
             intent.putExtra("GameType", CAMPAIGN_GAME)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonClassicGame.setOnClickListener {
-            val intent = Intent(this, StartActivity::class.java)
-            intent.putExtra("GameType", CLASSIC_GAME)
+        buttonCustomGame.setOnClickListener {
+            val intent = Intent(this, StartCustomActivity::class.java)
+            intent.putExtra("GameType", CUSTOM_GAME)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonDynamicGame.setOnClickListener {
-            val intent = Intent(this, StartActivity::class.java)
-            intent.putExtra("GameType", DYNAMIC_GAME)
+        buttonRandomGame.setOnClickListener {
+            val intent = Intent(this, StartCustomActivity::class.java)
+            intent.putExtra("GameType", RANDOM_GAME)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 

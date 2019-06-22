@@ -29,22 +29,23 @@
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.22, 13/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.23, 22/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
-    <string name="title_activity_mode">Game modes</string>
-    <string name="title_custom_game">Customize your game</string>
-    <string name="title_campaign">Go through different challenges</string>
-    <string name="button_classic_game">Classic</string>
-    <string name="button_dynamic_game">Dynamic</string>
+    <string name="title_activity_type">Game types</string>
+    <string name="title_campaign">Campaign game</string>
+    <string name="title_custom_game">Game properties</string>
     <string name="button_campaign_game">Campaign</string>
+    <string name="button_custom_game">Custom</string>
+    <string name="button_random_game">Random</string>
 
-    <string name="title_activity_start">Game settings</string>
     <string name="list_clear">Players cleared</string>
     <string name="maximum_reached">Maximum player number reached</string>
     <string name="not_enough_player">Not enough player to start</string>
     <string name="player_added">Player %1$d\ added</string>
     <string name="buttonAdd">+</string>
     <string name="buttonExtract">-</string>
+    <string name="buttonPrevious"><![CDATA[<]]></string>
+    <string name="buttonNext"><![CDATA[>]]></string>
     <string name="height_show">height: %1$d\</string>
     <string name="width_show">width: %1$d\</string>
     <string name="minimum_size">Minimum size reached</string>

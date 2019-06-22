@@ -22,9 +22,10 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
-import model.db.PlayerTypeStat
-import model.db.PlayerTypeStatsDatabase
+import model.db.stats.PlayerTypeStatsDatabase
 import android.widget.TextSwitcher
+import model.db.DbDefaults
+import model.db.campaign.CampaignDatabase
 
 /**
  * Activity of a game play
@@ -48,7 +49,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     private var currentClickTime: Long  = 0
 
     /**
-     * Default values to generate PlayGround
+     * Default size values to generate PlayGround
      */
     private var height = 7
     private var width = 5
@@ -67,14 +68,24 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val gifEnabled = settings.getBoolean("gif_enabled", true)
         val timeLimit = settings.getBoolean("time_limit", false)
         val players = ArrayList<String>()
+        var gameType = 1
+        var gameMode = 1
+        var campaignLevel = 0
 
         val extras = intent.extras
         if (extras != null) {
+
             height = extras.getInt("PlayGroundHeight")
             width = extras.getInt("PlayGroundWidth")
+            gameType = extras.getInt("GameType")
+            gameMode = extras.getInt("GameMode")
+            campaignLevel = extras.getInt("CampaignLevel")
+
             val number = extras.getInt("number_of_players")
-            for(i in 1..number)
-            players.add(extras.getString(i.toString())!!)
+            for(i in 1..number){
+                players.add(extras.getString(i.toString())!!)
+            }
+
         }
 
         setContentView(R.layout.activity_game)
@@ -89,7 +100,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width)
+        createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width, gameType, gameMode, campaignLevel)
 
         mAdView = findViewById(R.id.gameAdView)
         //loading the advertisement
@@ -100,7 +111,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     /**
      * Creates the presenter with an intent of a NxM dimensional Playground, and sets the onClickListeners on the Fields
      */
-    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, gifEnabled: Boolean, timeLimit: Boolean, height: Int, width: Int){
+    private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, gifEnabled: Boolean, timeLimit: Boolean,
+                              height: Int, width: Int, gameType: Int, gameMode: Int, campaignLevel: Int){
 
         tableLayoutPlayGround = findViewById(R.id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
@@ -144,7 +156,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         }
 
-        presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit)
+        presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit, gameType, gameMode, campaignLevel)
         //start waiting time counting
         previousClickTime = System.currentTimeMillis()
 
@@ -273,7 +285,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Shows the result of the game play, displays GameOverFragment, writes the database
+     * Shows the result of the game play, displays GameOverFragment
      *
      * @param     winnerId          Id of the winner
      * @param     playersData       Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
@@ -294,7 +306,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
             snackBar.setAction("LEAVE") {
                 //leaving the current game play
-                startActivity(Intent(this, ModeActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 this.finish()
             }
             snackBar.show()
@@ -320,9 +332,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             //fragment state is not important for us, state loss is acceptable here
             transaction.commitAllowingStateLoss()
 
-            //update the database
-            databaseUpdater(playersData[playersNumber-1][3], humanVsAiGame)
-
         }
 
         return true
@@ -330,41 +339,69 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Updates the database
+     * Updates statistics the database
      * Increments the overall number of victories of the winner's type and saves it, increments all games counter
+     * Updates campaign database if the game was a campaign game
+     *
      * @param     playerType    Type of the winner. 1 means human, 2 means AI
      * @param     humanVsAiGame True is human and AI played in the game, false otherwise
      */
-    private fun databaseUpdater(playerType: Int, humanVsAiGame: Boolean){
+    override fun statisticsDatabaseUpdater(playerType: Int, humanVsAiGame: Boolean){
 
-        val db = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db").build()
+        val dbStats = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db_stats").build()
 
         Thread {
 
-            val playerTypeStats = db.playerTypeStatDAO().getAll().toMutableList()
+            var playerTypeStats = dbStats.playerTypeStatDAO().getAll().toMutableList()
 
             if(playerTypeStats.isEmpty()){
-                playerTypeStats.add(0, PlayerTypeStat(1,"human",0))
-                playerTypeStats.add(0, PlayerTypeStat(2,"ai",0))
-                playerTypeStats.add(0, PlayerTypeStat(3,"all_games",0))
-                db.playerTypeStatDAO().insert(playerTypeStats[0])
-                db.playerTypeStatDAO().insert(playerTypeStats[1])
-                db.playerTypeStatDAO().insert(playerTypeStats[2])
+                val defaultStats = DbDefaults.statsDatabaseDefaults()
+                for(stat in defaultStats){
+                    dbStats.playerTypeStatDAO().insert(stat)
+                }
+                playerTypeStats = dbStats.playerTypeStatDAO().getAll().toMutableList()
             }
 
             if(humanVsAiGame){
                 when (playerType) {
                     1 -> {
-                        db.playerTypeStatDAO().update(playerTypeStats[0].NumberOfVictories + 1, "human")
+                        dbStats.playerTypeStatDAO().update(playerTypeStats[0].NumberOfVictories + 1, "human")
                     }
                     2 -> {
-                        db.playerTypeStatDAO().update(playerTypeStats[1].NumberOfVictories + 1, "ai")
+                        dbStats.playerTypeStatDAO().update(playerTypeStats[1].NumberOfVictories + 1, "ai")
                     }
                 }
             }
 
-            db.playerTypeStatDAO().update(playerTypeStats[2].NumberOfVictories + 1, "all_games")
-            db.close()
+            dbStats.playerTypeStatDAO().update(playerTypeStats[2].NumberOfVictories + 1, "all_games")
+            dbStats.close()
+
+        }.start()
+
+    }
+
+    /**
+     * Updates campaign database
+     *
+     * @param     campaignLevel Campaign level to save that it has been completed
+     */
+    override fun campaignDatabaseUpdater(campaignLevel: Int){
+
+        val dbCampaign = Room.databaseBuilder(applicationContext, CampaignDatabase::class.java, "db_campaign").build()
+
+        Thread {
+
+            var campaignLevels = dbCampaign.campaignLevelsDAO().getAll().toMutableList()
+
+            if(campaignLevels.isEmpty()){
+                val defaultCampaignStates = DbDefaults.campaignDatabaseDefaults()
+                for(level in defaultCampaignStates){
+                    dbCampaign.campaignLevelsDAO().insert(level)
+                }
+            }
+            dbCampaign.campaignLevelsDAO().completeLevel(true, campaignLevel.toLong())
+            dbCampaign.campaignLevelsDAO().unlockLevel(true, campaignLevel.toLong()+1)
+            dbCampaign.close()
 
         }.start()
 

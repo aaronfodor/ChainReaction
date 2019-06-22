@@ -7,7 +7,10 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import hu.bme.aut.android.chainreaction.R
-import model.db.PlayerTypeStatsDatabase
+import model.db.DbDefaults
+import model.db.campaign.CampaignDatabase
+import model.db.stats.PlayerTypeStat
+import model.db.stats.PlayerTypeStatsDatabase
 
 class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
 
@@ -38,10 +41,25 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
                 .setMessage(getString(R.string.confirm_delete_database))
                 .setPositiveButton(android.R.string.yes) { dialog, which ->
 
-                    val db = Room.databaseBuilder(this.requireContext(), PlayerTypeStatsDatabase::class.java, "db").build()
+                    val dbStats = Room.databaseBuilder(this.requireContext(), PlayerTypeStatsDatabase::class.java, "db_stats").build()
+                    val dbCampaign = Room.databaseBuilder(this.requireContext(), CampaignDatabase::class.java, "db_campaign").build()
+
                     Thread {
-                        db.playerTypeStatDAO().deleteAll()
-                        db.close()
+
+                        dbStats.playerTypeStatDAO().deleteAll()
+                        val defaultStats = DbDefaults.statsDatabaseDefaults()
+                        for(stat in defaultStats){
+                            dbStats.playerTypeStatDAO().insert(stat)
+                        }
+                        dbStats.close()
+
+                        dbCampaign.campaignLevelsDAO().deleteAll()
+                        val defaultCampaignStates = DbDefaults.campaignDatabaseDefaults()
+                        for(level in defaultCampaignStates){
+                            dbCampaign.campaignLevelsDAO().insert(level)
+                        }
+                        dbCampaign.close()
+
                     }.start()
                     deleteDialog = null
                     Snackbar.make(this.activity?.findViewById(android.R.id.content)!!, "Statistics are cleared", Snackbar.LENGTH_SHORT).show()
