@@ -5,6 +5,8 @@ import presenter.task.AILoaderTask
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
@@ -13,11 +15,12 @@ import hu.bme.aut.android.chainreaction.R
 import kotlinx.android.synthetic.main.activity_main.*
 import model.ai.PlayerLogic
 import presenter.AdPresenter
+import presenter.IMainView
 
 /**
  * Main Activity - entry point
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IMainView {
 
     /**
      * Advertisement of the activity
@@ -87,10 +90,41 @@ class MainActivity : AppCompatActivity() {
 
         if(!PlayerLogic.isNeuralNetworkLoaded()){
             //loading the AI component
-            val taskAILoad = AILoaderTask(this, findViewById(android.R.id.content))
+            val taskAILoad = AILoaderTask(this, applicationContext)
             taskAILoad.execute()
         }
 
+    }
+
+    /**
+     * Notifies the user about AI loading result
+     *
+     * @param    isLoaded   True if loaded, false otherwise
+     */
+    override fun loadedAI(isLoaded: Boolean) {
+
+        val view = findViewById<ConstraintLayout>(R.id.constraintLayoutMainActivity)
+
+        if(isLoaded){
+            buttonNewGame.setText(R.string.button_new_game)
+            buttonNewGame.isEnabled = true
+            Snackbar.make(view, R.string.ai_loaded, Snackbar.LENGTH_LONG).show()
+        }
+
+        else{
+            buttonNewGame.setText(R.string.ai_load_error)
+            buttonNewGame.isEnabled = false
+            Snackbar.make(view, R.string.ai_load_error, Snackbar.LENGTH_LONG).show()
+        }
+
+    }
+
+    /**
+     * Notifies the user that AI component is not loaded
+     */
+    override fun notLoadedAI() {
+        buttonNewGame.setText(R.string.button_loading)
+        buttonNewGame.isEnabled = false
     }
 
     /**

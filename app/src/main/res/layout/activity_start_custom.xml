@@ -91,6 +91,14 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonAddAIPlayer"
             app:layout_constraintStart_toEndOf="@+id/tvHeight"/>
     <Button
+            android:id="@+id/buttonRandom"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="@string/buttonRand"
+            android:background="@drawable/menu_button" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayers"
+            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/tvTitleStart"/>
+    <Button
             android:id="@+id/buttonWidthPlus"
             android:layout_width="50dp"
             android:layout_height="35dp"

@@ -15,6 +15,9 @@ import com.google.android.gms.ads.AdView
 import model.db.stats.PlayerTypeStat
 import model.db.stats.PlayerTypeStatsDatabase
 import presenter.AdPresenter
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.data.PieDataSet
 
 class StatsActivity : AppCompatActivity() {
 
@@ -50,19 +53,22 @@ class StatsActivity : AppCompatActivity() {
 
             runOnUiThread {
 
-                val textViewStats = findViewById<TextView>(R.id.textViewStats)
+                val textViewAiVsHumanStats = findViewById<TextView>(R.id.textViewAiVsHumanStats)
                 val textViewWinners = findViewById<TextView>(R.id.textViewWinningStats)
+                val textViewAllStats = findViewById<TextView>(R.id.textViewAllStats)
 
                 if(playerTypeStats.isEmpty()){
-                    textViewStats.text = getString(R.string.empty_db)
+                    textViewAiVsHumanStats.text = getString(R.string.empty_db)
                     textViewWinners.text = ""
+                    textViewAllStats.text = ""
                 }
 
                 else{
                     val humanVictories = playerTypeStats[0].NumberOfVictories
                     val aiVictories = playerTypeStats[1].NumberOfVictories
-                    textViewStats.text = getString(R.string.stats_data, playerTypeStats[2].NumberOfVictories, humanVictories+aiVictories)
+                    textViewAiVsHumanStats.text = getString(R.string.ai_vs_human_stats_data, humanVictories+aiVictories)
                     textViewWinners.text = getString(R.string.winning_data, humanVictories, aiVictories)
+                    textViewAllStats.text = getString(R.string.all_stats_data, playerTypeStats[2].NumberOfVictories)
                     displayChart(humanVictories, aiVictories)
                 }
 
@@ -89,37 +95,45 @@ class StatsActivity : AppCompatActivity() {
         // enable rotation of the chart by touch
         chart.isRotationEnabled = true
         chart.isHighlightPerTapEnabled = true
-        chart.animateY(1000, Easing.EaseInOutQuad)
+        chart.animateY(1500, Easing.EaseInOutQuad)
 
         chart.isDrawHoleEnabled = true
         chart.setHoleColor(resources.getColor(R.color.colorTransparent))
         chart.setTransparentCircleColor(resources.getColor(R.color.colorTransparent))
         chart.setTransparentCircleAlpha(110)
         chart.holeRadius = 58f
-        chart.transparentCircleRadius = 61f
+        chart.transparentCircleRadius = 60f
 
-        val l = chart.legend
-        l.isEnabled = true
-        l.isWordWrapEnabled = true
-        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        l.orientation = Legend.LegendOrientation.VERTICAL
-        l.setDrawInside(false)
-        l.xEntrySpace = 7f
-        l.yEntrySpace = 0f
-        l.yOffset = 0f
-        l.textColor = resources.getColor(R.color.colorMessage)
+        val legend = chart.legend
+        legend.isEnabled = true
+        legend.isWordWrapEnabled = true
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.setDrawInside(false)
+        legend.xEntrySpace = 5f
+        legend.yEntrySpace = 0f
+        legend.yOffset = 0f
+        legend.textColor = resources.getColor(R.color.colorMessage)
+        legend.textSize = 12f
+        legend.formSize = 10f
+        legend.form = Legend.LegendForm.SQUARE
 
-        victoryData.add(PieEntry(humanVictories.toFloat()))
+        victoryData.add(PieEntry(humanVictories.toFloat(), "human"))
         setColors.add(Color.GRAY)
-        victoryData.add(PieEntry(aiVictories.toFloat()))
+        victoryData.add(PieEntry(aiVictories.toFloat(), "AI"))
         setColors.add(Color.BLACK)
 
-        val set = PieDataSet(victoryData, "Victories in percentage")
+        val set = PieDataSet(victoryData, "Victories %")
         set.colors = setColors
+
+        val dataLabels = ArrayList<String>()
+        dataLabels.add("human")
+        dataLabels.add("AI")
 
         val dataSet = PieData(set)
         dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))
+        dataSet.setValueTextSize(12f)
 
         chart.data = dataSet
         chart.invalidate()

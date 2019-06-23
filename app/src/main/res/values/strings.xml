@@ -33,15 +33,15 @@
 
     <string name="title_activity_type">Game types</string>
     <string name="title_campaign">Campaign game</string>
-    <string name="title_custom_game">Game properties</string>
+    <string name="title_custom_game">Custom game</string>
     <string name="button_campaign_game">Campaign</string>
     <string name="button_custom_game">Custom</string>
-    <string name="button_random_game">Random</string>
 
     <string name="list_clear">Players cleared</string>
     <string name="maximum_reached">Maximum player number reached</string>
     <string name="not_enough_player">Not enough player to start</string>
     <string name="player_added">Player %1$d\ added</string>
+    <string name="buttonRand">Random</string>
     <string name="buttonAdd">+</string>
     <string name="buttonExtract">-</string>
     <string name="buttonPrevious"><![CDATA[<]]></string>
@@ -50,9 +50,11 @@
     <string name="width_show">width: %1$d\</string>
     <string name="minimum_size">Minimum size reached</string>
     <string name="maximum_size">Maximum size reached</string>
+    <string name="random_generated">Random configuration generated</string>
 
     <string name="title_activity_stats">Statistics</string>
-    <string name="stats_data">All games played: %1$d\ \n\nAI vs human games played: %2$d\</string>
+    <string name="ai_vs_human_stats_data">AI vs human games played: %1$d\</string>
+    <string name="all_stats_data">Total games played: %1$d\</string>
     <string name="winning_data">human victories: %1$d\ \nAI victories: %2$d\</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>

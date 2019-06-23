@@ -8,6 +8,7 @@ import android.content.Context
 import android.os.AsyncTask
 import hu.bme.aut.android.chainreaction.R
 import org.deeplearning4j.util.ModelSerializer
+import presenter.IMainView
 
 import java.io.IOException
 
@@ -19,17 +20,16 @@ class AILoaderTask
  * GameLogicTask constructor
  *
  * @param   context         Context of the UI thread
- * @param   rootView        View of the UI thread
  */
     (
     /**
+     * The caller activity
+     */
+    val view: IMainView,
+    /**
      * Context of the UI thread
      */
-    internal var context: Context,
-    /**
-     * View of the UI thread
-     */
-    private var rootView: View
+    val context: Context
 ) : AsyncTask<Void, Int, Boolean>() {
 
     /**
@@ -60,27 +60,11 @@ class AILoaderTask
      * @param   result      Result of doInBackground
      */
     override fun onPostExecute(result: Boolean) {
-
-        val btn = rootView.findViewById<Button>(R.id.buttonNewGame)
-
-        if(result){
-            btn.setText(R.string.button_new_game)
-            btn.isEnabled = true
-            Snackbar.make(rootView, R.string.ai_loaded, Snackbar.LENGTH_LONG).show()
-        }
-
-        else{
-            btn.setText(R.string.ai_load_error)
-            btn.isEnabled = false
-            Snackbar.make(rootView, R.string.ai_load_error, Snackbar.LENGTH_LONG).show()
-        }
-
+        view.loadedAI(result)
     }
 
     override fun onPreExecute() {
-        val btn = rootView.findViewById<Button>(R.id.buttonNewGame)
-        btn.setText(R.string.button_loading)
-        btn.isEnabled = false
+        view.notLoadedAI()
     }
 
     override fun onProgressUpdate(vararg values: Int?) {}

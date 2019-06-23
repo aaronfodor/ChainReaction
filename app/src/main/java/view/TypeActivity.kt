@@ -17,8 +17,7 @@ class TypeActivity : AppCompatActivity() {
 
     companion object {
         private const val CUSTOM_GAME = 1
-        private const val RANDOM_GAME = 2
-        private const val CAMPAIGN_GAME = 3
+        private const val CAMPAIGN_GAME = 2
     }
 
     /**
@@ -41,12 +40,6 @@ class TypeActivity : AppCompatActivity() {
         buttonCustomGame.setOnClickListener {
             val intent = Intent(this, StartCustomActivity::class.java)
             intent.putExtra("GameType", CUSTOM_GAME)
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-        }
-
-        buttonRandomGame.setOnClickListener {
-            val intent = Intent(this, StartCustomActivity::class.java)
-            intent.putExtra("GameType", RANDOM_GAME)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 

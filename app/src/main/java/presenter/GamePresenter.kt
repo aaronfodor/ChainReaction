@@ -64,8 +64,7 @@ class GamePresenter
          * Game type constants
          */
         private const val CUSTOM_GAME = 1
-        private const val RANDOM_GAME = 2
-        private const val CAMPAIGN_GAME = 3
+        private const val CAMPAIGN_GAME = 2
 
         /**
          * Game mode constants

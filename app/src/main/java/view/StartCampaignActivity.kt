@@ -18,12 +18,13 @@ import presenter.PlayerVisualRepresentation
 import java.util.*
 
 /**
- * Activity of settings of game play
+ * Activity of starting a campaign game play
  */
 class StartCampaignActivity : AppCompatActivity() {
 
     companion object {
-        private const val CAMPAIGN_GAME = 3
+        private const val CAMPAIGN_GAME = 2
+
         private const val NORMAL_MODE = 1
         private const val DYNAMIC_MODE = 2
     }

@@ -13,33 +13,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
-import presenter.PlayerListAdapter
-import presenter.PlayerListData
 import kotlinx.android.synthetic.main.activity_start_custom.*
-import presenter.AdPresenter
-import presenter.PlayerVisualRepresentation
-import java.util.*
+import presenter.*
 
 /**
- * Activity of settings of game play
+ * Activity of creating a custom game play
  */
-class StartCustomActivity : AppCompatActivity() {
+class StartCustomActivity : AppCompatActivity(), IStartCustomView {
 
     companion object {
-        private const val MAXIMUM_SIZE = 20
-        private const val MINIMUM_SIZE = 3
-        private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
-        private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
         private const val CUSTOM_GAME = 1
-        private const val RANDOM_GAME = 2
+
         private const val NORMAL_MODE = 1
         private const val DYNAMIC_MODE = 2
     }
 
-    private var playGroundHeight = 7
-    private var playGroundWidth = 5
-    private var playerListData = ArrayList<PlayerListData>()
-    private lateinit var adapter: PlayerListAdapter
+    /**
+     * presenter of the view
+     */
+    private lateinit var presenter: StartCustomPresenter
+
     private var gameType = CUSTOM_GAME
     private var gameMode = NORMAL_MODE
 
@@ -57,152 +50,76 @@ class StartCustomActivity : AppCompatActivity() {
         val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCustomView)
         gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
 
-        val extras = intent.extras
-        if (extras != null) {
-
-            gameType = extras.getInt("GameType")
-            when (gameType) {
-                CUSTOM_GAME -> {
-                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
-                }
-                RANDOM_GAME -> {
-                    gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_random))
-                    //TODO random property generating
-                }
-                else -> {}
-            }
-
-        }
+        presenter = StartCustomPresenter(this, this.applicationContext)
 
         val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
         addHumanPlayerButton.setOnClickListener {
-
-            if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
-                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"human", imageAdder(adapter.itemCount+1)))
-                Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (adapter.itemCount)), Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
-            }
-
+            presenter.addHumanPlayer()
         }
 
         val addAIPlayerButton = findViewById<Button>(R.id.buttonAddAIPlayer)
         addAIPlayerButton.setOnClickListener {
-
-            if(adapter.itemCount < MAXIMUM_ALLOWED_PLAYER_NUMBER){
-                adapter.addItem(PlayerListData("Player " + (adapter.itemCount+1).toString(),"AI", imageAdder(adapter.itemCount+1)))
-                Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (adapter.itemCount)), Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
-            }
-
+            presenter.addAIPlayer()
         }
 
         val clearPlayersButton = findViewById<Button>(R.id.buttonClearPlayers)
         clearPlayersButton.setOnClickListener {
-            adapter.clear()
-            Snackbar.make(recyclerViewPlayers, R.string.list_clear, Snackbar.LENGTH_LONG).show()
+            presenter.clearPlayers()
         }
 
         val startGameButton = findViewById<Button>(R.id.buttonStartGame)
         startGameButton.setOnClickListener {
 
-            if(adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START){
+            if(presenter.canGameBeStarted()){
 
                 val myIntent = Intent(this, GameActivity::class.java)
-                myIntent.putExtra("number_of_players", adapter.itemCount)
-                myIntent.putExtra("PlayGroundHeight", playGroundHeight)
-                myIntent.putExtra("PlayGroundWidth", playGroundWidth)
+                myIntent.putExtra("number_of_players", presenter.getPlayerCount())
+                myIntent.putExtra("PlayGroundHeight", presenter.getPlayGroundHeight())
+                myIntent.putExtra("PlayGroundWidth", presenter.getPlayGroundWidth())
                 myIntent.putExtra("GameType", gameType)
                 myIntent.putExtra("GameMode", gameMode)
                 myIntent.putExtra("CampaignLevel", 0)
 
-                for(i in 0 until adapter.itemCount){
-                    myIntent.putExtra((i+1).toString(), adapter.stringElementAt(i))
+                for(i in 0 until presenter.getPlayerCount()){
+                    myIntent.putExtra((i+1).toString(), presenter.getPlayerStringElementAt(i))
                 }
 
                 startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
             }
 
-            else{
-                Snackbar.make(recyclerViewPlayers, R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
-            }
-
         }
-
-        adapter = PlayerListAdapter(applicationContext, playerListData)
-        adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
-        adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlayers)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        recyclerView.adapter = presenter.getAdapter()
 
-        val heightTextView = findViewById<TextView>(R.id.tvHeight)
-        heightTextView.text = getString(R.string.height_show, playGroundHeight)
-
-        val widthTextView = findViewById<TextView>(R.id.tvWidth)
-        widthTextView.text = getString(R.string.width_show, playGroundWidth)
+        updateHeightText(presenter.getPlayGroundHeight())
+        updateWidthText(presenter.getPlayGroundWidth())
 
         val heightPlusButton = findViewById<Button>(R.id.buttonHeightPlus)
         heightPlusButton.setOnClickListener {
-
-            if(playGroundHeight == MAXIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                playGroundHeight++
-                heightTextView.text = getString(R.string.height_show, playGroundHeight)
-            }
-
+            presenter.heightPlus()
         }
 
         val heightMinusButton = findViewById<Button>(R.id.buttonHeightMinus)
         heightMinusButton.setOnClickListener {
-
-            if(playGroundHeight == MINIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                playGroundHeight--
-                heightTextView.text = getString(R.string.height_show, playGroundHeight)
-            }
-
+            presenter.heightMinus()
         }
 
         val widthPlusButton = findViewById<Button>(R.id.buttonWidthPlus)
         widthPlusButton.setOnClickListener {
-
-            if(playGroundWidth == MAXIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                playGroundWidth++
-                widthTextView.text = getString(R.string.width_show, playGroundWidth)
-            }
-
+            presenter.widthPlus()
         }
 
         val widthMinusButton = findViewById<Button>(R.id.buttonWidthMinus)
         widthMinusButton.setOnClickListener {
+            presenter.widthMinus()
+        }
 
-            if(playGroundWidth == MINIMUM_SIZE){
-                Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
-            }
-
-            else{
-                playGroundWidth--
-                widthTextView.text = getString(R.string.width_show, playGroundWidth)
-            }
-
+        val randomButton = findViewById<Button>(R.id.buttonRandom)
+        randomButton.setOnClickListener {
+            presenter.randomConfig()
         }
 
         mAdView = findViewById(R.id.startCustomAdView)
@@ -211,8 +128,75 @@ class StartCustomActivity : AppCompatActivity() {
 
     }
 
-    private fun imageAdder(Id: Int): Int {
-        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1, false)
+    /**
+     * Shows the user that a Player has been added
+     *
+     * @param   playerNumber    Id of the Player
+     */
+    override fun playerAdded(playerNumber: Int){
+        Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (playerNumber)), Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Shows the user that Players list is full
+     */
+    override fun playersFull(){
+        Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
+    }
+
+    /**
+     * Shows the user that Players list has been cleared
+     */
+    override fun playersCleared(){
+        Snackbar.make(recyclerViewPlayers, R.string.list_clear, Snackbar.LENGTH_LONG).show()
+    }
+
+    /**
+     * Shows the user that there are not enough Players to start
+     */
+    override fun notEnoughPlayer(){
+        Snackbar.make(recyclerViewPlayers, R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
+    }
+
+    /**
+     * Shows the user that maximum size has been reached
+     */
+    override fun maximumSizeReached(){
+        Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Shows the user that minimum size has been reached
+     */
+    override fun minimumSizeReached(){
+        Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Shows the user that random generating happened
+     */
+    override fun randomGenerated(){
+        Snackbar.make(recyclerViewPlayers, R.string.random_generated, Snackbar.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Shows the user the current height
+     *
+     * @param    value          Height value to show
+     */
+    override fun updateHeightText(value: Int){
+        val heightTextView = findViewById<TextView>(R.id.tvHeight)
+        heightTextView.text = getString(R.string.width_show, value)
+    }
+
+    /**
+     * Shows the user the current width
+     *
+     * @param    value          Width value to show
+     */
+    override fun updateWidthText(value: Int){
+        val widthTextView = findViewById<TextView>(R.id.tvWidth)
+        widthTextView.text = getString(R.string.width_show, value)
     }
 
     /**
