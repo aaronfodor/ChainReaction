@@ -21,10 +21,11 @@ interface IGameView {
     /**
      * Shows whose turn is now
      *
-     * @param    Id          Id of the current Player
-     * @return    boolean     True if succeed, false otherwise
+     * @param       Id          Id of the current Player
+     * @param       showAI      True means the current is an AI Player, false means human
+     * @return      boolean     True if succeed, false otherwise
      */
-    fun showCurrentPlayer(Id: Int): Boolean
+    fun showCurrentPlayer(Id: Int, showAI: Boolean): Boolean
 
     /**
      * Shows a message from the Presenter
@@ -48,9 +49,10 @@ interface IGameView {
      * Shows the start text from the Presenter
      *
      * @param       Id          Id of the current Player
+     * @param       showAI      True means the current is an AI Player, false means human
      * @return      boolean     True if succeed, false otherwise
      */
-    fun showStart(Id: Int): Boolean
+    fun showStart(Id: Int, showAI: Boolean): Boolean
 
     /**
      * Refresh the progress bar state with the given value

@@ -59,6 +59,7 @@ class GamePresenter
          * Type of the HUMAN Players
          */
         private const val HUMAN = 1
+        private const val AI = 2
 
         /**
          * Game type constants
@@ -131,7 +132,7 @@ class GamePresenter
         }
 
         this.refreshPlayground(SHOW_CURRENT_PLAYGROUND_STATE)
-        view.showStart(Integer.valueOf(players[0][0]!!))
+        view.showStart(Integer.valueOf(players[0][0]!!), model.actualPlayerType == AI)
 
         gameTask = GameLogicTask(model, this, showPropagation, limitedTimeMode)
         gameTask!!.cancel(true)
@@ -188,7 +189,7 @@ class GamePresenter
         else {
             stateMatrix = model.currentPlaygroundInfo()
             refreshPlaygroundFields(dimension, stateMatrix)
-            view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
+            view.showCurrentPlayer(Math.abs(model.actualPlayerId!!), model.actualPlayerType == AI)
         }
 
         timeLeftCalculator(propagation_depth)
@@ -204,7 +205,7 @@ class GamePresenter
     private fun handleGameOver() {
 
         val stateMatrix = model.currentPlaygroundInfo()
-        view.showCurrentPlayer(Math.abs(model.actualPlayerId!!))
+        view.showCurrentPlayer(Math.abs(model.actualPlayerId!!), model.actualPlayerType == AI)
         view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
         refreshPlaygroundFields(model.getDimension(), stateMatrix)
 

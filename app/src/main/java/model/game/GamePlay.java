@@ -484,7 +484,7 @@ public class GamePlay implements IGameModel {
     /**
      * Returns the Type of the current Player
      *
-     * @return 	Integer     Type of the current Player - 1 means human, 2 means AI
+     * @return 	Integer     Type of the current Player: 1 means human, 2 means AI
      */
     public Integer getActualPlayerType(){
         return players.get(current_player_index).getTypeId();

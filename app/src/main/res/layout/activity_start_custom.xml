@@ -95,9 +95,9 @@
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:text="@string/buttonRand"
-            android:background="@drawable/menu_button" android:layout_marginEnd="8dp"
+            android:background="@drawable/menu_button"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayers"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/tvTitleStart"/>
+            app:layout_constraintTop_toTopOf="@+id/recyclerViewPlayers"/>
     <Button
             android:id="@+id/buttonWidthPlus"
             android:layout_width="50dp"
@@ -168,9 +168,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/gameTypeStartCustomView"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@+id/recyclerViewPlayers" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/recyclerViewPlayers"
             app:layout_constraintEnd_toStartOf="@+id/recyclerViewPlayers"/>
 
 </android.support.constraint.ConstraintLayout>

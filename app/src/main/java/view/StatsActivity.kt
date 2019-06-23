@@ -16,7 +16,6 @@ import model.db.stats.PlayerTypeStat
 import model.db.stats.PlayerTypeStatsDatabase
 import presenter.AdPresenter
 import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.data.PieDataSet
 
 class StatsActivity : AppCompatActivity() {
@@ -95,7 +94,7 @@ class StatsActivity : AppCompatActivity() {
         // enable rotation of the chart by touch
         chart.isRotationEnabled = true
         chart.isHighlightPerTapEnabled = true
-        chart.animateY(1500, Easing.EaseInOutQuad)
+        chart.animateY(1000, Easing.EaseInOutQuad)
 
         chart.isDrawHoleEnabled = true
         chart.setHoleColor(resources.getColor(R.color.colorTransparent))

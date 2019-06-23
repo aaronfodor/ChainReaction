@@ -29,7 +29,7 @@
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.23, 22/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.24, 23/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_type">Game types</string>
     <string name="title_campaign">Campaign game</string>
@@ -58,6 +58,7 @@
     <string name="winning_data">human victories: %1$d\ \nAI victories: %2$d\</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
+    <string name="player_ai_turn">Player %1$d\'s turn [AI]</string>
     <string name="winner_text">Player %1$d\ is the winner!</string>
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>

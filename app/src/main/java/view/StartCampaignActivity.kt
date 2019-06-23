@@ -50,6 +50,9 @@ class StartCampaignActivity : AppCompatActivity() {
         val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCampaignView)
         gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_campaign))
 
+        val isLevelCompletedView = findViewById<ImageView>(R.id.isCompletedLevelView)
+        isLevelCompletedView.setImageDrawable(resources.getDrawable(R.drawable.uncompleted))
+
         val startGameButton = findViewById<Button>(R.id.buttonStartCampaignGame)
         startGameButton.setOnClickListener {
 
@@ -74,6 +77,12 @@ class StartCampaignActivity : AppCompatActivity() {
         adapter = PlayerListAdapter(applicationContext, playerListData)
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
+        adapter.addItem(PlayerListData("Player 3", "AI", imageAdder(3)))
+        adapter.addItem(PlayerListData("Player 4", "AI", imageAdder(4)))
+        adapter.addItem(PlayerListData("Player 5", "AI", imageAdder(5)))
+        adapter.addItem(PlayerListData("Player 6", "AI", imageAdder(6)))
+        adapter.addItem(PlayerListData("Player 7", "AI", imageAdder(7)))
+        adapter.addItem(PlayerListData("Player 8", "AI", imageAdder(8)))
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCampaignPlayers)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -84,6 +93,12 @@ class StartCampaignActivity : AppCompatActivity() {
 
         val widthTextView = findViewById<TextView>(R.id.tvCampaignWidth)
         widthTextView.text = getString(R.string.width_show, playGroundWidth)
+
+        val currentLevelView = findViewById<TextView>(R.id.tvCurrentLevel)
+        currentLevelView.text = "Level 1"
+
+        val gamePlayableImageView = findViewById<ImageView>(R.id.ivGamePlayable)
+        gamePlayableImageView.setImageDrawable(resources.getDrawable(R.drawable.locked))
 
         mAdView = findViewById(R.id.startCampaignAdView)
         //loading the advertisement

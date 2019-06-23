@@ -237,12 +237,21 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Shows whose turn is now
      *
      * @param       Id          Id of the current Player
+     * @param       showAI      True means the current is an AI Player, false means human
      * @return      boolean     True if succeed, false otherwise
      */
-    override fun showCurrentPlayer(Id: Int): Boolean {
+    override fun showCurrentPlayer(Id: Int, showAI: Boolean): Boolean {
 
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
-        infoText.setText(getString(R.string.player_turn, Id))
+
+        if(showAI){
+            infoText.setText(getString(R.string.player_ai_turn, Id))
+        }
+
+        else{
+            infoText.setText(getString(R.string.player_turn, Id))
+        }
+
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
         return true
@@ -275,11 +284,20 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Shows the start text from the Presenter
      *
      * @param       Id          Id of the current Player
+     * @param       showAI      True means the current is an AI Player, false means human
      * @return      boolean     True if succeed, false otherwise
      */
-    override fun showStart(Id: Int): Boolean {
+    override fun showStart(Id: Int, showAI: Boolean): Boolean {
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
-        infoText.setText(getString(R.string.player_turn, Id))
+
+        if(showAI){
+            infoText.setText(getString(R.string.player_ai_turn, Id))
+        }
+
+        else{
+            infoText.setText(getString(R.string.player_turn, Id))
+        }
+
         Snackbar.make(tableLayoutPlayGround, R.string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
     }

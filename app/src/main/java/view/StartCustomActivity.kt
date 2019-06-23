@@ -186,7 +186,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      */
     override fun updateHeightText(value: Int){
         val heightTextView = findViewById<TextView>(R.id.tvHeight)
-        heightTextView.text = getString(R.string.width_show, value)
+        heightTextView.text = getString(R.string.height_show, value)
     }
 
     /**
