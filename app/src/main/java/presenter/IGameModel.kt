@@ -118,13 +118,6 @@ interface IGameModel {
     fun isGameEnded(): Boolean
 
     /**
-     * Returns the type of the winner
-     *
-     * @return    String     AI or human
-     */
-    fun winnerType(): String
-
-    /**
      * Triggers the AI Players to step in their order
      * Sets the current Player Id to the actual Player's Id
      *

@@ -47,10 +47,10 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start_custom)
 
+        presenter = StartCustomPresenter(this, this.applicationContext)
+
         val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCustomView)
         gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
-
-        presenter = StartCustomPresenter(this, this.applicationContext)
 
         val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
         addHumanPlayerButton.setOnClickListener {
@@ -78,7 +78,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
                 myIntent.putExtra("PlayGroundWidth", presenter.getPlayGroundWidth())
                 myIntent.putExtra("GameType", gameType)
                 myIntent.putExtra("GameMode", gameMode)
-                myIntent.putExtra("CampaignLevel", 0)
+                myIntent.putExtra("ChallengeLevel", 0)
 
                 for(i in 0 until presenter.getPlayerCount()){
                     myIntent.putExtra((i+1).toString(), presenter.getPlayerStringElementAt(i))

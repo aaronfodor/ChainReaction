@@ -66,7 +66,7 @@ class StatsActivity : AppCompatActivity() {
                     val humanVictories = playerTypeStats[0].NumberOfVictories
                     val aiVictories = playerTypeStats[1].NumberOfVictories
                     textViewAiVsHumanStats.text = getString(R.string.ai_vs_human_stats_data, humanVictories+aiVictories)
-                    textViewWinners.text = getString(R.string.winning_data, humanVictories, aiVictories)
+                    textViewWinners.text = getString(R.string.victory_data, humanVictories, aiVictories)
                     textViewAllStats.text = getString(R.string.all_stats_data, playerTypeStats[2].NumberOfVictories)
                     displayChart(humanVictories, aiVictories)
                 }

@@ -25,7 +25,7 @@ import hu.bme.aut.android.chainreaction.R
 import model.db.stats.PlayerTypeStatsDatabase
 import android.widget.TextSwitcher
 import model.db.DbDefaults
-import model.db.campaign.CampaignDatabase
+import model.db.challenge.ChallengeDatabase
 
 /**
  * Activity of a game play
@@ -79,7 +79,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             width = extras.getInt("PlayGroundWidth")
             gameType = extras.getInt("GameType")
             gameMode = extras.getInt("GameMode")
-            campaignLevel = extras.getInt("CampaignLevel")
+            campaignLevel = extras.getInt("ChallengeLevel")
 
             val number = extras.getInt("number_of_players")
             for(i in 1..number){
@@ -308,6 +308,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @param     winnerId          Id of the winner
      * @param     playersData       Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
+     * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
      * @return    boolean           True if succeed, false otherwise
      */
     override fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean): Boolean {
@@ -320,14 +321,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         if(currentText.text != text){
 
             infoText.setText(text)
-
-            val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
-            snackBar.setAction("LEAVE") {
-                //leaving the current game play
-                startActivity(Intent(this, MainActivity::class.java))
-                this.finish()
-            }
-            snackBar.show()
 
             val playersNumber = playersData.size
             val bundle = Bundle()
@@ -399,27 +392,41 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
     }
 
     /**
-     * Updates campaign database
+     * Updates challenge database
      *
-     * @param     campaignLevel Campaign level to save that it has been completed
+     * @param     challengeLevelId   Challenge level Id to save that it has been completed
      */
-    override fun campaignDatabaseUpdater(campaignLevel: Int){
+    override fun challengeDatabaseUpdater(challengeLevelId: Int) {
 
-        val dbCampaign = Room.databaseBuilder(applicationContext, CampaignDatabase::class.java, "db_campaign").build()
+        val dbChallenge = Room.databaseBuilder(applicationContext, ChallengeDatabase::class.java, "db_challenge").build()
 
         Thread {
 
-            var campaignLevels = dbCampaign.campaignLevelsDAO().getAll().toMutableList()
+            val challengeLevels = dbChallenge.challengeLevelsDAO().getAll().toMutableList()
 
-            if(campaignLevels.isEmpty()){
-                val defaultCampaignStates = DbDefaults.campaignDatabaseDefaults()
-                for(level in defaultCampaignStates){
-                    dbCampaign.campaignLevelsDAO().insert(level)
+            if(challengeLevels.isEmpty()){
+                val defaultChallengeStates = DbDefaults.challengeDatabaseDefaults()
+                for(level in defaultChallengeStates){
+                    dbChallenge.challengeLevelsDAO().insert(level)
                 }
             }
-            dbCampaign.campaignLevelsDAO().completeLevel(true, campaignLevel.toLong())
-            dbCampaign.campaignLevelsDAO().unlockLevel(true, campaignLevel.toLong()+1)
-            dbCampaign.close()
+            dbChallenge.challengeLevelsDAO().completeLevel(true, challengeLevelId.toLong())
+
+            //if the last campaign level is not reached
+            if(challengeLevels.last().Id > challengeLevelId){
+                dbChallenge.challengeLevelsDAO().unlockLevel(true, challengeLevelId.toLong()+1)
+                runOnUiThread {
+                    presenter.newCampaignLevelUnlocked()
+                }
+            }
+
+            else{
+                runOnUiThread {
+                    presenter.allChallengesCompleted()
+                }
+            }
+
+            dbChallenge.close()
 
         }.start()
 
@@ -452,6 +459,67 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             .setNegativeButton(android.R.string.no, null)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
+    }
+
+    /**
+     * Shows the game over message
+     */
+    override fun showEndOfGameMessage() {
+
+        val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction("LEAVE") {
+            //leaving the current game play
+            startActivity(Intent(this, MainActivity::class.java))
+            this.finish()
+        }
+        snackBar.show()
+
+    }
+
+    /**
+     * Shows the restart campaign message
+     */
+    override fun showRestartChallengeLevelMessage() {
+
+        val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.challenge_level_failed, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction("RESTART") {
+            //restart the current game play
+            val intent = intent
+            this.finish()
+            startActivity(intent)
+        }
+        snackBar.show()
+
+    }
+
+    /**
+     * Shows the next campaign message
+     */
+    override fun showNextChallengeLevelMessage() {
+
+        val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.challenge_level_completed, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction("NEXT") {
+            //going to the next level
+            startActivity(Intent(this, StartChallengeActivity::class.java))
+            this.finish()
+        }
+        snackBar.show()
+
+    }
+
+    /**
+     * Shows the all campaigns completed message
+     */
+    override fun showAllChallengesCompletedMessage() {
+
+        val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.all_challenges_completed, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction("LEAVE") {
+            //leaving the current game play
+            startActivity(Intent(this, MainActivity::class.java))
+            this.finish()
+        }
+        snackBar.show()
+
     }
 
     /**

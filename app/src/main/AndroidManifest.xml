@@ -35,25 +35,32 @@
         <activity
                 android:name="view.StatsActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_activity_stats"/>
+                android:label="@string/title_activity_stats"
+                android:screenOrientation="portrait"/>
 
         <activity
                 android:name="view.StartCustomActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_custom_game"/>
+                android:label="@string/title_custom_game"
+                android:screenOrientation="portrait"
+                android:noHistory="true"/>
 
         <activity
-                android:name="view.StartCampaignActivity"
+                android:name="view.StartChallengeActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_campaign"/>
+                android:label="@string/title_challenge"
+                android:screenOrientation="portrait"
+                android:noHistory="true"/>
 
         <activity
                 android:name="view.TypeActivity"
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:label="@string/title_activity_type"/>
+                android:label="@string/title_activity_type"
+                android:screenOrientation="portrait"/>
 
         <activity android:name="view.MainActivity"
-                  android:theme="@style/Theme.AppCompat.NoActionBar">
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW" />

@@ -8,8 +8,7 @@ import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import hu.bme.aut.android.chainreaction.R
 import model.db.DbDefaults
-import model.db.campaign.CampaignDatabase
-import model.db.stats.PlayerTypeStat
+import model.db.challenge.ChallengeDatabase
 import model.db.stats.PlayerTypeStatsDatabase
 
 class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
@@ -42,7 +41,7 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
                 .setPositiveButton(android.R.string.yes) { dialog, which ->
 
                     val dbStats = Room.databaseBuilder(this.requireContext(), PlayerTypeStatsDatabase::class.java, "db_stats").build()
-                    val dbCampaign = Room.databaseBuilder(this.requireContext(), CampaignDatabase::class.java, "db_campaign").build()
+                    val dbChallenge = Room.databaseBuilder(this.requireContext(), ChallengeDatabase::class.java, "db_challenge").build()
 
                     Thread {
 
@@ -53,12 +52,12 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
                         }
                         dbStats.close()
 
-                        dbCampaign.campaignLevelsDAO().deleteAll()
-                        val defaultCampaignStates = DbDefaults.campaignDatabaseDefaults()
-                        for(level in defaultCampaignStates){
-                            dbCampaign.campaignLevelsDAO().insert(level)
+                        dbChallenge.challengeLevelsDAO().deleteAll()
+                        val defaultChallengeStates = DbDefaults.challengeDatabaseDefaults()
+                        for(level in defaultChallengeStates){
+                            dbChallenge.challengeLevelsDAO().insert(level)
                         }
-                        dbCampaign.close()
+                        dbChallenge.close()
 
                     }.start()
                     deleteDialog = null

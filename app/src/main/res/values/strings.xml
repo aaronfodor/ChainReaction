@@ -23,18 +23,18 @@
     <string name="label_time_limit_off">Player has no time limit to step</string>
     <string name="label_time_limit_on">Player has limited time to step</string>
     <string name="setting_delete_database">Delete statistics</string>
-    <string name="confirm_delete_database">Are you sure you want to delete the database?</string>
+    <string name="confirm_delete_database">Are you sure you want to delete the database?\n\nAll statistics and challenge data will be lost.</string>
     <string name="confirm_delete">Confirm delete</string>
     <string name="empty_db">Statistics are empty</string>
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.24, 23/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.25, 25/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_type">Game types</string>
-    <string name="title_campaign">Campaign game</string>
+    <string name="title_challenge">Challenge game</string>
     <string name="title_custom_game">Custom game</string>
-    <string name="button_campaign_game">Campaign</string>
+    <string name="button_challenge_game">Challenge</string>
     <string name="button_custom_game">Custom</string>
 
     <string name="list_clear">Players cleared</string>
@@ -51,17 +51,21 @@
     <string name="minimum_size">Minimum size reached</string>
     <string name="maximum_size">Maximum size reached</string>
     <string name="random_generated">Random configuration generated</string>
+    <string name="level_locked">This level has not been unlocked yet</string>
 
     <string name="title_activity_stats">Statistics</string>
     <string name="ai_vs_human_stats_data">AI vs human games played: %1$d\</string>
     <string name="all_stats_data">Total games played: %1$d\</string>
-    <string name="winning_data">human victories: %1$d\ \nAI victories: %2$d\</string>
+    <string name="victory_data">human victories: %1$d\ \nAI victories: %2$d\</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
     <string name="player_ai_turn">Player %1$d\'s turn [AI]</string>
     <string name="winner_text">Player %1$d\ is the winner!</string>
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
+    <string name="challenge_level_failed">Failed to complete this level</string>
+    <string name="challenge_level_completed">Challenge level completed!</string>
+    <string name="all_challenges_completed">All challenge levels are completed!</string>
     <string name="game_over_data">Winner type: %1$s\ \n\nNumber of rounds: %2$d\ \n\nAvg. step time of Players [ms]</string>
     <string name="type_ai">AI</string>
     <string name="type_human">human</string>

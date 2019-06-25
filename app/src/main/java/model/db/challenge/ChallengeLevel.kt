@@ -1,10 +1,10 @@
-package model.db.campaign
+package model.db.challenge
 
 import android.arch.persistence.room.*
 import java.io.Serializable
 
 @Entity
-data class CampaignLevel(
+data class ChallengeLevel(
     @PrimaryKey(autoGenerate = true)
     var Id: Long = 0,
     @ColumnInfo(name = "level_name")

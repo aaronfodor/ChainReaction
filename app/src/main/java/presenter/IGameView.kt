@@ -72,10 +72,30 @@ interface IGameView {
     fun statisticsDatabaseUpdater(playerType: Int, humanVsAiGame: Boolean)
 
     /**
-     * Updates campaign database
+     * Updates challenge database
      *
-     * @param     campaignLevel Campaign level to save that it has been completed
+     * @param     challengeLevelId   Challenge level Id to save that it has been completed
      */
-    fun campaignDatabaseUpdater(campaignLevel: Int)
+    fun challengeDatabaseUpdater(challengeLevelId: Int)
+
+    /**
+     * Shows the game over message
+     */
+    fun showEndOfGameMessage()
+
+    /**
+     * Shows the restart campaign message
+     */
+    fun showRestartChallengeLevelMessage()
+
+    /**
+     * Shows the next campaign message
+     */
+    fun showNextChallengeLevelMessage()
+
+    /**
+     * Shows the all campaigns completed message
+     */
+    fun showAllChallengesCompletedMessage()
 
 }

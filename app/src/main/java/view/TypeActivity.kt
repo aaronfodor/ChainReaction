@@ -15,11 +15,6 @@ import presenter.AdPresenter
  */
 class TypeActivity : AppCompatActivity() {
 
-    companion object {
-        private const val CUSTOM_GAME = 1
-        private const val CAMPAIGN_GAME = 2
-    }
-
     /**
      * Advertisement of the activity
      */
@@ -31,15 +26,13 @@ class TypeActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_type)
 
-        buttonCampaignGame.setOnClickListener {
-            val intent = Intent(this, StartCampaignActivity::class.java)
-            intent.putExtra("GameType", CAMPAIGN_GAME)
+        buttonChallengeGame.setOnClickListener {
+            val intent = Intent(this, StartChallengeActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonCustomGame.setOnClickListener {
             val intent = Intent(this, StartCustomActivity::class.java)
-            intent.putExtra("GameType", CUSTOM_GAME)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 

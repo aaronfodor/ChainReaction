@@ -455,24 +455,6 @@ public class GamePlay implements IGameModel {
     }
 
     /**
-     * Returns the type of the winner
-     *
-     * @return 	String     AI or human
-     */
-    @NotNull
-    public String winnerType(){
-
-        if(players.get(winner_Id).executeStep() != null){
-            return "AI";
-        }
-
-        else{
-            return "human";
-        }
-
-    }
-
-    /**
      * Returns the Id of the current Player
      *
      * @return 	Integer     Id of the current Player

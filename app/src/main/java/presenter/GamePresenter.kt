@@ -41,7 +41,7 @@ class GamePresenter
     /**
      * Game mode and campaign level flags
      */
-    private val gameMode: Int, private val campaignLevel: Int
+    private val gameMode: Int, private val challengeLevel: Int
 ) {
 
     companion object {
@@ -65,7 +65,7 @@ class GamePresenter
          * Game type constants
          */
         private const val CUSTOM_GAME = 1
-        private const val CAMPAIGN_GAME = 2
+        private const val CHALLENGE_GAME = 2
 
         /**
          * Game mode constants
@@ -199,7 +199,7 @@ class GamePresenter
     /**
      * Shows game over state properly
      * Updates statistics database
-     * Updates campaign database if the gameMode flag is CAMPAIGN_GAME
+     * Updates campaign database if the gameMode flag is CAMPAIGN_GAME and the winner is a human
      * Sets resultDisplayed flag true
      */
     private fun handleGameOver() {
@@ -209,10 +209,24 @@ class GamePresenter
         view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
         refreshPlaygroundFields(model.getDimension(), stateMatrix)
 
-        //update the databases
+        //update the statistics database
         view.statisticsDatabaseUpdater(model.playersData!![model.playersData!!.size - 1][3], model.isAiVsHumanGame())
-        if (gameMode == CAMPAIGN_GAME) {
-            view.campaignDatabaseUpdater(campaignLevel)
+
+        if(gameType == CUSTOM_GAME){
+            view.showEndOfGameMessage()
+        }
+
+        else if(gameType == CHALLENGE_GAME){
+
+            //update the campaign database if the game was a campaign game and human Player is the winner
+            if (model.actualPlayerType == HUMAN) {
+                view.challengeDatabaseUpdater(challengeLevel)
+            }
+
+            else{
+                view.showRestartChallengeLevelMessage()
+            }
+
         }
 
         resultDisplayed = true
@@ -315,6 +329,20 @@ class GamePresenter
      */
     fun isResultDisplayed(): Boolean {
         return resultDisplayed
+    }
+
+    /**
+     * A new challenge level unlocked notification
+     */
+    fun newCampaignLevelUnlocked(){
+        view.showNextChallengeLevelMessage()
+    }
+
+    /**
+     * All challenge levels completed notification
+     */
+    fun allChallengesCompleted(){
+        view.showAllChallengesCompletedMessage()
     }
 
 }
