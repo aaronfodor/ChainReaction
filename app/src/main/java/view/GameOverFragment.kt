@@ -27,7 +27,7 @@ class GameOverFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_gameover, container, false)
+        val view = inflater.inflate(R.layout.fragment_game_over, container, false)
 
         val bundle = this.arguments
         if(bundle != null){
@@ -94,6 +94,12 @@ class GameOverFragment : Fragment() {
 
     }
 
+    /**
+     * Shows confetti falling on the screen
+     *
+     * @param     winnerColorId     Color Id of the winner Player to show the confetti with
+     * @param     view              The view which contains the confetti element
+     */
     private fun buildConfetti(view: View, winnerColorId: Int){
         val confetti: KonfettiView = view.findViewById(R.id.viewConfetti)
         confetti.build()
