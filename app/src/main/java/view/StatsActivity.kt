@@ -9,6 +9,7 @@ import com.google.android.gms.ads.AdView
 import presenter.AdPresenter
 import android.support.v4.view.ViewPager
 import presenter.StatisticsSlidePagerAdapter
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 
 class StatsActivity : AppCompatActivity() {
 
@@ -40,8 +41,9 @@ class StatsActivity : AppCompatActivity() {
         mPagerTitles.setupWithViewPager(mPager)
 
         // The pager adapter, which provides the pages to the view pager widget
-        val pagerAdapter = StatisticsSlidePagerAdapter(supportFragmentManager)
+        val pagerAdapter = StatisticsSlidePagerAdapter(supportFragmentManager, getString(R.string.statistics), getString(R.string.challenge))
         mPager.adapter = pagerAdapter
+        mPager.setPageTransformer(true, CubeOutTransformer())
 
         mAdView = this.findViewById(R.id.statsAdView)
         //loading the advertisement

@@ -57,6 +57,15 @@
     <string name="ai_vs_human_stats_data">AI vs human games played: %1$d\</string>
     <string name="all_stats_data">Total games played: %1$d\</string>
     <string name="victory_data">human victories: %1$d\ \nAI victories: %2$d\</string>
+    <string name="victories_chart_label">Victories %</string>
+    <string name="step_time_chart_label">Avg. step time of Players</string>
+    <string name="statistics">Statistics</string>
+    <string name="challenge">Challenge</string>
+    <string name="empty_challenge_db">Challenge data not available</string>
+    <string name="all_levels_available">All levels in challenge mode: %1$d\</string>
+    <string name="levels_completed_left">completed: %1$d\ \nleft: %2$d\</string>
+    <string name="all_levels_completed">All levels completed!</string>
+    <string name="levels_completed_chart_label">Levels completed</string>
 
     <string name="player_turn">Player %1$d\'s turn</string>
     <string name="player_ai_turn">Player %1$d\'s turn [AI]</string>
@@ -64,8 +73,8 @@
     <string name="start_game">Click to start the game</string>
     <string name="game_over">End of the game</string>
     <string name="challenge_level_failed">Failed to complete this level</string>
-    <string name="challenge_level_completed">Challenge level completed!</string>
-    <string name="all_challenges_completed">All challenge levels are completed!</string>
+    <string name="challenge_level_completed">Level completed!</string>
+    <string name="all_challenges_completed">All levels are completed!</string>
     <string name="game_over_data">Winner type: %1$s\ \n\nNumber of rounds: %2$d\ \n\nAvg. step time of Players [ms]</string>
     <string name="type_ai">AI</string>
     <string name="type_human">human</string>

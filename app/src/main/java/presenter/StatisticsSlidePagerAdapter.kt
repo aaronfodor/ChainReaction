@@ -9,7 +9,10 @@ import view.StatisticsFragment
 /**
      * A pager adapter that represents 2 Fragment objects (StatisticsFragment, ChallengeFragment) in sequence
      */
-    class StatisticsSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+    class StatisticsSlidePagerAdapter(fm: FragmentManager, statsLabel: String, challengeLabel: String) : FragmentStatePagerAdapter(fm) {
+
+        private val statsLabel = statsLabel
+        private val challengeLabel = challengeLabel
 
         override fun getCount(): Int = 2
 
@@ -29,8 +32,8 @@ import view.StatisticsFragment
         override fun getPageTitle(position: Int): CharSequence {
 
             when(position){
-                0 -> return "Statistics"
-                1 -> return "Challenge"
+                0 -> return statsLabel
+                1 -> return challengeLabel
             }
 
             return ""

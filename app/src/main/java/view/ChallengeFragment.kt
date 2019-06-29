@@ -9,12 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.HorizontalBarChart
 import hu.bme.aut.android.chainreaction.R
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
-import model.db.stats.PlayerTypeStat
-import model.db.stats.PlayerTypeStatsDatabase
+import model.db.challenge.ChallengeDatabase
+import model.db.challenge.ChallengeLevel
 
 class ChallengeFragment : Fragment() {
 
@@ -32,32 +33,52 @@ class ChallengeFragment : Fragment() {
      */
     private fun challengeDatabaseReader(view: View){
 
-        val dbChallenge = Room.databaseBuilder(activity!!.applicationContext, PlayerTypeStatsDatabase::class.java, "db_stats").build()
-        var playerTypeStats: MutableList<PlayerTypeStat>
+        val dbChallenge = Room.databaseBuilder(activity!!.applicationContext, ChallengeDatabase::class.java, "db_challenge").build()
+        var challengeLevels: MutableList<ChallengeLevel>
 
         Thread {
 
-            playerTypeStats = dbChallenge.playerTypeStatDAO().getAll().toMutableList()
+            challengeLevels = dbChallenge.challengeLevelsDAO().getAll().toMutableList()
 
             activity!!.runOnUiThread {
 
-                val textViewAiVsHumanStats = view.findViewById<TextView>(R.id.textViewAiVsHumanStats)
-                val textViewWinners = view.findViewById<TextView>(R.id.textViewWinningStats)
-                val textViewAllStats = view.findViewById<TextView>(R.id.textViewAllStats)
+                val textViewAllLevels = view.findViewById<TextView>(R.id.textViewAllLevels)
+                val textViewCompletedLevels = view.findViewById<TextView>(R.id.textViewCompletedLevels)
+                val textViewIsAllLevelsCompleted = view.findViewById<TextView>(R.id.textViewIsAllLevelsCompleted)
 
-                if(playerTypeStats.isEmpty()){
-                    textViewAiVsHumanStats.text = getString(R.string.empty_db)
-                    textViewWinners.text = ""
-                    textViewAllStats.text = ""
+                if(challengeLevels.isEmpty()){
+                    textViewAllLevels.text = getString(R.string.empty_challenge_db)
+                    textViewCompletedLevels.text = ""
+                    textViewIsAllLevelsCompleted.text = ""
                 }
 
                 else{
-                    val humanVictories = playerTypeStats[0].NumberOfVictories
-                    val aiVictories = playerTypeStats[1].NumberOfVictories
-                    textViewAiVsHumanStats.text = getString(R.string.ai_vs_human_stats_data, humanVictories+aiVictories)
-                    textViewWinners.text = getString(R.string.victory_data, humanVictories, aiVictories)
-                    textViewAllStats.text = getString(R.string.all_stats_data, playerTypeStats[2].NumberOfVictories)
-                    displayChallengeChart(view, humanVictories, aiVictories)
+
+                    var levelsCompleted = 0
+                    var levelsLeft = 0
+
+                    for (level in challengeLevels){
+
+                        if(level.Completed){
+                            levelsCompleted++
+                        }
+                        else{
+                            levelsLeft++
+                        }
+
+                    }
+
+                    textViewAllLevels.text = getString(R.string.all_levels_available, levelsCompleted+levelsLeft)
+                    textViewCompletedLevels.text = getString(R.string.levels_completed_left, levelsCompleted, levelsLeft)
+
+                    if(levelsLeft == 0){
+                        textViewIsAllLevelsCompleted.text = getString(R.string.all_levels_completed)
+                    }
+                    else{
+                        textViewIsAllLevelsCompleted.text = ""
+                    }
+
+                    displayChallengeChart(view, levelsCompleted, levelsLeft)
                 }
 
             }
@@ -72,39 +93,41 @@ class ChallengeFragment : Fragment() {
      * Shows the challenge chart
      *
      * @param     view              The view containing the chart
-     * @param     humanVictories    Number of human victories
-     * @param     aiVictories       Number of AI victories
+     * @param     levelsCompleted   Levels completed
+     * @param     levelsLeft        Levels left
      */
-    private fun displayChallengeChart(view: View, humanVictories: Int, aiVictories: Int){
+    private fun displayChallengeChart(view: View, levelsCompleted: Int, levelsLeft: Int){
 
-        val chart: PieChart = view.findViewById(R.id.statsChart)
-        val victoryData = ArrayList<PieEntry>(2)
-        val setColors = ArrayList<Int>(2)
+        val chart: HorizontalBarChart = view.findViewById(R.id.challengeChart)
+        val levelData = ArrayList<BarEntry>(1)
+        val setColor = ArrayList<Int>(1)
 
-        chart.tag = "AI vs human victories"
         chart.description.isEnabled = false
-        chart.setUsePercentValues(true)
         chart.setExtraOffsets(5.toFloat(), 10.toFloat(), 5.toFloat(), 5.toFloat())
         chart.dragDecelerationFrictionCoef = 0.95f
-        chart.rotationAngle = 0.toFloat()
-        // enable rotation of the chart by touch
-        chart.isRotationEnabled = true
         chart.isHighlightPerTapEnabled = true
         chart.animateY(1000, Easing.EaseInOutQuad)
+        chart.setPinchZoom(false)
+        chart.setScaleEnabled(false)
+        chart.isDoubleTapToZoomEnabled = false
+        chart.setFitBars(true)
 
-        chart.isDrawHoleEnabled = true
-        chart.setHoleColor(resources.getColor(R.color.colorTransparent))
-        chart.setTransparentCircleColor(resources.getColor(R.color.colorTransparent))
-        chart.setTransparentCircleAlpha(110)
-        chart.holeRadius = 58f
-        chart.transparentCircleRadius = 60f
+        chart.axisRight.textColor = resources.getColor(R.color.colorMessage)
+        chart.axisRight.axisMinimum = 0f
+        chart.axisRight.axisMaximum = (levelsCompleted+levelsLeft).toFloat()
+
+        chart.axisLeft.setDrawLabels(false)
+        chart.axisLeft.axisMinimum = 0f
+        chart.axisLeft.axisMaximum = (levelsCompleted+levelsLeft).toFloat()
+
+        chart.xAxis.setDrawLabels(false)
 
         val legend = chart.legend
         legend.isEnabled = true
         legend.isWordWrapEnabled = true
         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
         legend.setDrawInside(false)
         legend.xEntrySpace = 5f
         legend.yEntrySpace = 0f
@@ -114,19 +137,16 @@ class ChallengeFragment : Fragment() {
         legend.formSize = 10f
         legend.form = Legend.LegendForm.SQUARE
 
-        victoryData.add(PieEntry(humanVictories.toFloat(), "human"))
-        setColors.add(Color.GRAY)
-        victoryData.add(PieEntry(aiVictories.toFloat(), "AI"))
-        setColors.add(Color.BLACK)
+        levelData.add(BarEntry(levelsCompleted.toFloat(), (levelsCompleted).toFloat()))
+        setColor.add(Color.GRAY)
 
-        val set = PieDataSet(victoryData, "Victories %")
-        set.colors = setColors
+        val set = BarDataSet(levelData, getString(R.string.levels_completed_chart_label))
+        set.colors = setColor
 
         val dataLabels = ArrayList<String>()
-        dataLabels.add("human")
-        dataLabels.add("AI")
+        dataLabels.add(getString(R.string.levels_completed_chart_label))
 
-        val dataSet = PieData(set)
+        val dataSet = BarData(set)
         dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))
         dataSet.setValueTextSize(12f)
 

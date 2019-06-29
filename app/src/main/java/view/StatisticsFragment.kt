@@ -114,17 +114,17 @@ class StatisticsFragment : Fragment() {
         legend.formSize = 10f
         legend.form = Legend.LegendForm.SQUARE
 
-        victoryData.add(PieEntry(humanVictories.toFloat(), "human"))
+        victoryData.add(PieEntry(humanVictories.toFloat(), getString(R.string.type_human)))
         setColors.add(Color.GRAY)
-        victoryData.add(PieEntry(aiVictories.toFloat(), "AI"))
+        victoryData.add(PieEntry(aiVictories.toFloat(), getString(R.string.type_ai)))
         setColors.add(Color.BLACK)
 
-        val set = PieDataSet(victoryData, "Victories %")
+        val set = PieDataSet(victoryData, getString(R.string.victories_chart_label))
         set.colors = setColors
 
         val dataLabels = ArrayList<String>()
-        dataLabels.add("human")
-        dataLabels.add("AI")
+        dataLabels.add(getString(R.string.type_human))
+        dataLabels.add(getString(R.string.type_ai))
 
         val dataSet = PieData(set)
         dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))

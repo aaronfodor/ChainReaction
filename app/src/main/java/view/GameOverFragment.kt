@@ -41,7 +41,7 @@ class GameOverFragment : Fragment() {
             val timeData = ArrayList<BarEntry>()
             val setColors = ArrayList<Int>(playersNumber)
 
-            chart.tag = "Avg. step time of Players"
+            chart.tag = getString(R.string.step_time_chart_label)
             chart.description.isEnabled = false
             chart.legend.isEnabled = false
             chart.setFitBars(true)

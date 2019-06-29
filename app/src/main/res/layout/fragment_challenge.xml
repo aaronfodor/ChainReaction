@@ -22,7 +22,7 @@
             tools:showIn="@layout/fragment_challenge">
 
         <TextView
-                android:id="@+id/textViewAiVsHumanStats"
+                android:id="@+id/textViewAllLevels"
                 android:textColor="@color/colorMessage"
                 android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
@@ -34,10 +34,10 @@
                 android:layout_marginEnd="8dp"
                 android:paddingTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/textViewWinningStats"/>
+                app:layout_constraintBottom_toTopOf="@+id/textViewCompletedLevels"/>
 
         <TextView
-                android:id="@+id/textViewWinningStats"
+                android:id="@+id/textViewCompletedLevels"
                 android:textColor="@color/colorMessage"
                 android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
@@ -50,10 +50,10 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/statsChart"/>
+                app:layout_constraintBottom_toTopOf="@+id/challengeChart"/>
 
-        <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/statsChart"
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/challengeChart"
                 android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
                 android:layout_height="360dp"
@@ -67,7 +67,7 @@
                 android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-                android:id="@+id/textViewAllStats"
+                android:id="@+id/textViewIsAllLevelsCompleted"
                 android:textColor="@color/colorMessage"
                 android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
@@ -77,7 +77,7 @@
                 android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statsChart"/>
+                app:layout_constraintTop_toBottomOf="@+id/challengeChart"/>
 
     </android.support.constraint.ConstraintLayout>
 
