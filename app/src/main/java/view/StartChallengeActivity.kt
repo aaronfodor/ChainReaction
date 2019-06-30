@@ -1,26 +1,21 @@
 package view
 
-import android.app.ActivityOptions
 import android.arch.persistence.room.Room
-import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
-import android.widget.Button
-import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
+import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chainreaction.R
-import kotlinx.android.synthetic.main.activity_start_challenge.*
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
-import presenter.IStartChallengeView
-import presenter.StartChallengePresenter
+import presenter.LevelSlidePagerAdapter
 import presenter.AdPresenter
+import presenter.IStartChallengeView
 
 /**
  * Activity of starting a challenge game play
@@ -34,13 +29,23 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
         private const val DYNAMIC_MODE = 2
     }
 
-    /**
-     * presenter of the view
-     */
-    private lateinit var presenter: StartChallengePresenter
-
     private var gameType = CHALLENGE_GAME
     private var gameMode = NORMAL_MODE
+
+    /**
+     * The pager adapter
+     */
+    private lateinit var pagerAdapter: LevelSlidePagerAdapter
+
+    /**
+     * The pager widget, which handles animation and allows swiping horizontally to access previous and next fragments
+     */
+    private lateinit var mPager: ViewPager
+
+    /**
+     * The pager titles
+     */
+    private lateinit var mPagerTitles: TabLayout
 
     /**
      * Advertisement of the activity
@@ -53,47 +58,15 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start_challenge)
 
-        presenter = StartChallengePresenter(this, this.applicationContext)
-
-        val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCampaignView)
-        gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_challenge))
-
-        val previousLevelButton = findViewById<Button>(R.id.buttonPreviousLevel)
-        previousLevelButton.setOnClickListener {
-            presenter.levelMinus()
-        }
-
-        val nextLevelButton = findViewById<Button>(R.id.buttonNextLevel)
-        nextLevelButton.setOnClickListener {
-            presenter.levelPlus()
-        }
-
-        val startGameButton = findViewById<Button>(R.id.buttonStartChallengeGame)
-        startGameButton.setOnClickListener {
-
-            if(presenter.canGameBeStarted()){
-
-                val myIntent = Intent(this, GameActivity::class.java)
-                myIntent.putExtra("number_of_players", presenter.getPlayerCount())
-                myIntent.putExtra("PlayGroundHeight", presenter.getPlayGroundHeight())
-                myIntent.putExtra("PlayGroundWidth", presenter.getPlayGroundWidth())
-                myIntent.putExtra("GameType", gameType)
-                myIntent.putExtra("GameMode", gameMode)
-                myIntent.putExtra("ChallengeLevel", presenter.getChallengeLevelIndex())
-
-                for(i in 0 until presenter.getPlayerCount()){
-                    myIntent.putExtra((i+1).toString(), presenter.getPlayerStringElementAt(i))
-                }
-
-                startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-
-            }
-
-        }
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewChallengePlayers)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = presenter.getAdapter()
+        // The pager adapter, which provides the pages to the view pager widget
+        pagerAdapter = LevelSlidePagerAdapter(this, this, supportFragmentManager)
+        //Instantiate a ViewPager
+        mPager = findViewById(R.id.levelsPager)
+        //bring to front to make snack bar visible even when ad is shown
+        mPager.bringToFront()
+        //Instantiate the titles shown in the ViewPager
+        mPagerTitles = findViewById(R.id.levelPagerTitles)
+        mPagerTitles.setupWithViewPager(mPager)
 
         mAdView = findViewById(R.id.startChallengeAdView)
         //loading the advertisement
@@ -123,79 +96,14 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
 
             dbChallenge.close()
 
-            runOnUiThread { presenter.setChallengeLevels(challengeLevels) }
+            runOnUiThread {
+                pagerAdapter.setChallengeLevels(challengeLevels)
+                mPager.adapter = pagerAdapter
+                mPager.setPageTransformer(true, CubeOutTransformer())
+            }
 
         }.start()
 
-    }
-
-    /**
-     * Shows the user that level can be played
-     */
-    override fun showUnlocked() {
-        val gamePlayableImageView = findViewById<ImageView>(R.id.ivGamePlayable)
-        gamePlayableImageView.setImageDrawable(resources.getDrawable(R.drawable.unlocked))
-    }
-
-    /**
-     * Shows the user that level is locked
-     */
-    override fun showLocked() {
-        val gamePlayableImageView = findViewById<ImageView>(R.id.ivGamePlayable)
-        gamePlayableImageView.setImageDrawable(resources.getDrawable(R.drawable.locked))
-    }
-
-    /**
-     * Shows the user that level has been completed
-     */
-    override fun showCompleted() {
-        val isLevelCompletedView = findViewById<ImageView>(R.id.isCompletedLevelView)
-        isLevelCompletedView.setImageDrawable(resources.getDrawable(R.drawable.completed))
-    }
-
-    /**
-     * Shows the user that level is not completed
-     */
-    override fun showUncompleted() {
-        val isLevelCompletedView = findViewById<ImageView>(R.id.isCompletedLevelView)
-        isLevelCompletedView.setImageDrawable(resources.getDrawable(R.drawable.uncompleted))
-    }
-
-    /**
-     * Shows the user the current height
-     *
-     * @param    value          Height value to show
-     */
-    override fun updateHeightText(value: Int) {
-        val heightTextView = findViewById<TextView>(R.id.tvChallengeHeight)
-        heightTextView.text = getString(R.string.height_show, value)
-    }
-
-    /**
-     * Shows the user the current width
-     *
-     * @param    value          Width value to show
-     */
-    override fun updateWidthText(value: Int) {
-        val widthTextView = findViewById<TextView>(R.id.tvChallengeWidth)
-        widthTextView.text = getString(R.string.width_show, value)
-    }
-
-    /**
-     * Shows the user the current level
-     *
-     * @param    value          Current level name
-     */
-    override fun updateCurrentLevelText(value: String) {
-        val currentLevelView = findViewById<TextView>(R.id.tvCurrentLevel)
-        currentLevelView.text = value
-    }
-
-    /**
-     * Reminds the user that the current level is not completed
-     */
-    override fun showLockedReminder(){
-        Snackbar.make(recyclerViewChallengePlayers, R.string.level_locked, Snackbar.LENGTH_SHORT).show()
     }
 
     /**

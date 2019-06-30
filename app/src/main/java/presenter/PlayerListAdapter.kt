@@ -79,7 +79,6 @@ class PlayerListAdapter
         val imageView: ImageView = itemView.findViewById(R.id.imageViewPlayer)
         val nameView: TextView = itemView.findViewById(R.id.nameView)
         val typeView: TextView = itemView.findViewById(R.id.typeView)
-        private val playerHolder: CardView = itemView.findViewById(R.id.cvPlayerHolder)
 
     }
 

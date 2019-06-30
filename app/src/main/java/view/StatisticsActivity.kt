@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager
 import presenter.StatisticsSlidePagerAdapter
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 
-class StatsActivity : AppCompatActivity() {
+class StatisticsActivity : AppCompatActivity() {
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous and next fragments
@@ -32,7 +32,7 @@ class StatsActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_stats)
+        setContentView(R.layout.activity_statistics)
 
         //Instantiate a ViewPager
         mPager = findViewById(R.id.statsPager)

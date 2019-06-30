@@ -4,10 +4,11 @@
      xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:tools="http://schemas.android.com/tools"
      xmlns:ads="http://schemas.android.com/apk/res-auto"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
      android:background="@drawable/background_img"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
-     tools:context="view.StatsActivity"
+     tools:context="view.StatisticsActivity"
      android:id="@+id/viewStatisticsActivity">
 
     <android.support.v4.view.ViewPager
@@ -18,7 +19,7 @@
         <android.support.design.widget.TabLayout
                 android:id="@+id/statsPagerTitles"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
     </android.support.v4.view.ViewPager >
 

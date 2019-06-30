@@ -70,7 +70,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         val players = ArrayList<String>()
         var gameType = 1
         var gameMode = 1
-        var campaignLevel = 0
+        var challengeLevelId = 0
 
         val extras = intent.extras
         if (extras != null) {
@@ -79,7 +79,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             width = extras.getInt("PlayGroundWidth")
             gameType = extras.getInt("GameType")
             gameMode = extras.getInt("GameMode")
-            campaignLevel = extras.getInt("ChallengeLevel")
+            challengeLevelId = extras.getInt("ChallengeLevelId")
 
             val number = extras.getInt("number_of_players")
             for(i in 1..number){
@@ -100,7 +100,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width, gameType, gameMode, campaignLevel)
+        createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width, gameType, gameMode, challengeLevelId)
 
         mAdView = findViewById(R.id.gameAdView)
         //loading the advertisement
@@ -112,7 +112,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Creates the presenter with an intent of a NxM dimensional Playground, and sets the onClickListeners on the Fields
      */
     private fun createNxMGame(players: ArrayList<String>, showPropagation: Boolean, gifEnabled: Boolean, timeLimit: Boolean,
-                              height: Int, width: Int, gameType: Int, gameMode: Int, campaignLevel: Int){
+                              height: Int, width: Int, gameType: Int, gameMode: Int, challengeLevelId: Int){
 
         tableLayoutPlayGround = findViewById(R.id.TableLayoutPlayGround)
         tableLayoutPlayGround.setBackgroundColor(Color.BLACK)
@@ -156,7 +156,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         }
 
-        presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit, gameType, gameMode, campaignLevel)
+        presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit, gameType, gameMode, challengeLevelId)
         //start waiting time counting
         previousClickTime = System.currentTimeMillis()
 

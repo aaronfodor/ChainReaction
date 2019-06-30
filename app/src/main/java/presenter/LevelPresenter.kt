@@ -5,19 +5,19 @@ import model.db.challenge.ChallengeLevel
 import java.util.ArrayList
 
 /**
- * presenter of start campaign game
- * Reads challenge database and displays its state
+ * presenter of level fragment
  * Controls the Players list and it's adapter
  */
-class StartChallengePresenter (
+class LevelPresenter (
     /**
      * MVP view
      */
-    private val view: IStartChallengeView,
+    private val view: IStartLevelView,
     /**
      * the context of the adapter
      */
-    context: Context
+    context: Context,
+    private val level: ChallengeLevel
 ) {
 
     companion object {
@@ -30,55 +30,18 @@ class StartChallengePresenter (
     private var playerListData = ArrayList<PlayerListData>()
     private var adapter: PlayerListAdapter
 
-    /**
-     * The campaign levels in a list
-     */
-    private var currentSelectedLevel = 0
-
-    /**
-     * The campaign levels in a list
-     */
-    private var challengeLevels : MutableList<ChallengeLevel> = arrayListOf()
-
     init {
-
         adapter = PlayerListAdapter(context, playerListData)
-        view.challengeDatabaseReader()
-        currentSelectedLevel = findHighestUnlocked(challengeLevels)
-        setCurrentLevelTo(currentSelectedLevel)
-
+        setDisplayedLevelTo(level)
     }
 
-    private fun findHighestUnlocked(levels: MutableList<ChallengeLevel>) : Int{
-
-        var highestUnlocked = 0
-
-        for(i in 0..(levels.size-1)){
-
-            if(levels[i].Playable){
-                highestUnlocked = i
-            }
-
-        }
-
-        return highestUnlocked
-
-    }
-
-    private fun setCurrentLevelTo(levelIdx: Int){
-
-        if(challengeLevels.isEmpty()){
-            return
-        }
-
-        val levelInfo = challengeLevels[levelIdx]
+    private fun setDisplayedLevelTo(levelInfo: ChallengeLevel){
 
         playGroundHeight = levelInfo.Height
         playGroundWidth = levelInfo.Width
 
         view.updateHeightText(playGroundHeight)
         view.updateWidthText(playGroundWidth)
-        view.updateCurrentLevelText(levelInfo.LevelName)
 
         clearPlayers()
 
@@ -108,12 +71,6 @@ class StartChallengePresenter (
             view.showUncompleted()
         }
 
-    }
-
-    fun setChallengeLevels(levelsList : MutableList<ChallengeLevel>){
-        challengeLevels = levelsList
-        currentSelectedLevel = findHighestUnlocked(challengeLevels)
-        setCurrentLevelTo(currentSelectedLevel)
     }
 
     /**
@@ -148,7 +105,7 @@ class StartChallengePresenter (
      */
     fun canGameBeStarted() : Boolean {
 
-        return if (adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START && challengeLevels[currentSelectedLevel].Playable){
+        return if (adapter.itemCount >= MINIMUM_PLAYER_NUMBER_TO_START && level.Playable){
             true
         }
         else{
@@ -209,39 +166,8 @@ class StartChallengePresenter (
      *
      * @return  Int	    Id of the current challenge level
      */
-    fun getChallengeLevelIndex() : Int {
-        return currentSelectedLevel+1
-    }
-
-    /**
-     * Increments the current level if maximum is not reached
-     */
-    fun levelPlus(){
-
-        if(currentSelectedLevel >= (challengeLevels.size-1)){
-        }
-
-        else{
-            currentSelectedLevel++
-            setCurrentLevelTo(currentSelectedLevel)
-
-        }
-
-    }
-
-    /**
-     * Decrements the current level if minimum is not reached
-     */
-    fun levelMinus(){
-
-        if(currentSelectedLevel <= 0){
-        }
-
-        else{
-            currentSelectedLevel--
-            setCurrentLevelTo(currentSelectedLevel)
-        }
-
+    fun getChallengeLevelId() : Int {
+        return level.Id.toInt()
     }
 
     /**

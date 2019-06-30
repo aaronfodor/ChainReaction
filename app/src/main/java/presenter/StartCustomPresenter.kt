@@ -29,12 +29,12 @@ class StartCustomPresenter (
 
     private var playGroundHeight = 7
     private var playGroundWidth = 5
-    private var playerListData = ArrayList<PlayerListData>()
+    private var playersListData = ArrayList<PlayerListData>()
     private var adapter: PlayerListAdapter
 
     init {
 
-        adapter = PlayerListAdapter(context, playerListData)
+        adapter = PlayerListAdapter(context, playersListData)
         adapter.addItem(PlayerListData("Player 1", "human", imageAdder(1)))
         adapter.addItem(PlayerListData("Player 2", "AI", imageAdder(2)))
 

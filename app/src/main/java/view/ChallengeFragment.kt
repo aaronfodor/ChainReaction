@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import hu.bme.aut.android.chainreaction.R
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import model.db.challenge.ChallengeDatabase

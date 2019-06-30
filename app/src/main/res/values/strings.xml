@@ -29,7 +29,7 @@
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
 
     <string name="title_about">About</string>
-    <string name="about">Chain Reaction\nv0.26, 28/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
+    <string name="about">Chain Reaction\nv0.27, 30/06/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com</string>
 
     <string name="title_activity_type">Game types</string>
     <string name="title_challenge">Challenge game</string>
@@ -42,10 +42,9 @@
     <string name="not_enough_player">Not enough player to start</string>
     <string name="player_added">Player %1$d\ added</string>
     <string name="buttonRand">Random</string>
+    <string name="level">Level</string>
     <string name="buttonAdd">+</string>
     <string name="buttonExtract">-</string>
-    <string name="buttonPrevious"><![CDATA[<]]></string>
-    <string name="buttonNext"><![CDATA[>]]></string>
     <string name="height_show">height: %1$d\</string>
     <string name="width_show">width: %1$d\</string>
     <string name="minimum_size">Minimum size reached</string>
