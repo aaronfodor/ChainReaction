@@ -2,7 +2,9 @@ package presenter
 
 import android.content.Context
 import android.support.v7.widget.CardView
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +34,7 @@ class PlayerListAdapter
      * the actual list of PlayerListData objects
      */
     private val list_data: ArrayList<PlayerListData>
-) : RecyclerView.Adapter<PlayerListAdapter.ViewHolder>() {
+) : Adapter<PlayerListAdapter.ViewHolder>() {
 
     /**
      * last position

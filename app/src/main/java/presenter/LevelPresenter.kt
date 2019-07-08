@@ -1,6 +1,7 @@
 package presenter
 
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import model.db.challenge.ChallengeLevel
 import java.util.ArrayList
 
@@ -18,7 +19,7 @@ class LevelPresenter (
      */
     context: Context,
     private val level: ChallengeLevel
-) {
+) : RecyclerView.AdapterDataObserver() {
 
     companion object {
         private const val MAXIMUM_ALLOWED_PLAYER_NUMBER = 8
@@ -32,6 +33,7 @@ class LevelPresenter (
 
     init {
         adapter = PlayerListAdapter(context, playerListData)
+        adapter.registerAdapterDataObserver(this)
         setDisplayedLevelTo(level)
     }
 

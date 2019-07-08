@@ -9,7 +9,7 @@ import model.db.stats.PlayerTypeStat
 object DbDefaults {
 
     /**
-     * Campaign database defaults in a mutable list
+     * Challenge database defaults in a mutable list
      *
      * @return  MutableList<ChallengeLevel>     The mutable list values to fill the default campaign database with
      */

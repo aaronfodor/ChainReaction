@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.view.WindowManager
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 import com.google.android.gms.ads.AdView
@@ -15,12 +14,11 @@ import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
 import presenter.LevelSlidePagerAdapter
 import presenter.AdPresenter
-import presenter.IStartChallengeView
 
 /**
  * Activity of starting a challenge game play
  */
-class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
+class StartChallengeActivity : AppCompatActivity() {
 
     companion object {
         private const val CHALLENGE_GAME = 2
@@ -58,8 +56,6 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_start_challenge)
 
-        // The pager adapter, which provides the pages to the view pager widget
-        pagerAdapter = LevelSlidePagerAdapter(this, this, supportFragmentManager)
         //Instantiate a ViewPager
         mPager = findViewById(R.id.levelsPager)
         //bring to front to make snack bar visible even when ad is shown
@@ -72,12 +68,14 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
         //loading the advertisement
         AdPresenter.loadAd(mAdView)
 
+        challengeDatabaseReader()
+
     }
 
     /**
      * Reads the challenge database, saves it into a list, then passes it to the view
      */
-    override fun challengeDatabaseReader() {
+    private fun challengeDatabaseReader() {
 
         val dbChallenge = Room.databaseBuilder(applicationContext, ChallengeDatabase::class.java, "db_challenge").build()
         var challengeLevels : MutableList<ChallengeLevel>
@@ -97,7 +95,8 @@ class StartChallengeActivity : AppCompatActivity(), IStartChallengeView {
             dbChallenge.close()
 
             runOnUiThread {
-                pagerAdapter.setChallengeLevels(challengeLevels)
+                // The pager adapter, which provides the pages to the view pager widget
+                pagerAdapter = LevelSlidePagerAdapter(challengeLevels, this, supportFragmentManager)
                 mPager.adapter = pagerAdapter
                 mPager.setPageTransformer(true, CubeOutTransformer())
             }

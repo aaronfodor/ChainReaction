@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity(), IMainView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        //Set the startup screen - make sure this is before calling super.onCreate
+        setTheme(R.style.defaultScreenTheme)
+
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)

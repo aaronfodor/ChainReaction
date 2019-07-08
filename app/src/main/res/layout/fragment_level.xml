@@ -22,22 +22,6 @@
             tools:context=".LevelFragment"
             tools:showIn="@layout/fragment_level">
 
-        <TextView
-                android:text="@string/title_challenge"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorMessage"
-                android:id="@+id/tvTitleStartChallenge"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"/>
-
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewChallengePlayers"
                 android:layout_width="180dp"
@@ -50,7 +34,7 @@
                 android:transcriptMode="alwaysScroll"
                 android:stackFromBottom="true"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitleStartChallenge"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
         <Button
                 android:id="@+id/buttonStartChallengeGame"
@@ -97,13 +81,6 @@
                 ads:layout_constraintTop_toTopOf="@+id/recyclerViewChallengePlayers"
                 ads:layout_constraintStart_toEndOf="@+id/recyclerViewChallengePlayers"
                 ads:layout_constraintEnd_toEndOf="parent"/>
-
-        <android.support.constraint.Guideline
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintGuide_percent="0.05"
-                android:id="@+id/levelGuideline"/>
 
     </android.support.constraint.ConstraintLayout>
 

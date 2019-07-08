@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="KEY_COORDINATES">2</string>
+    <string name="KEY_CURRENT_IMAGE">3</string>
+
+</resources>

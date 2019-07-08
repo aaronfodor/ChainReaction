@@ -33,9 +33,9 @@ class LevelFragment: Fragment(), IStartLevelView {
      */
     private lateinit var presenter: LevelPresenter
 
-    private lateinit var myView: View
+    private var myView: View? = null
 
-    private lateinit var level: ChallengeLevel
+    private var level = ChallengeLevel()
 
     private var gameType = CHALLENGE_GAME
     private var gameMode = NORMAL_MODE
@@ -44,9 +44,9 @@ class LevelFragment: Fragment(), IStartLevelView {
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_level, container, false)
 
-        presenter = LevelPresenter(this, this.requireContext(), level)
+        presenter = LevelPresenter(this, this.context!!, level)
 
-        val startGameButton = myView.findViewById<Button>(R.id.buttonStartChallengeGame)
+        val startGameButton = myView?.findViewById<Button>(R.id.buttonStartChallengeGame)
         startGameButton?.setOnClickListener {
 
             if(presenter.canGameBeStarted()){
@@ -69,9 +69,9 @@ class LevelFragment: Fragment(), IStartLevelView {
 
         }
 
-        val recyclerView = myView.findViewById<RecyclerView>(R.id.recyclerViewChallengePlayers)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = presenter.getAdapter()
+        val recyclerView = myView?.findViewById<RecyclerView>(R.id.recyclerViewChallengePlayers)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.adapter = presenter.getAdapter()
 
         return myView
     }
@@ -84,32 +84,32 @@ class LevelFragment: Fragment(), IStartLevelView {
      * Shows the user that level can be played
      */
     override fun showUnlocked() {
-        val gamePlayableImageView = myView.findViewById<ImageView>(R.id.ivGamePlayable)
-        gamePlayableImageView.setImageDrawable(resources.getDrawable(R.drawable.unlocked))
+        val gamePlayableImageView = myView?.findViewById<ImageView>(R.id.ivGamePlayable)
+        gamePlayableImageView?.setImageDrawable(resources.getDrawable(R.drawable.unlocked))
     }
 
     /**
      * Shows the user that level is locked
      */
     override fun showLocked() {
-        val gamePlayableImageView = myView.findViewById<ImageView>(R.id.ivGamePlayable)
-        gamePlayableImageView.setImageDrawable(resources.getDrawable(R.drawable.locked))
+        val gamePlayableImageView = myView?.findViewById<ImageView>(R.id.ivGamePlayable)
+        gamePlayableImageView?.setImageDrawable(resources.getDrawable(R.drawable.locked))
     }
 
     /**
      * Shows the user that level has been completed
      */
     override fun showCompleted() {
-        val isLevelCompletedView = myView.findViewById<ImageView>(R.id.isCompletedLevelView)
-        isLevelCompletedView.setImageDrawable(resources.getDrawable(R.drawable.completed))
+        val isLevelCompletedView = myView?.findViewById<ImageView>(R.id.isCompletedLevelView)
+        isLevelCompletedView?.setImageDrawable(resources.getDrawable(R.drawable.completed))
     }
 
     /**
      * Shows the user that level is not completed
      */
     override fun showUncompleted() {
-        val isLevelCompletedView = myView.findViewById<ImageView>(R.id.isCompletedLevelView)
-        isLevelCompletedView.setImageDrawable(resources.getDrawable(R.drawable.uncompleted))
+        val isLevelCompletedView = myView?.findViewById<ImageView>(R.id.isCompletedLevelView)
+        isLevelCompletedView?.setImageDrawable(resources.getDrawable(R.drawable.uncompleted))
     }
 
     /**
@@ -118,8 +118,8 @@ class LevelFragment: Fragment(), IStartLevelView {
      * @param    value          Height value to show
      */
     override fun updateHeightText(value: Int) {
-        val heightTextView = myView.findViewById<TextView>(R.id.tvChallengeHeight)
-        heightTextView.text = getString(R.string.height_show, value)
+        val heightTextView = myView?.findViewById<TextView>(R.id.tvChallengeHeight)
+        heightTextView?.text = getString(R.string.height_show, value)
     }
 
     /**
@@ -128,8 +128,8 @@ class LevelFragment: Fragment(), IStartLevelView {
      * @param    value          Width value to show
      */
     override fun updateWidthText(value: Int) {
-        val widthTextView = myView.findViewById<TextView>(R.id.tvChallengeWidth)
-        widthTextView.text = getString(R.string.width_show, value)
+        val widthTextView = myView?.findViewById<TextView>(R.id.tvChallengeWidth)
+        widthTextView?.text = getString(R.string.width_show, value)
     }
 
     /**
@@ -137,6 +137,11 @@ class LevelFragment: Fragment(), IStartLevelView {
      */
     override fun showLockedReminder(){
         Snackbar.make(levelFragmentCoordinatorLayout, R.string.level_locked, Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.getAdapter().unregisterAdapterDataObserver(presenter)
     }
 
 }

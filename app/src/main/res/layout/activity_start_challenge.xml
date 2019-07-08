@@ -8,7 +8,7 @@
         android:background="@drawable/background_img"
         tools:context="view.StartChallengeActivity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" tools:layout_editor_absoluteY="16dp" tools:layout_editor_absoluteX="16dp">
+        android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
             android:id="@+id/levelsPager"
