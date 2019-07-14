@@ -40,7 +40,10 @@ class GameLogicTask
          * Constant to represent current state display intent
          */
         private const val SHOW_CURRENT_PLAYGROUND_STATE = -1
-
+        /**
+         * Constant to represent an unsuccessful step
+         */
+        private const val STEP_UNSUCCESSFUL = 0
         /**
          * Static cancel flag of all GameLogicTask instances
          */
@@ -204,14 +207,14 @@ class GameLogicTask
 
                 model.addCurrentPlayerWaitingTime(values[2])
 
-                if (model.stepRequest(values[0], values[1]) == 0 && timeLimitMode!!) {
+                if (model.stepRequest(values[0], values[1]) == STEP_UNSUCCESSFUL && timeLimitMode!!) {
                     model.stepToNextPlayer()
                 } else if (showPropagation!!) {
 
                     model.historyPlaygroundBuilder()
                     val propagationDepth = model.getReactionPropagationDepth()
 
-                    //start from state 2 to show propagation events without delay - the previously displayed end state is the start state too
+                    //starts from state 2 as the previously displayed end state is the current start state too
                     for (i in 2 until propagationDepth) {
 
                         if (cancelTask) {
@@ -221,7 +224,7 @@ class GameLogicTask
                         try {
 
                             if (!model.isCurrentHistoryStateEmpty(i)) {
-                                publishProgress(model.lastPlayerId, i)
+                                publishProgress(i)
                                 Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
                             }
 
@@ -272,18 +275,18 @@ class GameLogicTask
     /**
      * Refreshes the UI
      *
-     * @param   values      The coordinates where actual Player steps - if empty, just draws the playground
+     * @param   values      The playground state index to show
      */
     override fun onProgressUpdate(vararg values: Int?) {
 
         //do if the task is not cancelled
         if (!cancelTask) {
 
-            if (values.size == 1) {
-                presenter.refreshPlayground(values[0]!!)
+            if (values[0] == SHOW_CURRENT_PLAYGROUND_STATE) {
+                presenter.refreshPlayground(SHOW_CURRENT_PLAYGROUND_STATE)
             } else {
-                //values[0] is the Player Id which is not used
-                presenter.refreshPlayground(values[1]!!)
+                //the current state to display
+                presenter.refreshPlayground(values[0]!!)
             }
 
         }

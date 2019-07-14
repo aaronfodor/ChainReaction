@@ -2,44 +2,37 @@
 
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/background_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="view.AboutActivity"
-        android:id="@+id/constraintLayoutAbout">
+        android:id="@+id/viewAboutActivity">
 
-    <TextView
-            android:text="@string/title_about"
-            android:textSize="16sp"
-            android:textStyle="bold"
+    <android.support.v4.view.ViewPager
+            android:id="@+id/aboutPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.design.widget.TabLayout
+                android:id="@+id/aboutPagerTitles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </android.support.v4.view.ViewPager >
+
+    <com.google.android.gms.ads.AdView
+            android:id="@+id/aboutAdView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorMessage"
-            android:id="@+id/tvTitleAbout"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"/>
-
-    <TextView
-            android:id="@+id/textViewAbout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorMessage"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/about"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textAlignment="center" app:layout_constraintTop_toBottomOf="@+id/tvTitleAbout"/>
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

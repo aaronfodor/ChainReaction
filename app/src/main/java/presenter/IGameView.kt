@@ -80,8 +80,10 @@ interface IGameView {
 
     /**
      * Shows the game over message
+     *
+     * @param     restartOffer      True means restart action will be offered
      */
-    fun showEndOfGameMessage()
+    fun showEndOfGameMessage(restartOffer: Boolean)
 
     /**
      * Shows the restart campaign message

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import com.google.android.gms.ads.AdView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_type.*
 import presenter.AdPresenter
 

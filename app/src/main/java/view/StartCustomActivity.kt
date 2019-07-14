@@ -12,7 +12,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.gms.ads.AdView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_start_custom.*
 import presenter.*
 

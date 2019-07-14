@@ -11,7 +11,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
 import com.google.android.gms.ads.AdView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_main.*
 import model.ai.PlayerLogic
 import presenter.AdPresenter
@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(), IMainView {
 
         mAdView = findViewById(R.id.mainAdView)
         //loading the advertisement
+        AdPresenter.initMobileAds(applicationContext)
         AdPresenter.loadAd(mAdView)
 
     }

@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.fragment_level.*
 import model.db.challenge.ChallengeLevel
 import presenter.IStartLevelView

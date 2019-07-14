@@ -1,17 +1,27 @@
 package presenter
 
+import android.content.Context
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 
 object AdPresenter{
 
     /**
-     * Load the advertisement banner content
+     * Initializes the Mobile Ads SDK with an AdMob App ID
+     *
+     * @param    context            Context of the mobile ads to initialize with
+     */
+    fun initMobileAds(context: Context){
+        MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713")
+    }
+
+    /**
+     * Loads the advertisement banner content
+     *
+     * @param    advertisement      AdView element to load
      */
     fun loadAd(advertisement: AdView){
-
-        // Initialize the Mobile Ads SDK with an AdMob App ID.
-        //MobileAds.initialize(adContext, "ca-app-pub-3940256099942544~3347511713")
 
         // Create an ad request. If you're running this on a physical device, check your logcat to
         // learn how to enable test ads for it. Look for a line like this one:

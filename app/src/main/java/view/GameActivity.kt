@@ -21,7 +21,7 @@ import android.widget.*
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import model.db.stats.PlayerTypeStatsDatabase
 import android.widget.TextSwitcher
 import model.db.DbDefaults
@@ -463,15 +463,33 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
     /**
      * Shows the game over message
+     *
+     * @param     restartOffer      True means restart action will be offered
      */
-    override fun showEndOfGameMessage() {
+    override fun showEndOfGameMessage(restartOffer: Boolean) {
 
         val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.game_over, Snackbar.LENGTH_INDEFINITE)
-        snackBar.setAction("LEAVE") {
-            //leaving the current game play
-            startActivity(Intent(this, MainActivity::class.java))
-            this.finish()
+
+        if(restartOffer){
+
+            snackBar.setAction("RESTART") {
+                //restart the current game play
+                val intent = intent
+                this.finish()
+                startActivity(intent)
+            }
+
         }
+        else{
+
+            snackBar.setAction("LEAVE") {
+                //leaving the current game play
+                startActivity(Intent(this, MainActivity::class.java))
+                this.finish()
+            }
+
+        }
+
         snackBar.show()
 
     }

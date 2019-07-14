@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import model.db.challenge.ChallengeDatabase
@@ -102,6 +102,10 @@ class ChallengeFragment : Fragment() {
         val setColor = ArrayList<Int>(1)
 
         chart.description.isEnabled = false
+        chart.setDrawGridBackground(false)
+        chart.axisLeft.setDrawGridLines(false)
+        chart.axisRight.setDrawGridLines(false)
+        chart.xAxis.setDrawGridLines(false)
         chart.setExtraOffsets(5.toFloat(), 10.toFloat(), 5.toFloat(), 5.toFloat())
         chart.dragDecelerationFrictionCoef = 0.95f
         chart.isHighlightPerTapEnabled = true

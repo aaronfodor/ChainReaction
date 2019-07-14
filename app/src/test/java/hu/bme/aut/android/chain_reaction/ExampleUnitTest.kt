@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chainreaction
+package hu.bme.aut.android.chain_reaction
 
 import org.junit.Test
 

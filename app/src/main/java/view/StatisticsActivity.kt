@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import com.google.android.gms.ads.AdView
 import presenter.AdPresenter
 import android.support.v4.view.ViewPager

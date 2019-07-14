@@ -1,12 +1,9 @@
 package presenter.task
 
-import android.support.design.widget.Snackbar
-import android.view.View
-import android.widget.Button
 import model.ai.PlayerLogic
 import android.content.Context
 import android.os.AsyncTask
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import org.deeplearning4j.util.ModelSerializer
 import presenter.IMainView
 

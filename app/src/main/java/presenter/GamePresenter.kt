@@ -7,6 +7,7 @@ import presenter.task.GameLogicTask
 import java.util.ArrayList
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.concurrent.thread
 
 /**
  * presenter of a game play
@@ -213,7 +214,7 @@ class GamePresenter
         view.statisticsDatabaseUpdater(model.playersData!![model.playersData!!.size - 1][3], model.isAiVsHumanGame())
 
         if(gameType == CUSTOM_GAME){
-            view.showEndOfGameMessage()
+            view.showEndOfGameMessage(model.actualPlayerType == AI)
         }
 
         else if(gameType == CHALLENGE_GAME){

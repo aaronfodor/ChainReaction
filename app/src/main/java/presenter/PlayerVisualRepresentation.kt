@@ -1,7 +1,7 @@
 package presenter
 
 import android.graphics.Color
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 
 /**
  * Player Id and Color connection

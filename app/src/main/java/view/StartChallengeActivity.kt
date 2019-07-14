@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 import com.google.android.gms.ads.AdView
-import hu.bme.aut.android.chainreaction.R
+import hu.bme.aut.android.chain_reaction.R
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
