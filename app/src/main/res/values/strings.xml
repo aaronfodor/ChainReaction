@@ -37,7 +37,7 @@
     <string name="how_to_play_title">How to play</string>
     <string name="about_title">About</string>
     <string name="how_to_play">Chain Reaction is a two-eight player board game. Human and AI Players can play against each other on different playgrounds. Each player has an allocated color, red (first player) or green (second player) and so on.\n\nThe objective of the game is to take control of the board by eliminating your opponents\' particles. Players take it in turns to place their atoms in a cell.\n\nOnce a cell has reached critical mass the particles explode into the surrounding cells adding an extra atom and claiming the cell for the player. The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.\n\nWhen a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow. The same rule is applicable for other colors.\n\nA player may only place their atoms in a blank cell or a cell that contains atoms of their own color. As soon as a player looses all their particles they are out of the game.</string>
-    <string name="about">Chain Reaction\nv0.31, 22/07/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com\n\nAI players are powered by DL4j</string>
+    <string name="about">Chain Reaction\nv0.31, 22/07/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nResources: pixabay.com, freesound.org\n\nAI players are powered by DL4j</string>
 
     <string name="title_activity_type">Game types</string>
     <string name="title_challenge">Challenge game</string>
