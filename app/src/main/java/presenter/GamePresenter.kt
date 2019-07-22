@@ -218,6 +218,7 @@ class GamePresenter
             if (model.actualPlayerType == HUMAN) {
                 view.showEndOfGameMessage(false)
                 AudioPresenter.soundHumanVictory()
+                AudioPresenter.soundConfetti()
             }
 
             else{
@@ -233,6 +234,7 @@ class GamePresenter
             if (model.actualPlayerType == HUMAN) {
                 view.challengeDatabaseUpdater(challengeLevel)
                 AudioPresenter.soundHumanVictory()
+                AudioPresenter.soundConfetti()
             }
 
             else{

@@ -16,6 +16,7 @@ object AudioPresenter{
     private var soundSwipe = MediaPlayer()
     private var soundAIVictory = MediaPlayer()
     private var soundHumanVictory = MediaPlayer()
+    private var soundConfetti = MediaPlayer()
     private var soundParticle = MediaPlayer()
     private var soundDialog = MediaPlayer()
     private var soundLocked = MediaPlayer()
@@ -43,6 +44,7 @@ object AudioPresenter{
         soundSwipe = MediaPlayer.create(context, R.raw.swipe)
         soundAIVictory = MediaPlayer.create(context, R.raw.victory_ai)
         soundHumanVictory = MediaPlayer.create(context, R.raw.victory_human)
+        soundConfetti = MediaPlayer.create(context, R.raw.confetti)
         soundParticle = MediaPlayer.create(context, R.raw.particle)
         //soundDialog = MediaPlayer.create(context, R.raw.dialog)
         soundLocked = MediaPlayer.create(context, R.raw.locked)
@@ -138,6 +140,16 @@ object AudioPresenter{
         if(soundEnabled){
             prepareAudioPlaying(soundHumanVictory)
             soundHumanVictory.start()
+        }
+    }
+
+    /**
+     * Plays confetti sound
+     */
+    fun soundConfetti(){
+        if(soundEnabled){
+            prepareAudioPlaying(soundConfetti)
+            soundConfetti.start()
         }
     }
 
