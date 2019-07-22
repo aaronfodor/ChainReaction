@@ -10,8 +10,9 @@ import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import presenter.AboutSlidePagerAdapter
 import presenter.AdPresenter
+import presenter.ViewPagerPageChangeListener
 
-class AboutActivity : AppCompatActivity() {
+class MoreActivity : AppCompatActivity() {
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous and next fragments
@@ -32,20 +33,21 @@ class AboutActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_about)
+        setContentView(R.layout.activity_more)
 
         //Instantiate a ViewPager
-        mPager = findViewById(R.id.aboutPager)
+        mPager = findViewById(R.id.morePager)
         //Instantiate the titles shown in the ViewPager
-        mPagerTitles = findViewById(R.id.aboutPagerTitles)
+        mPagerTitles = findViewById(R.id.morePagerTitles)
         mPagerTitles.setupWithViewPager(mPager)
 
         // The pager adapter, which provides the pages to the view pager widget
-        val pagerAdapter = AboutSlidePagerAdapter(supportFragmentManager, getString(R.string.how_to_play_title), getString(R.string.app_info_title))
+        val pagerAdapter = AboutSlidePagerAdapter(supportFragmentManager, getString(R.string.how_to_play_title), getString(R.string.about_title))
         mPager.adapter = pagerAdapter
+        mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
         mPager.setPageTransformer(true, CubeOutTransformer())
 
-        mAdView = this.findViewById(R.id.aboutAdView)
+        mAdView = this.findViewById(R.id.moreAdView)
         //loading the advertisement
         AdPresenter.loadAd(mAdView)
 

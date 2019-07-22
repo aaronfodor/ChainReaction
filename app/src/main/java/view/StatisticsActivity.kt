@@ -10,6 +10,8 @@ import presenter.AdPresenter
 import android.support.v4.view.ViewPager
 import presenter.StatisticsSlidePagerAdapter
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
+import presenter.AudioPresenter
+import presenter.ViewPagerPageChangeListener
 
 class StatisticsActivity : AppCompatActivity() {
 
@@ -37,12 +39,13 @@ class StatisticsActivity : AppCompatActivity() {
         //Instantiate a ViewPager
         mPager = findViewById(R.id.statsPager)
         //Instantiate the titles shown in the ViewPager
-        mPagerTitles = findViewById(R.id.statsPagerTitles)
+        mPagerTitles = findViewById<TabLayout>(R.id.statsPagerTitles)
         mPagerTitles.setupWithViewPager(mPager)
 
         // The pager adapter, which provides the pages to the view pager widget
         val pagerAdapter = StatisticsSlidePagerAdapter(supportFragmentManager, getString(R.string.statistics), getString(R.string.challenge))
         mPager.adapter = pagerAdapter
+        mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
         mPager.setPageTransformer(true, CubeOutTransformer())
 
         mAdView = this.findViewById(R.id.statsAdView)

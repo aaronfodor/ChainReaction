@@ -15,6 +15,7 @@ import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_main.*
 import model.ai.PlayerLogic
 import presenter.AdPresenter
+import presenter.AudioPresenter
 import presenter.IMainView
 
 /**
@@ -40,26 +41,31 @@ class MainActivity : AppCompatActivity(), IMainView {
         SettingsActivity.changeSettings(sharedPreferences)
 
         buttonNewGame.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             val intent = Intent(this, TypeActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonStats.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonSettings.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonAbout.setOnClickListener {
-            val intent = Intent(this, AboutActivity::class.java)
+        buttonMore.setOnClickListener {
+            AudioPresenter.soundButtonClick()
+            val intent = Intent(this, MoreActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
         buttonExit.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             exitDialog()
         }
 
@@ -68,9 +74,12 @@ class MainActivity : AppCompatActivity(), IMainView {
         AdPresenter.initMobileAds(applicationContext)
         AdPresenter.loadAd(mAdView)
 
+        AudioPresenter.init(applicationContext)
+
     }
 
     override fun onBackPressed() {
+        AudioPresenter.soundDialog()
         exitDialog()
     }
 
@@ -79,13 +88,16 @@ class MainActivity : AppCompatActivity(), IMainView {
             .setTitle(getString(R.string.confirm_exit))
             .setMessage(getString(R.string.confirm_exit_description))
             .setPositiveButton(android.R.string.yes) { dialog, which ->
+                AudioPresenter.soundButtonClick()
                 //showing the home screen - app is not visible but running
                 val intent = Intent(Intent.ACTION_MAIN)
                 intent.addCategory(Intent.CATEGORY_HOME)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             }
-            .setNegativeButton(android.R.string.no, null)
+            .setNegativeButton(android.R.string.no){ dialog, which ->
+                AudioPresenter.soundButtonClick()
+            }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
@@ -106,6 +118,8 @@ class MainActivity : AppCompatActivity(), IMainView {
      * @param    isLoaded   True if loaded, false otherwise
      */
     override fun loadedAI(isLoaded: Boolean) {
+
+        AudioPresenter.soundNotification()
 
         val view = findViewById<ConstraintLayout>(R.id.constraintLayoutMainActivity)
 

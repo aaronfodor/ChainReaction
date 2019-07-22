@@ -10,6 +10,7 @@ import hu.bme.aut.android.chain_reaction.R
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import model.db.stats.PlayerTypeStatsDatabase
+import presenter.AudioPresenter
 
 class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
 
@@ -26,6 +27,7 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
         val myPref = findPreference("delete_database") as Preference
         myPref.setOnPreferenceClickListener {
             deleteDialog()
+            AudioPresenter.soundDialog()
             true
         }
 
@@ -39,6 +41,8 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
                 .setTitle(getString(R.string.confirm_delete))
                 .setMessage(getString(R.string.confirm_delete_database))
                 .setPositiveButton(android.R.string.yes) { dialog, which ->
+
+                    AudioPresenter.soundButtonClick()
 
                     val dbStats = Room.databaseBuilder(this.requireContext(), PlayerTypeStatsDatabase::class.java, "db_stats").build()
                     val dbChallenge = Room.databaseBuilder(this.requireContext(), ChallengeDatabase::class.java, "db_challenge").build()
@@ -65,6 +69,7 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
 
                 }
                 .setNegativeButton(android.R.string.no) {dialog, which ->
+                    AudioPresenter.soundButtonClick()
                     deleteDialog = null
                 }
                 .setIcon(android.R.drawable.ic_dialog_alert)

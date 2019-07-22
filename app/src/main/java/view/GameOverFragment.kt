@@ -15,6 +15,7 @@ import com.github.mikephil.charting.data.BarEntry
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
+import presenter.AudioPresenter
 import presenter.PlayerVisualRepresentation
 
 class GameOverFragment : Fragment() {

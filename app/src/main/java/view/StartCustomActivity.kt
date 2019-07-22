@@ -54,21 +54,26 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
 
         val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
         addHumanPlayerButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.addHumanPlayer()
         }
 
         val addAIPlayerButton = findViewById<Button>(R.id.buttonAddAIPlayer)
         addAIPlayerButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.addAIPlayer()
         }
 
         val clearPlayersButton = findViewById<Button>(R.id.buttonClearPlayers)
         clearPlayersButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.clearPlayers()
         }
 
         val startGameButton = findViewById<Button>(R.id.buttonStartGame)
         startGameButton.setOnClickListener {
+
+            AudioPresenter.soundButtonClick()
 
             if(presenter.canGameBeStarted()){
 
@@ -99,26 +104,31 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
 
         val heightPlusButton = findViewById<Button>(R.id.buttonHeightPlus)
         heightPlusButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.heightPlus()
         }
 
         val heightMinusButton = findViewById<Button>(R.id.buttonHeightMinus)
         heightMinusButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.heightMinus()
         }
 
         val widthPlusButton = findViewById<Button>(R.id.buttonWidthPlus)
         widthPlusButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.widthPlus()
         }
 
         val widthMinusButton = findViewById<Button>(R.id.buttonWidthMinus)
         widthMinusButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.widthMinus()
         }
 
         val randomButton = findViewById<Button>(R.id.buttonRandom)
         randomButton.setOnClickListener {
+            AudioPresenter.soundButtonClick()
             presenter.randomConfig()
         }
 
@@ -134,6 +144,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * @param   playerNumber    Id of the Player
      */
     override fun playerAdded(playerNumber: Int){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (playerNumber)), Snackbar.LENGTH_SHORT).show()
     }
 
@@ -141,6 +152,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that Players list is full
      */
     override fun playersFull(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
     }
 
@@ -148,6 +160,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that Players list has been cleared
      */
     override fun playersCleared(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.list_clear, Snackbar.LENGTH_LONG).show()
     }
 
@@ -155,6 +168,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that there are not enough Players to start
      */
     override fun notEnoughPlayer(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
     }
 
@@ -162,6 +176,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that maximum size has been reached
      */
     override fun maximumSizeReached(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -169,6 +184,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that minimum size has been reached
      */
     override fun minimumSizeReached(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -176,6 +192,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that random generating happened
      */
     override fun randomGenerated(){
+        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.random_generated, Snackbar.LENGTH_SHORT).show()
     }
 

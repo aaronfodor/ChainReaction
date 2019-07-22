@@ -3,11 +3,11 @@ package presenter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import view.AppInfoFragment
+import view.AboutFragment
 import view.HowToPlayFragment
 
 /**
- * A pager adapter that represents 2 Fragment objects (HowToPlayFragment, AppInfoFragment) in sequence
+ * A pager adapter that represents 2 Fragment objects (HowToPlayFragment, AboutFragment) in sequence
  */
 class AboutSlidePagerAdapter(fm: FragmentManager, howToPlayLabel: String, appInfoLabel: String) : FragmentStatePagerAdapter(fm) {
 
@@ -22,7 +22,7 @@ class AboutSlidePagerAdapter(fm: FragmentManager, howToPlayLabel: String, appInf
             //show the how to play fragment
             0 -> return HowToPlayFragment()
             //show the app info fragment
-            1 -> return AppInfoFragment()
+            1 -> return AboutFragment()
         }
 
         return HowToPlayFragment()

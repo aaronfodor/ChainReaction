@@ -214,7 +214,17 @@ class GamePresenter
         view.statisticsDatabaseUpdater(model.playersData!![model.playersData!!.size - 1][3], model.isAiVsHumanGame())
 
         if(gameType == CUSTOM_GAME){
-            view.showEndOfGameMessage(model.actualPlayerType == AI)
+
+            if (model.actualPlayerType == HUMAN) {
+                view.showEndOfGameMessage(false)
+                AudioPresenter.soundHumanVictory()
+            }
+
+            else{
+                view.showEndOfGameMessage(true)
+                AudioPresenter.soundAIVictory()
+            }
+
         }
 
         else if(gameType == CHALLENGE_GAME){
@@ -222,10 +232,12 @@ class GamePresenter
             //update the campaign database if the game was a campaign game and human Player is the winner
             if (model.actualPlayerType == HUMAN) {
                 view.challengeDatabaseUpdater(challengeLevel)
+                AudioPresenter.soundHumanVictory()
             }
 
             else{
                 view.showRestartChallengeLevelMessage()
+                AudioPresenter.soundAIVictory()
             }
 
         }

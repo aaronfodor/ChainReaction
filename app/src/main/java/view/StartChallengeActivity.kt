@@ -14,6 +14,8 @@ import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
 import presenter.LevelSlidePagerAdapter
 import presenter.AdPresenter
+import presenter.AudioPresenter
+import presenter.ViewPagerPageChangeListener
 
 /**
  * Activity of starting a challenge game play
@@ -60,6 +62,7 @@ class StartChallengeActivity : AppCompatActivity() {
         mPager = findViewById(R.id.levelsPager)
         //bring to front to make snack bar visible even when ad is shown
         mPager.bringToFront()
+        mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
         //Instantiate the titles shown in the ViewPager
         mPagerTitles = findViewById(R.id.levelPagerTitles)
         mPagerTitles.setupWithViewPager(mPager)

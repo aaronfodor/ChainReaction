@@ -3,6 +3,7 @@ package presenter.task
 import android.os.AsyncTask
 import presenter.GamePresenter
 import presenter.IGameModel
+import presenter.AudioPresenter
 
 /**
  * Async task to execute model computations
@@ -224,6 +225,7 @@ class GameLogicTask
                         try {
 
                             if (!model.isCurrentHistoryStateEmpty(i)) {
+                                AudioPresenter.soundParticle()
                                 publishProgress(i)
                                 Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
                             }
@@ -239,6 +241,7 @@ class GameLogicTask
 
                 }
 
+                AudioPresenter.soundParticle()
                 publishProgress(SHOW_CURRENT_PLAYGROUND_STATE)
 
             }

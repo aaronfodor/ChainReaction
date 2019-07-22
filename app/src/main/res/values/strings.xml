@@ -5,7 +5,7 @@
     <string name="button_loading">Loading AI...</string>
     <string name="button_stats">Statistics</string>
     <string name="button_settings">Settings</string>
-    <string name="button_about">About</string>
+    <string name="button_more">More</string>
     <string name="button_exit">Exit</string>
     <string name="ai_loaded">AI loaded</string>
 
@@ -20,6 +20,7 @@
     <string name="setting_show_propagation">Show propagation</string>
     <string name="setting_gif_enabled">Particle animation</string>
     <string name="setting_time_limit">Time limit</string>
+    <string name="setting_sound_enabled">Sound enabled</string>
     <string name="label_time_limit_off">Player has no time limit to step</string>
     <string name="label_time_limit_on">Player has limited time to step</string>
     <string name="setting_delete_database">Delete statistics</string>
@@ -27,12 +28,16 @@
     <string name="confirm_delete">Confirm delete</string>
     <string name="empty_db">Statistics are empty</string>
     <string name="delete_database_guide">Click here to delete recorded statistics</string>
+    <string name="title_game_settings">Game</string>
+    <string name="title_visual_representation">Visuals</string>
+    <string name="title_sounds">Audio</string>
+    <string name="title_saved_data">Saved data</string>
 
     <string name="title_about">About</string>
     <string name="how_to_play_title">How to play</string>
-    <string name="app_info_title">App info</string>
+    <string name="about_title">About</string>
     <string name="how_to_play">Chain Reaction is a two-eight player board game. Human and AI Players can play against each other on different playgrounds. Each player has an allocated color, red (first player) or green (second player) and so on.\n\nThe objective of the game is to take control of the board by eliminating your opponents\' particles. Players take it in turns to place their atoms in a cell.\n\nOnce a cell has reached critical mass the particles explode into the surrounding cells adding an extra atom and claiming the cell for the player. The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.\n\nWhen a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow. The same rule is applicable for other colors.\n\nA player may only place their atoms in a blank cell or a cell that contains atoms of their own color. As soon as a player looses all their particles they are out of the game.</string>
-    <string name="app_info">Chain Reaction\nv0.29, 14/07/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com\nAI players are powered by DL4j</string>
+    <string name="about">Chain Reaction\nv0.31, 22/07/2019\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nPhoto resources: Pixabay.com\n\nAI players are powered by DL4j</string>
 
     <string name="title_activity_type">Game types</string>
     <string name="title_challenge">Challenge game</string>

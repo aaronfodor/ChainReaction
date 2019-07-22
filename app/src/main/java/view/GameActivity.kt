@@ -26,6 +26,7 @@ import model.db.stats.PlayerTypeStatsDatabase
 import android.widget.TextSwitcher
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
+import presenter.AudioPresenter
 
 /**
  * Activity of a game play
@@ -288,6 +289,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * @return      boolean     True if succeed, false otherwise
      */
     override fun showStart(Id: Int, showAI: Boolean): Boolean {
+
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
 
         if(showAI){
@@ -300,6 +302,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         Snackbar.make(tableLayoutPlayGround, R.string.start_game, Snackbar.LENGTH_SHORT).show()
         return true
+
     }
 
     /**
@@ -442,6 +445,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             this.finish()
         }
         else{
+            AudioPresenter.soundDialog()
             leaveDialog()
         }
 
@@ -452,11 +456,14 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             .setTitle(getString(R.string.confirm_leave_game))
             .setMessage(getString(R.string.confirm_leave_game_description))
             .setPositiveButton(android.R.string.yes) { dialog, which ->
+                AudioPresenter.soundButtonClick()
                 //leaving the current game play
                 startActivity(Intent(this, MainActivity::class.java))
                 this.finish()
             }
-            .setNegativeButton(android.R.string.no, null)
+            .setNegativeButton(android.R.string.no) { dialog, which ->
+                AudioPresenter.soundButtonClick()
+            }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
@@ -473,6 +480,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         if(restartOffer){
 
             snackBar.setAction("RESTART") {
+                AudioPresenter.soundButtonClick()
                 //restart the current game play
                 val intent = intent
                 this.finish()
@@ -483,6 +491,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         else{
 
             snackBar.setAction("LEAVE") {
+                AudioPresenter.soundButtonClick()
                 //leaving the current game play
                 startActivity(Intent(this, MainActivity::class.java))
                 this.finish()
@@ -501,6 +510,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.challenge_level_failed, Snackbar.LENGTH_INDEFINITE)
         snackBar.setAction("RESTART") {
+            AudioPresenter.soundButtonClick()
             //restart the current game play
             val intent = intent
             this.finish()
@@ -517,6 +527,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.challenge_level_completed, Snackbar.LENGTH_INDEFINITE)
         snackBar.setAction("NEXT") {
+            AudioPresenter.soundButtonClick()
             //going to the next level
             startActivity(Intent(this, StartChallengeActivity::class.java))
             this.finish()
@@ -532,6 +543,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
 
         val snackBar = Snackbar.make(tableLayoutPlayGround, R.string.all_challenges_completed, Snackbar.LENGTH_INDEFINITE)
         snackBar.setAction("LEAVE") {
+            AudioPresenter.soundButtonClick()
             //leaving the current game play
             startActivity(Intent(this, MainActivity::class.java))
             this.finish()

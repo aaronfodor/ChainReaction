@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_level.*
 import model.db.challenge.ChallengeLevel
 import presenter.IStartLevelView
 import presenter.LevelPresenter
+import presenter.AudioPresenter
 
 class LevelFragment: Fragment(), IStartLevelView {
 
@@ -51,6 +52,8 @@ class LevelFragment: Fragment(), IStartLevelView {
 
             if(presenter.canGameBeStarted()){
 
+                AudioPresenter.soundButtonClick()
+
                 val myIntent = Intent(activity, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", presenter.getPlayerCount())
                 myIntent.putExtra("PlayGroundHeight", presenter.getPlayGroundHeight())
@@ -65,6 +68,10 @@ class LevelFragment: Fragment(), IStartLevelView {
 
                 startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
 
+            }
+
+            else{
+                AudioPresenter.soundLocked()
             }
 
         }

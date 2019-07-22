@@ -7,23 +7,23 @@
         android:background="@drawable/background_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="view.AboutActivity"
-        android:id="@+id/viewAboutActivity">
+        tools:context="view.MoreActivity"
+        android:id="@+id/viewMoreActivity">
 
     <android.support.v4.view.ViewPager
-            android:id="@+id/aboutPager"
+            android:id="@+id/morePager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <android.support.design.widget.TabLayout
-                android:id="@+id/aboutPagerTitles"
+                android:id="@+id/morePagerTitles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
     </android.support.v4.view.ViewPager >
 
     <com.google.android.gms.ads.AdView
-            android:id="@+id/aboutAdView"
+            android:id="@+id/moreAdView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
