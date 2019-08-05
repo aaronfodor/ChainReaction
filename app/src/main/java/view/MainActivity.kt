@@ -3,31 +3,28 @@ package view
 import android.app.ActivityOptions
 import presenter.task.AILoaderTask
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.support.v7.preference.PreferenceManager
 import android.view.WindowManager
-import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_main.*
 import model.ai.PlayerLogic
 import presenter.AdPresenter
 import presenter.AudioPresenter
 import presenter.IMainView
+import view.subclass.BaseActivity
+import view.subclass.BaseDialog
 
 /**
  * Main Activity - entry point
  */
-class MainActivity : AppCompatActivity(), IMainView {
+class MainActivity : BaseActivity(), IMainView {
 
     /**
-     * Advertisement of the activity
+     * Sets startup screen, initializes the global presenter objects
      */
-    lateinit var mAdView : AdView
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //Set the startup screen - make sure this is before calling super.onCreate
@@ -36,6 +33,10 @@ class MainActivity : AppCompatActivity(), IMainView {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
+
+        //initializing the global presenter objects
+        AudioPresenter.init(applicationContext)
+        AdPresenter.initMobileAds(applicationContext)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         SettingsActivity.changeSettings(sharedPreferences)
@@ -69,47 +70,43 @@ class MainActivity : AppCompatActivity(), IMainView {
             exitDialog()
         }
 
-        mAdView = findViewById(R.id.mainAdView)
-        //loading the advertisement
-        AdPresenter.initMobileAds(applicationContext)
-        AdPresenter.loadAd(mAdView)
-
-        AudioPresenter.init(applicationContext)
+        initActivityAd(findViewById(R.id.mainAdView))
 
     }
 
+    /**
+     * Shows the exit dialog
+     */
     override fun onBackPressed() {
-        AudioPresenter.soundDialog()
         exitDialog()
     }
 
+    /**
+     * Asks for exit confirmation
+     */
     private fun exitDialog(){
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.confirm_exit))
-            .setMessage(getString(R.string.confirm_exit_description))
-            .setPositiveButton(android.R.string.yes) { dialog, which ->
-                AudioPresenter.soundButtonClick()
-                //showing the home screen - app is not visible but running
-                val intent = Intent(Intent.ACTION_MAIN)
-                intent.addCategory(Intent.CATEGORY_HOME)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-            }
-            .setNegativeButton(android.R.string.no){ dialog, which ->
-                AudioPresenter.soundButtonClick()
-            }
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
+
+        val exitDialog = BaseDialog(this, getString(R.string.confirm_exit), getString(R.string.confirm_exit_description), resources.getDrawable(R.drawable.warning))
+        exitDialog.setPositiveButton {
+            //showing the home screen - app is not visible but running
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.addCategory(Intent.CATEGORY_HOME)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        }
+        exitDialog.show()
+
     }
 
+    /**
+     * Starts loading the AI component
+     */
     private fun startAILoading(){
-
         if(!PlayerLogic.isNeuralNetworkLoaded()){
             //loading the AI component
             val taskAILoad = AILoaderTask(this, applicationContext)
             taskAILoad.execute()
         }
-
     }
 
     /**
@@ -118,8 +115,6 @@ class MainActivity : AppCompatActivity(), IMainView {
      * @param    isLoaded   True if loaded, false otherwise
      */
     override fun loadedAI(isLoaded: Boolean) {
-
-        AudioPresenter.soundNotification()
 
         val view = findViewById<ConstraintLayout>(R.id.constraintLayoutMainActivity)
 
@@ -146,28 +141,11 @@ class MainActivity : AppCompatActivity(), IMainView {
     }
 
     /**
-     * Called when leaving the activity - stops the presenter calculations too
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
+     * Called when returning to the activity - load the AI component if not loaded
      */
     override fun onResume() {
         super.onResume()
-        mAdView.resume()
         startAILoading()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

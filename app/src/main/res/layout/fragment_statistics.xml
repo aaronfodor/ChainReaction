@@ -16,18 +16,20 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_fragment"
             tools:context=".StatisticsFragment"
             tools:showIn="@layout/fragment_statistics">
 
         <TextView
                 android:id="@+id/textViewAiVsHumanStats"
                 android:textColor="@color/colorMessage"
-                android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
                 android:textSize="16sp"
                 android:paddingStart="20dp"
+                android:paddingEnd="20dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"
@@ -39,7 +41,6 @@
         <TextView
                 android:id="@+id/textViewWinningStats"
                 android:textColor="@color/colorMessage"
-                android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
                 android:textSize="14sp"
                 android:layout_height="wrap_content"
@@ -54,7 +55,6 @@
 
         <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/statsChart"
-                android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
                 android:layout_height="360dp"
                 android:layout_marginEnd="8dp"
@@ -69,12 +69,12 @@
         <TextView
                 android:id="@+id/textViewAllStats"
                 android:textColor="@color/colorMessage"
-                android:background="@color/colorTransparentBackground"
                 android:layout_width="320dp"
                 android:textSize="16sp"
                 android:paddingStart="20dp"
-                android:layout_height="wrap_content"
+                android:paddingEnd="20dp"
                 android:paddingBottom="20dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/statsChart"/>

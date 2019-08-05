@@ -4,14 +4,11 @@ import android.arch.persistence.room.Room
 import presenter.GamePresenter
 import presenter.PlayerVisualRepresentation
 import presenter.IGameView
-import presenter.AdPresenter
 import android.content.Intent
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -20,18 +17,19 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import model.db.stats.PlayerTypeStatsDatabase
 import android.widget.TextSwitcher
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import presenter.AudioPresenter
+import view.subclass.BaseActivity
+import view.subclass.BaseDialog
 
 /**
  * Activity of a game play
  */
-class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
+class GameActivity : BaseActivity(), IGameView, View.OnClickListener {
 
     /**
      * presenter of the view
@@ -54,11 +52,6 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      */
     private var height = 7
     private var width = 5
-
-    /**
-     * Advertisement of the activity
-     */
-    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -103,9 +96,7 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         createNxMGame(players, showPropagation, gifEnabled, timeLimit, height, width, gameType, gameMode, challengeLevelId)
 
-        mAdView = findViewById(R.id.gameAdView)
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+        initActivityAd(findViewById(R.id.gameAdView))
 
     }
 
@@ -445,27 +436,19 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
             this.finish()
         }
         else{
-            AudioPresenter.soundDialog()
             leaveDialog()
         }
 
     }
 
     private fun leaveDialog(){
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.confirm_leave_game))
-            .setMessage(getString(R.string.confirm_leave_game_description))
-            .setPositiveButton(android.R.string.yes) { dialog, which ->
-                AudioPresenter.soundButtonClick()
-                //leaving the current game play
-                startActivity(Intent(this, MainActivity::class.java))
-                this.finish()
-            }
-            .setNegativeButton(android.R.string.no) { dialog, which ->
-                AudioPresenter.soundButtonClick()
-            }
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
+        val leaveDialog = BaseDialog(this, getString(R.string.confirm_leave_game), getString(R.string.confirm_leave_game_description), resources.getDrawable(R.drawable.warning))
+        leaveDialog.setPositiveButton {
+            //leaving the current game play
+            startActivity(Intent(this, MainActivity::class.java))
+            this.finish()
+        }
+        leaveDialog.show()
     }
 
     /**
@@ -556,25 +539,8 @@ class GameActivity : AppCompatActivity(), IGameView, View.OnClickListener {
      * Called when leaving the activity
      */
     override fun onPause() {
-        mAdView.pause()
         presenter.task?.cancel(true)
         super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
-     */
-    override fun onResume() {
-        super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

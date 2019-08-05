@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.HorizontalBarChart
+import com.github.mikephil.charting.charts.BarChart
 import hu.bme.aut.android.chain_reaction.R
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
@@ -43,12 +43,12 @@ class ChallengeFragment : Fragment() {
 
                 val textViewAllLevels = view.findViewById<TextView>(R.id.textViewAllLevels)
                 val textViewCompletedLevels = view.findViewById<TextView>(R.id.textViewCompletedLevels)
-                val textViewIsAllLevelsCompleted = view.findViewById<TextView>(R.id.textViewIsAllLevelsCompleted)
+                val textViewChallengeMessage = view.findViewById<TextView>(R.id.textViewChallengeMessage)
 
                 if(challengeLevels.isEmpty()){
                     textViewAllLevels.text = getString(R.string.empty_challenge_db)
                     textViewCompletedLevels.text = ""
-                    textViewIsAllLevelsCompleted.text = ""
+                    textViewChallengeMessage.text = ""
                 }
 
                 else{
@@ -70,11 +70,12 @@ class ChallengeFragment : Fragment() {
                     textViewAllLevels.text = getString(R.string.all_levels_available, levelsCompleted+levelsLeft)
                     textViewCompletedLevels.text = getString(R.string.levels_completed_left, levelsCompleted, levelsLeft)
 
-                    if(levelsLeft == 0){
-                        textViewIsAllLevelsCompleted.text = getString(R.string.all_levels_completed)
-                    }
-                    else{
-                        textViewIsAllLevelsCompleted.text = ""
+                    when (levelsLeft) {
+                        0 -> textViewChallengeMessage.text = getString(R.string.levels_all_completed)
+                        in 1..3 -> textViewChallengeMessage.text = getString(R.string.levels_almost_completed)
+                        in 4..8 -> textViewChallengeMessage.text = getString(R.string.levels_some_completed)
+                        !in 0..8 -> textViewChallengeMessage.text = getString(R.string.levels_few_completed, levelsLeft)
+                        else -> textViewChallengeMessage.text = ""
                     }
 
                     displayChallengeChart(view, levelsCompleted, levelsLeft)
@@ -89,7 +90,7 @@ class ChallengeFragment : Fragment() {
     }
 
     /**
-     * Shows the challenge chart
+     * Shows the challenge data in a chart
      *
      * @param     view              The view containing the chart
      * @param     levelsCompleted   Levels completed
@@ -97,9 +98,9 @@ class ChallengeFragment : Fragment() {
      */
     private fun displayChallengeChart(view: View, levelsCompleted: Int, levelsLeft: Int){
 
-        val chart: HorizontalBarChart = view.findViewById(R.id.challengeChart)
-        val levelData = ArrayList<BarEntry>(1)
-        val setColor = ArrayList<Int>(1)
+        val chart: BarChart = view.findViewById(R.id.challengeChart)
+        val levelData = ArrayList<BarEntry>(2)
+        val setColor = ArrayList<Int>(2)
 
         chart.description.isEnabled = false
         chart.setDrawGridBackground(false)
@@ -119,7 +120,7 @@ class ChallengeFragment : Fragment() {
         chart.axisRight.axisMinimum = 0f
         chart.axisRight.axisMaximum = (levelsCompleted+levelsLeft).toFloat()
 
-        chart.axisLeft.setDrawLabels(false)
+        chart.axisLeft.textColor = resources.getColor(R.color.colorMessage)
         chart.axisLeft.axisMinimum = 0f
         chart.axisLeft.axisMaximum = (levelsCompleted+levelsLeft).toFloat()
 
@@ -134,26 +135,29 @@ class ChallengeFragment : Fragment() {
         legend.setDrawInside(false)
         legend.xEntrySpace = 5f
         legend.yEntrySpace = 0f
-        legend.yOffset = 0f
+        legend.yOffset = 10f
         legend.textColor = resources.getColor(R.color.colorMessage)
         legend.textSize = 12f
         legend.formSize = 10f
         legend.form = Legend.LegendForm.SQUARE
 
-        levelData.add(BarEntry(levelsCompleted.toFloat(), (levelsCompleted).toFloat()))
+        levelData.add(BarEntry(0f, levelsCompleted.toFloat()))
         setColor.add(Color.GRAY)
+        levelData.add(BarEntry(1f, levelsLeft.toFloat()))
+        setColor.add(Color.BLACK)
 
         val set = BarDataSet(levelData, getString(R.string.levels_completed_chart_label))
         set.colors = setColor
 
         val dataLabels = ArrayList<String>()
         dataLabels.add(getString(R.string.levels_completed_chart_label))
+        dataLabels.add(getString(R.string.levels_left_chart_label))
 
-        val dataSet = BarData(set)
-        dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))
-        dataSet.setValueTextSize(12f)
+        val data = BarData(set)
+        data.setValueTextColor(resources.getColor(R.color.colorMessage))
+        data.setValueTextSize(12f)
 
-        chart.data = dataSet
+        chart.data = data
         chart.invalidate()
 
     }

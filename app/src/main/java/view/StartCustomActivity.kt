@@ -4,22 +4,21 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_start_custom.*
 import presenter.*
+import view.subclass.BaseActivity
 
 /**
  * Activity of creating a custom game play
  */
-class StartCustomActivity : AppCompatActivity(), IStartCustomView {
+class StartCustomActivity : BaseActivity(), IStartCustomView {
 
     companion object {
         private const val CUSTOM_GAME = 1
@@ -35,11 +34,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
 
     private var gameType = CUSTOM_GAME
     private var gameMode = NORMAL_MODE
-
-    /**
-     * Advertisement of the activity
-     */
-    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -132,9 +126,7 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
             presenter.randomConfig()
         }
 
-        mAdView = findViewById(R.id.startCustomAdView)
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+        initActivityAd(findViewById(R.id.startCustomAdView))
 
     }
 
@@ -144,7 +136,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * @param   playerNumber    Id of the Player
      */
     override fun playerAdded(playerNumber: Int){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, getString(R.string.player_added, (playerNumber)), Snackbar.LENGTH_SHORT).show()
     }
 
@@ -152,7 +143,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that Players list is full
      */
     override fun playersFull(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.maximum_reached, Snackbar.LENGTH_LONG).show()
     }
 
@@ -160,7 +150,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that Players list has been cleared
      */
     override fun playersCleared(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.list_clear, Snackbar.LENGTH_LONG).show()
     }
 
@@ -168,7 +157,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that there are not enough Players to start
      */
     override fun notEnoughPlayer(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.not_enough_player, Snackbar.LENGTH_LONG).show()
     }
 
@@ -176,7 +164,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that maximum size has been reached
      */
     override fun maximumSizeReached(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.maximum_size, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -184,7 +171,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that minimum size has been reached
      */
     override fun minimumSizeReached(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.minimum_size, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -192,7 +178,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
      * Shows the user that random generating happened
      */
     override fun randomGenerated(){
-        AudioPresenter.soundNotification()
         Snackbar.make(recyclerViewPlayers, R.string.random_generated, Snackbar.LENGTH_SHORT).show()
     }
 
@@ -214,30 +199,6 @@ class StartCustomActivity : AppCompatActivity(), IStartCustomView {
     override fun updateWidthText(value: Int){
         val widthTextView = findViewById<TextView>(R.id.tvWidth)
         widthTextView.text = getString(R.string.width_show, value)
-    }
-
-    /**
-     * Called when leaving the activity - stops the presenter calculations too
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
-     */
-    override fun onResume() {
-        super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

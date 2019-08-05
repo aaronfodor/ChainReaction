@@ -10,7 +10,9 @@ object AudioPresenter{
     private var soundEnabled = true
 
     private var soundButtonClick = MediaPlayer()
-    private var soundNotification = MediaPlayer()
+    private var soundPositiveButtonClick = MediaPlayer()
+    private var soundNegativeButtonClick = MediaPlayer()
+    private var soundBackClick = MediaPlayer()
     private var soundOn = MediaPlayer()
     private var soundOff = MediaPlayer()
     private var soundSwipe = MediaPlayer()
@@ -18,7 +20,7 @@ object AudioPresenter{
     private var soundHumanVictory = MediaPlayer()
     private var soundConfetti = MediaPlayer()
     private var soundParticle = MediaPlayer()
-    private var soundDialog = MediaPlayer()
+    //private var soundDialog = MediaPlayer()
     private var soundLocked = MediaPlayer()
 
     /**
@@ -38,7 +40,9 @@ object AudioPresenter{
      */
     private fun initSounds(context: Context) {
         soundButtonClick = MediaPlayer.create(context, R.raw.tap)
-        //soundNotification = MediaPlayer.create(context, R.raw.notification)
+        soundPositiveButtonClick = MediaPlayer.create(context, R.raw.tap)
+        soundNegativeButtonClick = MediaPlayer.create(context, R.raw.tap)
+        soundBackClick = MediaPlayer.create(context, R.raw.notification)
         soundOn = MediaPlayer.create(context, R.raw.on)
         soundOff = MediaPlayer.create(context, R.raw.off)
         soundSwipe = MediaPlayer.create(context, R.raw.swipe)
@@ -84,12 +88,32 @@ object AudioPresenter{
     }
 
     /**
-     * Plays notification sound
+     * Plays positive button click sound
      */
-    fun soundNotification(){
+    fun soundPositiveButtonClick(){
         if(soundEnabled){
-            prepareAudioPlaying(soundNotification)
-            soundNotification.start()
+            prepareAudioPlaying(soundPositiveButtonClick)
+            soundPositiveButtonClick.start()
+        }
+    }
+
+    /**
+     * Plays negative button click sound
+     */
+    fun soundNegativeButtonClick(){
+        if(soundEnabled){
+            prepareAudioPlaying(soundNegativeButtonClick)
+            soundNegativeButtonClick.start()
+        }
+    }
+
+    /**
+     * Plays back click sound
+     */
+    fun soundBackClick(){
+        if(soundEnabled){
+            prepareAudioPlaying(soundBackClick)
+            soundBackClick.start()
         }
     }
 
@@ -166,12 +190,12 @@ object AudioPresenter{
     /**
      * Plays dialog sound
      */
-    fun soundDialog(){
+    /*fun soundDialog(){
         if(soundEnabled){
             prepareAudioPlaying(soundDialog)
             soundDialog.start()
         }
-    }
+    }*/
 
     /**
      * Plays locked sound

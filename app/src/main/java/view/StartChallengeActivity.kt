@@ -4,23 +4,20 @@ import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
-import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
 import presenter.LevelSlidePagerAdapter
-import presenter.AdPresenter
-import presenter.AudioPresenter
 import presenter.ViewPagerPageChangeListener
+import view.subclass.BaseActivity
 
 /**
  * Activity of starting a challenge game play
  */
-class StartChallengeActivity : AppCompatActivity() {
+class StartChallengeActivity : BaseActivity() {
 
     companion object {
         private const val CHALLENGE_GAME = 2
@@ -47,11 +44,6 @@ class StartChallengeActivity : AppCompatActivity() {
      */
     private lateinit var mPagerTitles: TabLayout
 
-    /**
-     * Advertisement of the activity
-     */
-    lateinit var mAdView : AdView
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -67,9 +59,7 @@ class StartChallengeActivity : AppCompatActivity() {
         mPagerTitles = findViewById(R.id.levelPagerTitles)
         mPagerTitles.setupWithViewPager(mPager)
 
-        mAdView = findViewById(R.id.startChallengeAdView)
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+        initActivityAd(findViewById(R.id.startChallengeAdView))
 
         challengeDatabaseReader()
 
@@ -106,30 +96,6 @@ class StartChallengeActivity : AppCompatActivity() {
 
         }.start()
 
-    }
-
-    /**
-     * Called when leaving the activity - stops the presenter calculations too
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
-     */
-    override fun onResume() {
-        super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
+import hu.bme.aut.android.chain_reaction.R
 import presenter.AudioPresenter
+import view.subclass.BaseActivity
 
 /**
  * Activity of settings
@@ -44,6 +46,7 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         supportFragmentManager.beginTransaction()
             .replace(android.R.id.content, SettingsDeleteDbFragment())
             .commit()
+
     }
 
     override fun onStart() {
@@ -56,6 +59,11 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         PreferenceManager.getDefaultSharedPreferences(applicationContext)
             .unregisterOnSharedPreferenceChangeListener(this)
         super.onStop()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        AudioPresenter.soundBackClick()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

@@ -2,24 +2,17 @@ package view
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
-import com.google.android.gms.ads.AdView
 import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_type.*
-import presenter.AdPresenter
 import presenter.AudioPresenter
+import view.subclass.BaseActivity
 
 /**
  * Type Activity - selects the game type to play
  */
-class TypeActivity : AppCompatActivity() {
-
-    /**
-     * Advertisement of the activity
-     */
-    lateinit var mAdView : AdView
+class TypeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -39,34 +32,8 @@ class TypeActivity : AppCompatActivity() {
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        mAdView = findViewById(R.id.modeAdView)
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+        initActivityAd(findViewById(R.id.modeAdView))
 
-    }
-
-    /**
-     * Called when leaving the activity - stops the presenter calculations too
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
-     */
-    override fun onResume() {
-        super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

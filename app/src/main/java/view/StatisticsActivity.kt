@@ -2,18 +2,15 @@ package view
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import hu.bme.aut.android.chain_reaction.R
-import com.google.android.gms.ads.AdView
-import presenter.AdPresenter
 import android.support.v4.view.ViewPager
 import presenter.StatisticsSlidePagerAdapter
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
-import presenter.AudioPresenter
 import presenter.ViewPagerPageChangeListener
+import view.subclass.BaseActivity
 
-class StatisticsActivity : AppCompatActivity() {
+class StatisticsActivity : BaseActivity() {
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous and next fragments
@@ -24,11 +21,6 @@ class StatisticsActivity : AppCompatActivity() {
      * The pager titles
      */
     private lateinit var mPagerTitles: TabLayout
-
-    /**
-     * Advertisement of the activity
-     */
-    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -48,34 +40,8 @@ class StatisticsActivity : AppCompatActivity() {
         mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
         mPager.setPageTransformer(true, CubeOutTransformer())
 
-        mAdView = this.findViewById(R.id.statsAdView)
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+        initActivityAd(findViewById(R.id.statsAdView))
 
-    }
-
-    /**
-     * Called when leaving the activity
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity
-     */
-    override fun onResume() {
-        super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
     }
 
 }

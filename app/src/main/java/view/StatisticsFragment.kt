@@ -126,11 +126,11 @@ class StatisticsFragment : Fragment() {
         dataLabels.add(getString(R.string.type_human))
         dataLabels.add(getString(R.string.type_ai))
 
-        val dataSet = PieData(set)
-        dataSet.setValueTextColor(resources.getColor(R.color.colorMessage))
-        dataSet.setValueTextSize(12f)
+        val data = PieData(set)
+        data.setValueTextColor(resources.getColor(R.color.colorMessage))
+        data.setValueTextSize(12f)
 
-        chart.data = dataSet
+        chart.data = data
         chart.invalidate()
 
     }
