@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
-import android.widget.Button
 import android.support.v7.widget.LinearLayoutManager
 import android.view.WindowManager
 import android.widget.ImageView
@@ -13,12 +12,14 @@ import android.widget.TextView
 import hu.bme.aut.android.chain_reaction.R
 import kotlinx.android.synthetic.main.activity_start_custom.*
 import presenter.*
-import view.subclass.BaseActivity
+import view.subclass.AdActivity
+import view.subclass.BaseButton
+import view.subclass.MainButton
 
 /**
  * Activity of creating a custom game play
  */
-class StartCustomActivity : BaseActivity(), IStartCustomView {
+class StartCustomActivity : AdActivity(), IStartCustomView {
 
     companion object {
         private const val CUSTOM_GAME = 1
@@ -46,28 +47,40 @@ class StartCustomActivity : BaseActivity(), IStartCustomView {
         val gameTypeStartView = findViewById<ImageView>(R.id.gameTypeStartCustomView)
         gameTypeStartView.setImageDrawable(resources.getDrawable(R.drawable.game_mode_custom))
 
-        val addHumanPlayerButton = findViewById<Button>(R.id.buttonAddHumanPlayer)
-        addHumanPlayerButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        val addHumanPlayerButton = findViewById<BaseButton>(R.id.buttonAddHumanPlayer)
+        val addAIPlayerButton = findViewById<BaseButton>(R.id.buttonAddAIPlayer)
+        val clearPlayersButton = findViewById<BaseButton>(R.id.buttonClearPlayers)
+        val startGameButton = findViewById<MainButton>(R.id.buttonStartGame)
+        val heightPlusButton = findViewById<BaseButton>(R.id.buttonHeightPlus)
+        val heightMinusButton = findViewById<BaseButton>(R.id.buttonHeightMinus)
+        val widthPlusButton = findViewById<BaseButton>(R.id.buttonWidthPlus)
+        val widthMinusButton = findViewById<BaseButton>(R.id.buttonWidthMinus)
+        val randomButton = findViewById<BaseButton>(R.id.buttonRandom)
+
+        //adding buttons to the activity register to animate all of them
+        this.addButtonToRegister(addHumanPlayerButton)
+        this.addButtonToRegister(addAIPlayerButton)
+        this.addButtonToRegister(clearPlayersButton)
+        this.addButtonToRegister(startGameButton)
+        this.addButtonToRegister(heightPlusButton)
+        this.addButtonToRegister(heightMinusButton)
+        this.addButtonToRegister(widthPlusButton)
+        this.addButtonToRegister(widthMinusButton)
+        this.addButtonToRegister(randomButton)
+
+        addHumanPlayerButton.setOnClickEvent {
             presenter.addHumanPlayer()
         }
 
-        val addAIPlayerButton = findViewById<Button>(R.id.buttonAddAIPlayer)
-        addAIPlayerButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        addAIPlayerButton.setOnClickEvent {
             presenter.addAIPlayer()
         }
 
-        val clearPlayersButton = findViewById<Button>(R.id.buttonClearPlayers)
-        clearPlayersButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        clearPlayersButton.setOnClickEvent {
             presenter.clearPlayers()
         }
 
-        val startGameButton = findViewById<Button>(R.id.buttonStartGame)
-        startGameButton.setOnClickListener {
-
-            AudioPresenter.soundButtonClick()
+        startGameButton.setOnClickEvent {
 
             if(presenter.canGameBeStarted()){
 
@@ -89,42 +102,32 @@ class StartCustomActivity : BaseActivity(), IStartCustomView {
 
         }
 
+        heightPlusButton.setOnClickEvent {
+            presenter.heightPlus()
+        }
+
+        heightMinusButton.setOnClickEvent {
+            presenter.heightMinus()
+        }
+
+        widthPlusButton.setOnClickEvent {
+            presenter.widthPlus()
+        }
+
+        widthMinusButton.setOnClickEvent {
+            presenter.widthMinus()
+        }
+
+        randomButton.setOnClickEvent {
+            presenter.randomConfig()
+        }
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewPlayers)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = presenter.getAdapter()
 
         updateHeightText(presenter.getPlayGroundHeight())
         updateWidthText(presenter.getPlayGroundWidth())
-
-        val heightPlusButton = findViewById<Button>(R.id.buttonHeightPlus)
-        heightPlusButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
-            presenter.heightPlus()
-        }
-
-        val heightMinusButton = findViewById<Button>(R.id.buttonHeightMinus)
-        heightMinusButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
-            presenter.heightMinus()
-        }
-
-        val widthPlusButton = findViewById<Button>(R.id.buttonWidthPlus)
-        widthPlusButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
-            presenter.widthPlus()
-        }
-
-        val widthMinusButton = findViewById<Button>(R.id.buttonWidthMinus)
-        widthMinusButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
-            presenter.widthMinus()
-        }
-
-        val randomButton = findViewById<Button>(R.id.buttonRandom)
-        randomButton.setOnClickListener {
-            AudioPresenter.soundButtonClick()
-            presenter.randomConfig()
-        }
 
         initActivityAd(findViewById(R.id.startCustomAdView))
 
@@ -199,6 +202,14 @@ class StartCustomActivity : BaseActivity(), IStartCustomView {
     override fun updateWidthText(value: Int){
         val widthTextView = findViewById<TextView>(R.id.tvWidth)
         widthTextView.text = getString(R.string.width_show, value)
+    }
+
+    /**
+     * Step back to the type activity
+     */
+    override fun onBackPressed() {
+        startActivity(Intent(this, TypeActivity::class.java))
+        this.finish()
     }
 
 }

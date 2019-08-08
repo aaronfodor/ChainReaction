@@ -7,16 +7,17 @@ package presenter
 interface IGameView {
 
     /**
-     * Draws the selected Playground Field
+     * Draws the selected Playground Field if a new image is required to be set
      *
-     * @param    pos_y       Y coordinate
-     * @param    pos_x       X coordinate
-     * @param    color       Color of the Field
-     * @param    number      elements of the Field
-     * @param    gifEnabled  whether moving image is enabled or not
-     * @return   boolean     True if succeed, false otherwise
+     * @param    pos_y                  Y coordinate
+     * @param    pos_x                  X coordinate
+     * @param    color                  Color of the Field
+     * @param    number                 elements of the Field
+     * @param    isCloseToExplosion     maximum allowed elements on the Field
+     * @param    gifEnabled             whether moving image is enabled or not
+     * @return   boolean                True if succeed, false otherwise
      */
-    fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int, gifEnabled: Boolean): Boolean
+    fun refreshPlaygroundFieldAt(pos_y: Int, pos_x: Int, color: Int, number: Int, isCloseToExplosion: Boolean, gifEnabled: Boolean): Boolean
 
     /**
      * Shows whose turn is now

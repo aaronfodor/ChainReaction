@@ -1,5 +1,6 @@
 package view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.view.WindowManager
@@ -8,9 +9,9 @@ import android.support.v4.view.ViewPager
 import presenter.StatisticsSlidePagerAdapter
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer
 import presenter.ViewPagerPageChangeListener
-import view.subclass.BaseActivity
+import view.subclass.AdActivity
 
-class StatisticsActivity : BaseActivity() {
+class StatisticsActivity : AdActivity() {
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous and next fragments
@@ -42,6 +43,14 @@ class StatisticsActivity : BaseActivity() {
 
         initActivityAd(findViewById(R.id.statsAdView))
 
+    }
+
+    /**
+     * Step back to the main activity
+     */
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
+        this.finish()
     }
 
 }

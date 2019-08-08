@@ -5,6 +5,9 @@ import android.media.MediaPlayer
 import android.preference.PreferenceManager
 import hu.bme.aut.android.chain_reaction.R
 
+/**
+ * App sound handler singleton
+ */
 object AudioPresenter{
 
     private var soundEnabled = true

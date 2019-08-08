@@ -7,8 +7,12 @@
         android:id="@+id/constraintLayoutTypeActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_img"
         tools:context="view.TypeActivity">
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/background_menu"/>
 
     <TextView
             android:text="@string/title_activity_type"
@@ -26,30 +30,33 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"/>
 
-    <Button
+    <view.subclass.BaseButton
             android:id="@+id/buttonChallengeGame"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="@string/button_challenge_game"
-            android:background="@drawable/menu_button"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitleMode"
             app:layout_constraintBottom_toTopOf="@+id/buttonCustomGame"/>
 
-    <Button
+    <view.subclass.BaseButton
             android:id="@+id/buttonCustomGame"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="@string/button_custom_game"
-            android:background="@drawable/menu_button"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonChallengeGame"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guidelineType"/>
+            app:layout_constraintBottom_toTopOf="@+id/guidelineType"/>
 
     <com.google.android.gms.ads.AdView
             android:id="@+id/modeAdView"
@@ -66,21 +73,27 @@
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" ads:srcCompat="@drawable/game_mode_custom"
+            android:layout_height="wrap_content"
+            ads:srcCompat="@drawable/game_mode_custom"
             android:id="@+id/gameTypeModeCustomView"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonCustomGame"/>
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonCustomGame"/>
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" ads:srcCompat="@drawable/game_mode_challenge"
+            android:layout_height="wrap_content"
+            ads:srcCompat="@drawable/game_mode_challenge"
             android:id="@+id/gameTypeModeChallengeView"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/buttonChallengeGame"/>
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonChallengeGame"/>
 
     <android.support.constraint.Guideline
             android:orientation="horizontal"

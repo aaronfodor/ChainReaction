@@ -10,32 +10,39 @@
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
             android:theme="@style/defaultScreenTheme"
+            android:supportsRtl="true"
             android:noHistory="true"
             android:largeHeap="true">
 
         <activity
                 android:name="view.GameActivity"
-                android:theme="@style/defaultScreenTheme">
+                android:theme="@style/defaultScreenTheme"
+                android:configChanges="orientation|screenSize"
+                android:screenOrientation="portrait"
+                android:noHistory="true">
         </activity>
 
         <activity
                 android:name="view.SettingsActivity"
                 android:theme="@style/defaultScreenTheme"
-                android:label="@string/title_settings">
+                android:label="@string/title_settings"
+                android:noHistory="true">
         </activity>
 
         <activity
                 android:name="view.MoreActivity"
                 android:theme="@style/defaultScreenTheme"
-                android:label="@string/title_about"/>
+                android:label="@string/title_more"
+                android:screenOrientation="portrait"
+                android:noHistory="true"/>
 
         <activity
                 android:name="view.StatisticsActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_activity_stats"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:noHistory="true"/>
 
         <activity
                 android:name="view.StartCustomActivity"
@@ -55,11 +62,13 @@
                 android:name="view.TypeActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_activity_type"
-                android:screenOrientation="portrait"/>
+                android:screenOrientation="portrait"
+                android:noHistory="true"/>
 
         <activity android:name="view.MainActivity"
                   android:theme="@style/startScreenTheme"
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait"
+                  android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW" />

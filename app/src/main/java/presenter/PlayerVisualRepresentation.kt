@@ -33,15 +33,16 @@ object PlayerVisualRepresentation {
     /**
      * Returns the Drawable resource image Id based on the input parameters
      *
-     * @param       color       Color Id of the Player
-     * @param       number      Number of dots of Player
-     * @param       gifEnabled  True means gif is needed, false means standing image is required
-     * @return      Int         Drawable resource Id of the image
+     * @param       color                   Color Id of the Player
+     * @param       number                  Number of dots of Player
+     * @param       isCloseToExplosion      Is the particle close to the explosion
+     * @param       gifEnabled              True means gif is needed, false means standing image is required
+     * @return      Int                     Drawable resource Id of the image
      */
-    fun getDotsImageIdByColorAndNumber(color: Int, number: Int, gifEnabled: Boolean): Int {
+    fun getDotsImageIdByColorAndNumber(color: Int, number: Int, isCloseToExplosion: Boolean, gifEnabled: Boolean): Int {
 
         return if(gifEnabled){
-            getDotsGifImageId(color, number)
+            getDotsGifImageId(color, number, isCloseToExplosion)
         } else{
             getDotsStandingImageId(color, number)
         }
@@ -61,72 +62,72 @@ object PlayerVisualRepresentation {
 
         when (color) {
             8 -> drawableId = when (number) {
-                1 -> R.drawable.grey_dot1
-                2 -> R.drawable.grey_dot2
-                3 -> R.drawable.grey_dot3
+                1 -> R.drawable.grey_dot1stand
+                2 -> R.drawable.grey_dot2stand
+                3 -> R.drawable.grey_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             7 -> drawableId = when (number) {
-                1 -> R.drawable.brown_dot1
-                2 -> R.drawable.brown_dot2
-                3 -> R.drawable.brown_dot3
+                1 -> R.drawable.brown_dot1stand
+                2 -> R.drawable.brown_dot2stand
+                3 -> R.drawable.brown_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             6 -> drawableId = when (number) {
-                1 -> R.drawable.pink_dot1
-                2 -> R.drawable.pink_dot2
-                3 -> R.drawable.pink_dot3
+                1 -> R.drawable.pink_dot1stand
+                2 -> R.drawable.pink_dot2stand
+                3 -> R.drawable.pink_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             5 -> drawableId = when (number) {
-                1 -> R.drawable.orange_dot1
-                2 -> R.drawable.orange_dot2
-                3 -> R.drawable.orange_dot3
+                1 -> R.drawable.orange_dot1stand
+                2 -> R.drawable.orange_dot2stand
+                3 -> R.drawable.orange_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             4 -> drawableId = when (number) {
-                1 -> R.drawable.yellow_dot1
-                2 -> R.drawable.yellow_dot2
-                3 -> R.drawable.yellow_dot3
+                1 -> R.drawable.yellow_dot1stand
+                2 -> R.drawable.yellow_dot2stand
+                3 -> R.drawable.yellow_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             3 -> drawableId = when (number) {
-                1 -> R.drawable.blue_dot1
-                2 -> R.drawable.blue_dot2
-                3 -> R.drawable.blue_dot3
+                1 -> R.drawable.blue_dot1stand
+                2 -> R.drawable.blue_dot2stand
+                3 -> R.drawable.blue_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             2 -> drawableId = when (number) {
-                1 -> R.drawable.green_dot1
-                2 -> R.drawable.green_dot2
-                3 -> R.drawable.green_dot3
+                1 -> R.drawable.green_dot1stand
+                2 -> R.drawable.green_dot2stand
+                3 -> R.drawable.green_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
 
             }
             1 -> drawableId = when (number) {
-                1 -> R.drawable.red_dot1
-                2 -> R.drawable.red_dot2
-                3 -> R.drawable.red_dot3
+                1 -> R.drawable.red_dot1stand
+                2 -> R.drawable.red_dot2stand
+                3 -> R.drawable.red_dot3stand
                 else -> { // Note the block
                     R.drawable.nothing
                 }
@@ -141,13 +142,19 @@ object PlayerVisualRepresentation {
     /**
      * Returns the Drawable resource gif image Id based on the input parameters
      *
-     * @param       color       Color Id of the Player
-     * @param       number      Number of dots of Player
-     * @return      Int         Drawable resource Id of the image
+     * @param       color                   Color Id of the Player
+     * @param       number                  Number of dots of Player
+     * @param       isCloseToExplosion      Is the particle close to the explosion
+     * @return      Int                     Drawable resource Id of the image
      */
-    private fun getDotsGifImageId(color: Int, number: Int): Int {
+    private fun getDotsGifImageId(color: Int, number: Int, isCloseToExplosion: Boolean): Int {
 
         val drawableId: Int
+
+        if(!isCloseToExplosion){
+            drawableId = getDotsStandingImageId(color, number)
+            return drawableId
+        }
 
         when (color) {
             8 -> drawableId = when (number) {

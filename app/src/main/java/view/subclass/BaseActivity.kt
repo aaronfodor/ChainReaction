@@ -1,8 +1,6 @@
 package view.subclass
 
 import android.support.v7.app.AppCompatActivity
-import com.google.android.gms.ads.AdView
-import presenter.AdPresenter
 import presenter.AudioPresenter
 
 /**
@@ -11,19 +9,17 @@ import presenter.AudioPresenter
 abstract class BaseActivity : AppCompatActivity(){
 
     /**
-     * Advertisement of the activity
+     * Buttons of the activity
      */
-    lateinit var mAdView : AdView
+    var activityButtons = ArrayList<BaseButton>()
 
     /**
-     * Initialize the advertisement of the Activity
+     * Add a button to the BaseButton register of the activity
      *
-     *  @param   adView     AdView to initialize
+     * @param    button        Button to add
      */
-    fun initActivityAd(adView: AdView) {
-        mAdView = adView
-        //loading the advertisement
-        AdPresenter.loadAd(mAdView)
+    fun addButtonToRegister(button: BaseButton){
+        activityButtons.add(button)
     }
 
     /**
@@ -35,27 +31,13 @@ abstract class BaseActivity : AppCompatActivity(){
     }
 
     /**
-     * Called when leaving the activity - stops the ad
-     */
-    override fun onPause() {
-        mAdView.pause()
-        super.onPause()
-    }
-
-    /**
-     * Called when returning to the activity - starts the ad
+     * Called when returning to the activity - starts BaseButton appearing animation
      */
     override fun onResume() {
         super.onResume()
-        mAdView.resume()
-    }
-
-    /**
-     * Called before the activity is destroyed - destroys the ad
-     */
-    override fun onDestroy() {
-        mAdView.destroy()
-        super.onDestroy()
+        for(button in activityButtons){
+            button.startAppearingAnimation()
+        }
     }
 
 }

@@ -179,7 +179,10 @@ class LevelPresenter (
      * @return  Int 	    Image Id to display
      */
     private fun imageAdder(Id: Int): Int {
-        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1, false)
+        return PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(Id, 1,
+            isCloseToExplosion = false,
+            gifEnabled = false
+        )
     }
 
 }

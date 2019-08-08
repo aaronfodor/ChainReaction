@@ -4,13 +4,11 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import hu.bme.aut.android.chain_reaction.R
@@ -18,9 +16,10 @@ import kotlinx.android.synthetic.main.fragment_level.*
 import model.db.challenge.ChallengeLevel
 import presenter.IStartLevelView
 import presenter.LevelPresenter
-import presenter.AudioPresenter
+import view.subclass.BaseFragment
+import view.subclass.MainButton
 
-class LevelFragment: Fragment(), IStartLevelView {
+class LevelFragment: BaseFragment(), IStartLevelView {
 
     companion object {
         private const val CHALLENGE_GAME = 2
@@ -47,12 +46,14 @@ class LevelFragment: Fragment(), IStartLevelView {
 
         presenter = LevelPresenter(this, this.context!!, level)
 
-        val startGameButton = myView?.findViewById<Button>(R.id.buttonStartChallengeGame)
-        startGameButton?.setOnClickListener {
+        val startGameButton = myView?.findViewById<MainButton>(R.id.buttonStartChallengeGame)
+
+        //adding buttons to the fragment register to animate all of them
+        this.addButtonToRegister(startGameButton)
+
+        startGameButton?.setOnClickEvent {
 
             if(presenter.canGameBeStarted()){
-
-                AudioPresenter.soundButtonClick()
 
                 val myIntent = Intent(activity, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", presenter.getPlayerCount())
@@ -68,10 +69,6 @@ class LevelFragment: Fragment(), IStartLevelView {
 
                 startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
 
-            }
-
-            else{
-                AudioPresenter.soundLocked()
             }
 
         }

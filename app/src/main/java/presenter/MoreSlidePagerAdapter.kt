@@ -9,7 +9,7 @@ import view.HowToPlayFragment
 /**
  * A pager adapter that represents 2 Fragment objects (HowToPlayFragment, AboutFragment) in sequence
  */
-class AboutSlidePagerAdapter(fm: FragmentManager, howToPlayLabel: String, appInfoLabel: String) : FragmentStatePagerAdapter(fm) {
+class MoreSlidePagerAdapter(fm: FragmentManager, howToPlayLabel: String, appInfoLabel: String) : FragmentStatePagerAdapter(fm) {
 
     private val howToPlayLabel = howToPlayLabel
     private val appInfoLabel = appInfoLabel

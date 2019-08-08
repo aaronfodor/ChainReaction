@@ -1,6 +1,7 @@
 package view
 
 import android.arch.persistence.room.Room
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
@@ -12,12 +13,12 @@ import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
 import presenter.LevelSlidePagerAdapter
 import presenter.ViewPagerPageChangeListener
-import view.subclass.BaseActivity
+import view.subclass.AdActivity
 
 /**
  * Activity of starting a challenge game play
  */
-class StartChallengeActivity : BaseActivity() {
+class StartChallengeActivity : AdActivity() {
 
     companion object {
         private const val CHALLENGE_GAME = 2
@@ -75,13 +76,24 @@ class StartChallengeActivity : BaseActivity() {
 
         Thread {
 
+            //adapter start position to show
+            var startAdapterPosition = 0
+
             challengeLevels = dbChallenge.challengeLevelsDAO().getAll().toMutableList()
+
+            for(level in challengeLevels){
+                if(level.Completed){
+                    startAdapterPosition++
+                }
+            }
 
             if(challengeLevels.isEmpty()){
                 val defaultCampaignStates = DbDefaults.challengeDatabaseDefaults()
+
                 for(level in defaultCampaignStates){
                     dbChallenge.challengeLevelsDAO().insert(level)
                 }
+
                 challengeLevels = dbChallenge.challengeLevelsDAO().getAll().toMutableList()
             }
 
@@ -91,11 +103,20 @@ class StartChallengeActivity : BaseActivity() {
                 // The pager adapter, which provides the pages to the view pager widget
                 pagerAdapter = LevelSlidePagerAdapter(challengeLevels, this, supportFragmentManager)
                 mPager.adapter = pagerAdapter
+                mPager.currentItem = startAdapterPosition
                 mPager.setPageTransformer(true, CubeOutTransformer())
             }
 
         }.start()
 
+    }
+
+    /**
+     * Step back to the type activity
+     */
+    override fun onBackPressed() {
+        startActivity(Intent(this, TypeActivity::class.java))
+        this.finish()
     }
 
 }

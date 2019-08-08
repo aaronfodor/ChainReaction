@@ -14,13 +14,13 @@ import model.ai.PlayerLogic
 import presenter.AdPresenter
 import presenter.AudioPresenter
 import presenter.IMainView
-import view.subclass.BaseActivity
+import view.subclass.AdActivity
 import view.subclass.BaseDialog
 
 /**
  * Main Activity - entry point
  */
-class MainActivity : BaseActivity(), IMainView {
+class MainActivity : AdActivity(), IMainView {
 
     /**
      * Sets startup screen, initializes the global presenter objects
@@ -41,32 +41,34 @@ class MainActivity : BaseActivity(), IMainView {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         SettingsActivity.changeSettings(sharedPreferences)
 
-        buttonNewGame.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        //adding buttons to the activity register to animate all of them
+        this.addButtonToRegister(buttonNewGame)
+        this.addButtonToRegister(buttonStats)
+        this.addButtonToRegister(buttonSettings)
+        this.addButtonToRegister(buttonMore)
+        this.addButtonToRegister(buttonExit)
+
+        buttonNewGame.setOnClickEvent {
             val intent = Intent(this, TypeActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonStats.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        buttonStats.setOnClickEvent {
             val intent = Intent(this, StatisticsActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonSettings.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        buttonSettings.setOnClickEvent {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonMore.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        buttonMore.setOnClickEvent {
             val intent = Intent(this, MoreActivity::class.java)
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
 
-        buttonExit.setOnClickListener {
-            AudioPresenter.soundButtonClick()
+        buttonExit.setOnClickEvent {
             exitDialog()
         }
 

@@ -7,7 +7,6 @@ import presenter.task.GameLogicTask
 import java.util.ArrayList
 import java.util.Timer
 import java.util.TimerTask
-import kotlin.concurrent.thread
 
 /**
  * presenter of a game play
@@ -259,10 +258,15 @@ class GamePresenter
 
         for (actual_height in 0 until dimension[0]) {
             for (actual_width in 0 until dimension[1]) {
-                view.refreshPlayground(
+
+                val numOfElements = stateMatrix[actual_height][actual_width][1]
+                val numLeftBeforeExplosion = stateMatrix[actual_height][actual_width][2]
+
+                view.refreshPlaygroundFieldAt(
                     actual_height, actual_width,
                     stateMatrix[actual_height][actual_width][0],
-                    stateMatrix[actual_height][actual_width][1],
+                    numOfElements,
+                    numLeftBeforeExplosion == 0,
                     gifEnabled
                 )
             }

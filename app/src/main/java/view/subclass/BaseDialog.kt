@@ -8,14 +8,24 @@ import android.graphics.drawable.Drawable
 import hu.bme.aut.android.chain_reaction.R
 import presenter.AudioPresenter
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 
-class BaseDialog(context: Context?, title: String, description: String, image: Drawable) : AlertDialog(context) {
+/**
+ * Dialog class of the app
+ *
+ * @param    context            Context of the parent where the dialog is shown
+ * @param    title              Title of the dialog
+ * @param    description        Description of the dialog
+ * @param    image              Image shown on the dialog
+ */
+class BaseDialog(context: Context, title: String, description: String, image: Drawable) : AlertDialog(context) {
 
-    var buttonPositive: Button? = null
-    var buttonNegative: Button? = null
+    /**
+     * Positive and negative Buttons of the dialog
+     */
+    var buttonPositive: MainButton? = null
+    var buttonNegative: BaseButton? = null
 
     init {
 
@@ -35,13 +45,13 @@ class BaseDialog(context: Context?, title: String, description: String, image: D
         val textViewDescription = view.findViewById<TextView>(R.id.tvMenuDialogDescription)
         textViewDescription.text = description
 
-        buttonPositive = view.findViewById<Button?>(R.id.btnPositiveMenuDialog)
+        buttonPositive = view.findViewById<MainButton?>(R.id.btnPositiveMenuDialog)
         buttonPositive?.setOnClickListener {
             AudioPresenter.soundPositiveButtonClick()
             this.dismiss()
         }
 
-        buttonNegative = view.findViewById<Button?>(R.id.btnNegativeMenuDialog)
+        buttonNegative = view.findViewById<BaseButton?>(R.id.btnNegativeMenuDialog)
         buttonNegative?.setOnClickListener {
             AudioPresenter.soundNegativeButtonClick()
             this.dismiss()
@@ -49,6 +59,11 @@ class BaseDialog(context: Context?, title: String, description: String, image: D
 
     }
 
+    /**
+     * Sets the positive Button on click listener
+     *
+     * @param    func        Lambda to execute when the positive Button is pressed
+     */
     fun setPositiveButton(func: () -> Unit){
         buttonPositive?.setOnClickListener {
             AudioPresenter.soundPositiveButtonClick()
@@ -57,12 +72,26 @@ class BaseDialog(context: Context?, title: String, description: String, image: D
         }
     }
 
+    /**
+     * Sets the negative Button on click listener
+     *
+     * @param    func        Lambda to execute when the negative Button is pressed
+     */
     fun setNegativeButton(func: () -> Unit){
         buttonNegative?.setOnClickListener {
             AudioPresenter.soundNegativeButtonClick()
             this.dismiss()
             func()
         }
+    }
+
+    /**
+     * Show the dialog - play its Buttons' animations
+     */
+    override fun show() {
+        super.show()
+        buttonPositive?.startAppearingAnimation()
+        buttonNegative?.startAppearingAnimation()
     }
 
 }

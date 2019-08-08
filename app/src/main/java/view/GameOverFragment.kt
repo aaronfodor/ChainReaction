@@ -2,7 +2,6 @@ package view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +14,10 @@ import com.github.mikephil.charting.data.BarEntry
 import nl.dionsegijn.konfetti.KonfettiView
 import nl.dionsegijn.konfetti.models.Shape
 import nl.dionsegijn.konfetti.models.Size
-import presenter.AudioPresenter
 import presenter.PlayerVisualRepresentation
+import view.subclass.BaseFragment
 
-class GameOverFragment : Fragment() {
+class GameOverFragment : BaseFragment() {
 
     companion object {
         const val HUMAN = 1

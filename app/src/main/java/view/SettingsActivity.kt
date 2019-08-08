@@ -1,18 +1,17 @@
 package view
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-import hu.bme.aut.android.chain_reaction.R
 import presenter.AudioPresenter
 import view.subclass.BaseActivity
 
 /**
  * Activity of settings
  */
-class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsActivity : BaseActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
 
@@ -61,11 +60,6 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
         super.onStop()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        AudioPresenter.soundBackClick()
-    }
-
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
 
         when(sharedPreferences.getBoolean(key, false)){
@@ -97,6 +91,14 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             }
         }
 
+    }
+
+    /**
+     * Step back to the main activity
+     */
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
+        this.finish()
     }
 
 }

@@ -23,13 +23,15 @@ import android.widget.TextSwitcher
 import model.db.DbDefaults
 import model.db.challenge.ChallengeDatabase
 import presenter.AudioPresenter
-import view.subclass.BaseActivity
+import view.subclass.AdActivity
 import view.subclass.BaseDialog
+import android.content.res.Configuration
+import kotlinx.android.synthetic.main.activity_game.*
 
 /**
  * Activity of a game play
  */
-class GameActivity : BaseActivity(), IGameView, View.OnClickListener {
+class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
     /**
      * presenter of the view
@@ -191,18 +193,19 @@ class GameActivity : BaseActivity(), IGameView, View.OnClickListener {
     /**
      * Draws the selected Playground Field if a new image is required to be set
      *
-     * @param    pos_y       Y coordinate
-     * @param    pos_x       X coordinate
-     * @param    color       Color of the Field
-     * @param    number      elements of the Field
-     * @param    gifEnabled  whether moving image is enabled or not
-     * @return   boolean     True if succeed, false otherwise
+     * @param    pos_y                  Y coordinate
+     * @param    pos_x                  X coordinate
+     * @param    color                  Color of the Field
+     * @param    number                 elements of the Field
+     * @param    isCloseToExplosion     is the particle close to the explosion
+     * @param    gifEnabled             whether moving image is enabled or not
+     * @return   boolean                True if succeed, false otherwise
      */
-    override fun refreshPlayground(pos_y: Int, pos_x: Int, color: Int, number: Int, gifEnabled: Boolean): Boolean {
+    override fun refreshPlaygroundFieldAt(pos_y: Int, pos_x: Int, color: Int, number: Int, isCloseToExplosion: Boolean, gifEnabled: Boolean): Boolean {
 
         val row = tableLayoutPlayGround.getChildAt(pos_y) as TableRow
         val field = row.getChildAt(pos_x) as ImageView
-        val imageToSet = PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number, gifEnabled)
+        val imageToSet = PlayerVisualRepresentation.getDotsImageIdByColorAndNumber(color, number, isCloseToExplosion, gifEnabled)
         val currentImageId = Integer.valueOf(field.getTag(R.string.KEY_CURRENT_IMAGE).toString())
 
         //if the image to set is not the same as the current image, change it and store it's Id as tag value
