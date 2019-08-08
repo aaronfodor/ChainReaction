@@ -549,4 +549,12 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
         super.onPause()
     }
 
+    /**
+     * Stops the presenter calculations of the activity
+     */
+    override fun finish() {
+        super.finish()
+        this.presenter.stop()
+    }
+
 }

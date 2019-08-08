@@ -90,6 +90,11 @@ class GamePresenter
     private val timeLimit = 4000
 
     /**
+     * Has the click been calculated and handled
+     */
+    private var clickResultCalculated: Boolean = true
+
+    /**
      * Has the result been displayed flag
      */
     private var resultDisplayed: Boolean
@@ -140,16 +145,22 @@ class GamePresenter
     }
 
     /**
-     * Requests a step to the Field described with the input parameters in a new task
-     * Refreshes the view if the step is valid
+     * Requests a step calculation to the Field described with the input parameters in a new task
+     * Returns if a calculation has not finished yet and an another step is required - filters too early clicks
+     * Otherwise, refreshes the view if the step is valid
      *
-     * @param   pos_y       Y coordinate
+     * @param   pos_y      Y coordinate
      * @param   pos_x      X coordinate
-     * @param    duration   Duration of waiting
+     * @param   duration   Duration of waiting
      */
     fun stepRequest(pos_y: Int, pos_x: Int, duration: Int) {
-        gameTask = GameLogicTask(model, this, showPropagation, limitedTimeMode)
-        gameTask!!.execute(pos_y, pos_x, duration)
+
+        if(clickResultCalculated){
+            clickResultCalculated = false
+            gameTask = GameLogicTask(model, this, showPropagation, limitedTimeMode)
+            gameTask!!.execute(pos_y, pos_x, duration)
+        }
+
     }
 
     /**
@@ -167,6 +178,7 @@ class GamePresenter
      * Refreshes the Playground and tells the view to draw it
      * If the result has been displayed, refresh nothing
      * Handles game over
+     * If the current state has been shown, sets calculation done flag to enable handling another clicks
      *
      * @param   propagation_depth     Current propagation state
      */
@@ -342,6 +354,13 @@ class GamePresenter
     }
 
     /**
+     * Tells the presenter that calculation has finished
+     */
+    fun notifyCalculationFinished(){
+        clickResultCalculated = true
+    }
+
+    /**
      * Result displayed getter method
      *
      * @return    Boolean       True if the result has been displayed, false otherwise
@@ -362,6 +381,14 @@ class GamePresenter
      */
     fun allChallengesCompleted(){
         view.showAllChallengesCompletedMessage()
+    }
+
+    /**
+     * Stops the game presenter calculations
+     */
+    fun stop(){
+        this.gameTask?.cancel(true)
+        progressBarTimerTask?.cancel()
     }
 
 }

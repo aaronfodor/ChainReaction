@@ -250,9 +250,11 @@ class GameLogicTask
 
     }
 
+    /**
+     * If the current calculation has finished, informs the presenter
+     */
     override fun onPostExecute(result: Boolean?) {
-        if (!cancelTask) {
-        }
+        presenter.notifyCalculationFinished()
     }
 
     override fun onPreExecute() {
@@ -273,6 +275,7 @@ class GameLogicTask
      */
     private fun handleOnCancelled() {
         cancelTask = true
+        presenter.notifyCalculationFinished()
     }
 
     /**
