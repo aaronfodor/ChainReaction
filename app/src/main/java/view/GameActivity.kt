@@ -444,6 +444,9 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
     }
 
+    /**
+     * Displays the leave dialog to confirm exit
+     */
     private fun leaveDialog(){
         val leaveDialog = BaseDialog(this, getString(R.string.confirm_leave_game), getString(R.string.confirm_leave_game_description), resources.getDrawable(R.drawable.warning))
         leaveDialog.setPositiveButton {
