@@ -209,7 +209,7 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
      */
     override fun onBackPressed() {
         startActivity(Intent(this, TypeActivity::class.java))
-        this.finish()
+        super.onBackPressed()
     }
 
 }

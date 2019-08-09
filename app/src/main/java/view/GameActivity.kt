@@ -462,7 +462,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
         if(presenter.isResultDisplayed()){
             startActivity(Intent(this, MainActivity::class.java))
-            this.finish()
+            super.onBackPressed()
         }
         else{
             leaveDialog()
