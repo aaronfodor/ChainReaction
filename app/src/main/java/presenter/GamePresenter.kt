@@ -228,29 +228,22 @@ class GamePresenter
 
             if (model.actualPlayerType == HUMAN) {
                 view.showEndOfGameMessage(false)
-                AudioPresenter.soundHumanVictory()
-                AudioPresenter.soundConfetti()
             }
 
             else{
                 view.showEndOfGameMessage(true)
-                AudioPresenter.soundAIVictory()
             }
 
         }
 
         else if(gameType == CHALLENGE_GAME){
 
-            //update the campaign database if the game was a campaign game and human Player is the winner
+            //update the challenge database if the game was a challenge game and human Player is the winner
             if (model.actualPlayerType == HUMAN) {
                 view.challengeDatabaseUpdater(challengeLevel)
-                AudioPresenter.soundHumanVictory()
-                AudioPresenter.soundConfetti()
             }
-
             else{
                 view.showRestartChallengeLevelMessage()
-                AudioPresenter.soundAIVictory()
             }
 
         }

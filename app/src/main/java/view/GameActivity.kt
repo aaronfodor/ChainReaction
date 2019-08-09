@@ -46,7 +46,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
     /**
      * Current times in milliseconds to calculate the duration of the waiting time of the Player
      */
-    private var previousClickTime: Long = 0
+    private var previousScreenRefreshTime: Long = 0
     private var currentClickTime: Long  = 0
 
     /**
@@ -151,8 +151,6 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
         }
 
         presenter = GamePresenter(this, height, width, players, showPropagation, gifEnabled, timeLimit, gameType, gameMode, challengeLevelId)
-        //start waiting time counting
-        previousClickTime = System.currentTimeMillis()
 
     }
 
@@ -182,9 +180,8 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
     private fun onPlayGroundElementClicked(pos_y: Int, pos_x: Int): View.OnClickListener? {
 
         currentClickTime = System.currentTimeMillis()
-        val waiting = currentClickTime - previousClickTime
+        val waiting = currentClickTime - previousScreenRefreshTime
         presenter.stepRequest(pos_y, pos_x, waiting.toInt())
-        previousClickTime = currentClickTime
 
         return null
 
@@ -230,6 +227,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
     /**
      * Shows whose turn is now
+     * Starts time counting from screen refresh
      *
      * @param       Id          Id of the current Player
      * @param       showAI      True means the current is an AI Player, false means human
@@ -246,6 +244,9 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
         else{
             infoText.setText(getString(R.string.player_turn, Id))
         }
+
+        //start waiting time counting
+        previousScreenRefreshTime = System.currentTimeMillis()
 
         tableLayoutPlayGround.setBackgroundColor(PlayerVisualRepresentation.getColorById(Id))
         tableLayoutPlayGround.invalidate()
@@ -277,6 +278,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
     /**
      * Shows the start text from the Presenter
+     * Starts time counting from screen refresh
      *
      * @param       Id          Id of the current Player
      * @param       showAI      True means the current is an AI Player, false means human
@@ -285,16 +287,18 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
     override fun showStart(Id: Int, showAI: Boolean): Boolean {
 
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
-
         if(showAI){
             infoText.setText(getString(R.string.player_ai_turn, Id))
         }
-
         else{
             infoText.setText(getString(R.string.player_turn, Id))
         }
 
         Snackbar.make(tableLayoutPlayGround, R.string.start_game, Snackbar.LENGTH_SHORT).show()
+
+        //start waiting time counting
+        previousScreenRefreshTime = System.currentTimeMillis()
+
         return true
 
     }
@@ -350,11 +354,14 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
      * Updates statistics the database
      * Increments the overall number of victories of the winner's type and saves it, increments all games counter
      * Updates campaign database if the game was a campaign game
+     * Calls play end game sound function
      *
      * @param     playerType    Type of the winner. 1 means human, 2 means AI
      * @param     humanVsAiGame True is human and AI played in the game, false otherwise
      */
     override fun statisticsDatabaseUpdater(playerType: Int, humanVsAiGame: Boolean){
+
+        playEndGameSound(playerType)
 
         val dbStats = Room.databaseBuilder(applicationContext, PlayerTypeStatsDatabase::class.java, "db_stats").build()
 
@@ -430,6 +437,25 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
     }
 
     /**
+     * Plays the corresponding end game sound
+     *
+     * @param     playerType    Type of the winner. 1 means human, 2 means AI
+     */
+    private fun playEndGameSound(playerType: Int){
+
+        when(playerType){
+            1 -> {
+                AudioPresenter.soundHumanVictory()
+                AudioPresenter.soundConfetti()
+            }
+            else -> {
+                AudioPresenter.soundAIVictory()
+            }
+        }
+
+    }
+
+    /**
      * Displays a dialog if the game is running or returns to the MainActivity and stops the current game instance if the game is over
      */
     override fun onBackPressed() {
@@ -448,13 +474,16 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
      * Displays the leave dialog to confirm exit
      */
     private fun leaveDialog(){
+
         val leaveDialog = BaseDialog(this, getString(R.string.confirm_leave_game), getString(R.string.confirm_leave_game_description), resources.getDrawable(R.drawable.warning))
+
         leaveDialog.setPositiveButton {
             //leaving the current game play
             startActivity(Intent(this, MainActivity::class.java))
             this.finish()
         }
         leaveDialog.show()
+
     }
 
     /**

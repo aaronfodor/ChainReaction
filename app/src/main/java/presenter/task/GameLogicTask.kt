@@ -74,10 +74,10 @@ class GameLogicTask
 
                 propagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE)
 
-                var startTime: Long? = System.currentTimeMillis()
+                var startTime: Long = System.currentTimeMillis()
                 var coordinates: Array<Int>? = model.autoCoordinates
-                var estimatedTime: Long? = System.currentTimeMillis() - startTime!!
-                var estimated = estimatedTime!!.toInt()
+                var estimatedTime: Long = System.currentTimeMillis() - startTime
+                var estimated = estimatedTime.toInt()
 
                 while (coordinates != null) {
 
@@ -102,7 +102,8 @@ class GameLogicTask
 
                 }
 
-            } else if (params.size == 1) {
+            }
+            else if (params.size == 1) {
 
                 model.addCurrentPlayerWaitingTime(params[0]!!)
                 propagationDisplayManager(SHOW_CURRENT_PLAYGROUND_STATE)
@@ -126,11 +127,10 @@ class GameLogicTask
                     }
 
                     try {
-
                         propagationDisplayManager(coordinates[0], coordinates[1], estimated)
                         Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
-
-                    } catch (e: InterruptedException) {
+                    }
+                    catch (e: InterruptedException) {
                         e.printStackTrace()
                         handleOnCancelled()
                     }
@@ -142,7 +142,8 @@ class GameLogicTask
 
                 }
 
-            } else {
+            }
+            else {
 
                 var coordinates: Array<Int>? = arrayOf(0, 0)
 
@@ -151,11 +152,14 @@ class GameLogicTask
                 var estimatedTime: Long? = System.currentTimeMillis() - startTime!!
                 var estimated = estimatedTime!!.toInt()
 
+                //if auto coordinates are empty, this click is interpreted as a step for the human Player
                 if (autoCoordinates == null) {
                     coordinates?.set(0, params[0]!!)
                     coordinates?.set(1, params[1]!!)
                     estimated = params[2]!!
-                } else {
+                }
+                //if auto coordinates are not empty, this click only triggers a game start, and the AI player decides its step
+                else {
                     coordinates?.set(0, autoCoordinates[0])
                     coordinates?.set(1, autoCoordinates[1])
                 }
@@ -171,7 +175,8 @@ class GameLogicTask
                         propagationDisplayManager(coordinates[0], coordinates[1], estimated)
                         Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
 
-                    } catch (e: InterruptedException) {
+                    }
+                    catch (e: InterruptedException) {
                         e.printStackTrace()
                         handleOnCancelled()
                     }
@@ -204,13 +209,15 @@ class GameLogicTask
 
             if (values.size == 1) {
                 publishProgress(SHOW_CURRENT_PLAYGROUND_STATE)
-            } else {
+            }
+            else {
 
                 model.addCurrentPlayerWaitingTime(values[2])
 
                 if (model.stepRequest(values[0], values[1]) == STEP_UNSUCCESSFUL && timeLimitMode!!) {
                     model.stepToNextPlayer()
-                } else if (showPropagation!!) {
+                }
+                else if (showPropagation!!) {
 
                     model.historyPlaygroundBuilder()
                     val propagationDepth = model.getReactionPropagationDepth()
@@ -230,7 +237,8 @@ class GameLogicTask
                                 Thread.sleep(REFRESH_RATE_MILLISECONDS.toLong())
                             }
 
-                        } catch (e: InterruptedException) {
+                        }
+                        catch (e: InterruptedException) {
                             e.printStackTrace()
                             handleOnCancelled()
                         }
