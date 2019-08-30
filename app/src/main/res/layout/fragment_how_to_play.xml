@@ -43,9 +43,8 @@
         <ScrollView
                 android:id="@+id/scrollViewHowToPlay"
                 android:layout_width="320dp"
-                android:layout_height="400dp"
+                android:layout_height="420dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:paddingTop="10dp"
@@ -61,8 +60,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"/>
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"/>
 
         </ScrollView>
 

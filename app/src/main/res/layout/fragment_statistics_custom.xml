@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="view.StatisticsActivity"
-        android:id="@+id/challengeFragmentCoordinatorLayout">
+        android:id="@+id/statisticsFragmentCoordinatorLayout">
 
     <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
@@ -20,11 +20,26 @@
             android:layout_width="340dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_fragment"
-            tools:context=".ChallengeFragment"
-            tools:showIn="@layout/fragment_challenge">
+            tools:context=".StatisticsFragment"
+            tools:showIn="@layout/fragment_statistics_custom">
 
         <TextView
-                android:id="@+id/textViewAllLevels"
+                android:id="@+id/textViewAllStats"
+                android:textColor="@color/colorMessage"
+                android:layout_width="320dp"
+                android:textSize="16sp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textViewAiVsHumanStats"/>
+
+        <TextView
+                android:id="@+id/textViewAiVsHumanStats"
                 android:textColor="@color/colorMessage"
                 android:layout_width="320dp"
                 android:textSize="16sp"
@@ -36,10 +51,10 @@
                 android:layout_marginEnd="8dp"
                 android:paddingTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/textViewCompletedLevels"/>
+                app:layout_constraintBottom_toTopOf="@+id/textViewWinningStats"/>
 
         <TextView
-                android:id="@+id/textViewCompletedLevels"
+                android:id="@+id/textViewWinningStats"
                 android:textColor="@color/colorMessage"
                 android:layout_width="320dp"
                 android:textSize="14sp"
@@ -51,35 +66,21 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/challengeChart"/>
+                app:layout_constraintBottom_toTopOf="@+id/statsChart"/>
 
-        <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/challengeChart"
+        <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/statsChart"
                 android:layout_width="320dp"
                 android:layout_height="360dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 android:paddingBottom="10dp"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-                android:id="@+id/textViewChallengeMessage"
-                android:textColor="@color/colorMessage"
-                android:layout_width="320dp"
-                android:textSize="16sp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/challengeChart"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -27,7 +27,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewChallengePlayers"
             android:layout_width="180dp"
-            android:layout_height="310dp"
+            android:layout_height="320dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp"

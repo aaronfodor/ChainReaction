@@ -16,11 +16,11 @@ import model.db.challenge.ChallengeDatabase
 import model.db.challenge.ChallengeLevel
 import view.subclass.BaseFragment
 
-class ChallengeFragment : BaseFragment() {
+class StatisticsChallengeFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_challenge, container, false)
+        val view = inflater.inflate(R.layout.fragment_statistics_challenge, container, false)
         challengeDatabaseReader(view)
         return view
     }
@@ -71,10 +71,10 @@ class ChallengeFragment : BaseFragment() {
                     textViewCompletedLevels.text = getString(R.string.levels_completed_left, levelsCompleted, levelsLeft)
 
                     when (levelsLeft) {
-                        0 -> textViewChallengeMessage.text = getString(R.string.levels_all_completed)
-                        in 1..3 -> textViewChallengeMessage.text = getString(R.string.levels_almost_completed)
-                        in 4..8 -> textViewChallengeMessage.text = getString(R.string.levels_some_completed)
-                        !in 0..8 -> textViewChallengeMessage.text = getString(R.string.levels_few_completed, levelsLeft)
+                        0 -> textViewChallengeMessage.text = getString(R.string.player_professional)
+                        in 1..5 -> textViewChallengeMessage.text = getString(R.string.player_advanced)
+                        in 6..11 -> textViewChallengeMessage.text = getString(R.string.player_intermediate)
+                        !in 0..12 -> textViewChallengeMessage.text = getString(R.string.player_beginner)
                         else -> textViewChallengeMessage.text = ""
                     }
 
@@ -106,6 +106,7 @@ class ChallengeFragment : BaseFragment() {
         chart.setDrawGridBackground(false)
         chart.axisLeft.setDrawGridLines(false)
         chart.axisRight.setDrawGridLines(false)
+        chart.xAxis.isEnabled = false
         chart.xAxis.setDrawGridLines(false)
         chart.setExtraOffsets(5.toFloat(), 10.toFloat(), 5.toFloat(), 5.toFloat())
         chart.dragDecelerationFrictionCoef = 0.95f

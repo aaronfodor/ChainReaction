@@ -25,8 +25,6 @@ import model.db.challenge.ChallengeDatabase
 import presenter.AudioPresenter
 import view.subclass.AdActivity
 import view.subclass.BaseDialog
-import android.content.res.Configuration
-import kotlinx.android.synthetic.main.activity_game.*
 
 /**
  * Activity of a game play
@@ -52,8 +50,8 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
     /**
      * Default size values to generate PlayGround
      */
-    private var height = 7
-    private var width = 5
+    private var height = 10
+    private var width = 7
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -238,7 +236,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
 
         if(showAI){
-            infoText.setText(getString(R.string.player_ai_turn, Id))
+            infoText.setText(getString(R.string.ai_turn, Id))
         }
 
         else{
@@ -288,7 +286,7 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
 
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
         if(showAI){
-            infoText.setText(getString(R.string.player_ai_turn, Id))
+            infoText.setText(getString(R.string.ai_turn, Id))
         }
         else{
             infoText.setText(getString(R.string.player_turn, Id))
@@ -309,13 +307,18 @@ class GameActivity : AdActivity(), IGameView, View.OnClickListener {
      * @param     winnerId          Id of the winner
      * @param     playersData       Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
-     * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
+     * @param     isWinnerAI        True means the winner is an AI Player
      * @return    boolean           True if succeed, false otherwise
      */
-    override fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean): Boolean {
+    override fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean, isWinnerAI: Boolean): Boolean {
 
         val infoText = findViewById<TextSwitcher>(R.id.textViewInfo)
-        val text = getString(R.string.winner_text, winnerId)
+
+        val text: String = if(isWinnerAI){
+            getString(R.string.winner_ai_text, winnerId)
+        } else{
+            getString(R.string.winner_player_text, winnerId)
+        }
 
         val currentText = infoText.currentView as TextView
 

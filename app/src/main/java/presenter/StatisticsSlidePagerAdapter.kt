@@ -3,11 +3,11 @@ package presenter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import view.ChallengeFragment
-import view.StatisticsFragment
+import view.StatisticsChallengeFragment
+import view.StatisticsCustomFragment
 
 /**
- * A pager adapter that represents 2 Fragment objects (StatisticsFragment, ChallengeFragment) in sequence
+ * A pager adapter that represents 2 Fragment objects (StatisticsCustomFragment, StatisticsChallengeFragment) in sequence
  */
 class StatisticsSlidePagerAdapter(fm: FragmentManager, statsLabel: String, challengeLabel: String) : FragmentStatePagerAdapter(fm) {
 
@@ -20,12 +20,12 @@ class StatisticsSlidePagerAdapter(fm: FragmentManager, statsLabel: String, chall
 
         when(position){
             //show the statistics fragment
-            0 -> return StatisticsFragment()
+            0 -> return StatisticsCustomFragment()
             //show the challenge fragment
-            1 -> return ChallengeFragment()
+            1 -> return StatisticsChallengeFragment()
         }
 
-        return StatisticsFragment()
+        return StatisticsCustomFragment()
 
     }
 

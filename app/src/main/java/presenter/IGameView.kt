@@ -37,14 +37,15 @@ interface IGameView {
     fun showMessage(msg: String): Boolean
 
     /**
-     * Shows the result of the game play, displays GameOverFragment, writes the database
+     * Shows the result of the game play, displays GameOverFragment
      *
      * @param     winnerId          Id of the winner
      * @param     playersData       Players data. [i] is the Player index, [][0] is Player Id, [][1] is the average step time of Player, [][2] is the number of rounds of Player, [][3] is the type of the Player (1:human, 2:AI)
      * @param     humanVsAiGame     True is human and AI played in the game, false otherwise
+     * @param     isWinnerAI        True means the winner is an AI Player
      * @return    boolean           True if succeed, false otherwise
      */
-    fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean): Boolean
+    fun showResult(winnerId: Int, playersData: Array<IntArray>, humanVsAiGame: Boolean, isWinnerAI: Boolean): Boolean
 
     /**
      * Shows the start text from the Presenter

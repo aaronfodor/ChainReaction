@@ -27,8 +27,8 @@ class StartCustomPresenter (
         private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
     }
 
-    private var playGroundHeight = 7
-    private var playGroundWidth = 5
+    private var playGroundHeight = 10
+    private var playGroundWidth = 7
     private var playersListData = ArrayList<PlayerListData>()
     private var adapter: PlayerListAdapter
 

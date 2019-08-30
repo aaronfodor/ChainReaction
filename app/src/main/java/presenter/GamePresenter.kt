@@ -216,9 +216,11 @@ class GamePresenter
      */
     private fun handleGameOver() {
 
+        val isWinnerAI = model.actualPlayerType == AI
+
         val stateMatrix = model.currentPlaygroundInfo()
-        view.showCurrentPlayer(Math.abs(model.actualPlayerId!!), model.actualPlayerType == AI)
-        view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame())
+        view.showCurrentPlayer(Math.abs(model.actualPlayerId!!), isWinnerAI)
+        view.showResult(Math.abs(model.actualPlayerId!!), model.playersData!!, model.isAiVsHumanGame(), isWinnerAI)
         refreshPlaygroundFields(model.getDimension(), stateMatrix)
 
         //update the statistics database
