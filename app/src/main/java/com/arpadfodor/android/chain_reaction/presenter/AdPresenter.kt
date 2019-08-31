@@ -11,9 +11,11 @@ object AdPresenter{
      * Initializes the Mobile Ads SDK with an AdMob App ID
      *
      * @param    context            Context of the mobile ads to initialize with
+     * @param    appAdMobId         AdMob Id of the app
      */
-    fun initMobileAds(context: Context){
-        MobileAds.initialize(context, "ca-app-pub-3940256099942544~3347511713")
+    fun initMobileAds(context: Context, appAdMobId: String){
+        //MobileAds.initialize(context, <your key>)
+        MobileAds.initialize(context, appAdMobId)
     }
 
     /**

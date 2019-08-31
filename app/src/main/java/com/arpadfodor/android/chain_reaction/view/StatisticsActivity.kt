@@ -35,7 +35,7 @@ class StatisticsActivity : AdActivity() {
         mPagerTitles.setupWithViewPager(mPager)
 
         // The pager adapter, which provides the pages to the hu.bme.aut.android.chain_reaction.view pager widget
-        val pagerAdapter = StatisticsSlidePagerAdapter(supportFragmentManager, getString(R.string.custom), getString(R.string.challenge))
+        val pagerAdapter = StatisticsSlidePagerAdapter(supportFragmentManager, getString(R.string.offline), getString(R.string.challenge))
         mPager.adapter = pagerAdapter
         mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
         mPager.setPageTransformer(true, CubeOutTransformer())

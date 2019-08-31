@@ -24,7 +24,6 @@ abstract class BaseActivity : AppCompatActivity(){
 
     /**
      * Play sound when back is pressed
-     * Finishes the activity
      */
     override fun onBackPressed() {
         AudioPresenter.soundBackClick()

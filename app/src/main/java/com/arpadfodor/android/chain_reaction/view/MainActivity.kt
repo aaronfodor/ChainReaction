@@ -23,7 +23,7 @@ import com.arpadfodor.android.chain_reaction.view.subclass.BaseDialog
 class MainActivity : AdActivity(), IMainView {
 
     /**
-     * Sets startup screen, initializes the global hu.bme.aut.android.chain_reaction.presenter objects
+     * Sets startup screen, initializes the global presenter objects
      */
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -34,9 +34,9 @@ class MainActivity : AdActivity(), IMainView {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
 
-        //initializing the global hu.bme.aut.android.chain_reaction.presenter objects
+        //initializing the global presenter objects
         AudioPresenter.init(applicationContext)
-        AdPresenter.initMobileAds(applicationContext)
+        AdPresenter.initMobileAds(applicationContext, getString(R.string.app_ad_id))
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         SettingsActivity.changeSettings(sharedPreferences)

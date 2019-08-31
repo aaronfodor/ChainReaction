@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE resources [
         <!ENTITY appName "Chain Reaction">
-        <!ENTITY appVersion "v0.37">
+        <!ENTITY appId "971610432652">
+        <!ENTITY appVersion "v0.38">
         <!ENTITY appDate "31/08/2019">
+        <!ENTITY adMobAppId "ca-app-pub-3940256099942544~3347511713">
+        <!ENTITY adMobBannerId "ca-app-pub-3940256099942544/6300978111">
         ]>
+        <!--test adMobAppId "ca-app-pub-3940256099942544~3347511713"-->
+        <!--test adMobBannerId "ca-app-pub-3940256099942544/6300978111"-->
 
 <resources>
     <string name="app_name">&appName;</string>
+    <string name="app_id">&appId;</string>
     <string name="app_version">&appVersion;</string>
     <string name="app_date">&appDate;</string>
+    <string name="app_ad_id">&adMobAppId;</string>
+    <string name="app_banner_id">&adMobBannerId;</string>
 
     <string name="button_new_game">New Game</string>
     <string name="button_loading">Loading AI...</string>
@@ -71,11 +79,11 @@
 
     <string name="title_activity_stats">Statistics</string>
     <string name="ai_vs_human_stats_data">AI vs human games: %1$d\</string>
-    <string name="all_stats_data">Total custom games played: %1$d\</string>
+    <string name="all_stats_data">Total offline games played: %1$d\</string>
     <string name="victory_data">human victories: %1$d\ \nAI victories: %2$d\</string>
     <string name="victories_chart_label">Victories %</string>
     <string name="step_time_chart_label">Avg. step time of Players</string>
-    <string name="custom">Custom</string>
+    <string name="offline">Offline</string>
     <string name="challenge">Challenge</string>
     <string name="empty_challenge_db">Challenge data not available</string>
     <string name="all_levels_available">All levels in challenge mode: %1$d\</string>
