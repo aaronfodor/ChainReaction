@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/constraintLayoutStartCustomActivity"
-        tools:context="view.StartCustomActivity"
+        tools:context="com.arpadfodor.android.chain_reaction.view.StartCustomActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteY="16dp"
@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/background_menu" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPlayers"
             android:layout_width="180dp"
             android:layout_height="310dp"
@@ -46,7 +46,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonAddHumanPlayer"
             android:layout_width="120dp"
             android:layout_height="45dp"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"
             app:layout_constraintEnd_toStartOf="@+id/tvHeight"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonHeightMinus"
             android:layout_width="50dp"
             android:layout_height="35dp"
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonAddHumanPlayer"
             app:layout_constraintEnd_toStartOf="@+id/tvHeight"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonWidthMinus"
             android:layout_width="50dp"
             android:layout_height="35dp"
@@ -76,7 +76,7 @@
             app:layout_constraintEnd_toStartOf="@+id/tvWidth"
             app:layout_constraintStart_toStartOf="parent"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonAddAIPlayer"
             android:layout_width="120dp"
             android:layout_height="45dp"
@@ -86,7 +86,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"
             app:layout_constraintStart_toEndOf="@+id/tvHeight"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonHeightPlus"
             android:layout_width="50dp"
             android:layout_height="35dp"
@@ -96,7 +96,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonAddAIPlayer"
             app:layout_constraintStart_toEndOf="@+id/tvHeight"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonRandom"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
@@ -107,7 +107,7 @@
             app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayers"
             app:layout_constraintTop_toTopOf="@+id/recyclerViewPlayers"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonWidthPlus"
             android:layout_width="50dp"
             android:layout_height="35dp"
@@ -117,7 +117,7 @@
             app:layout_constraintStart_toEndOf="@+id/tvWidth"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-    <view.subclass.BaseButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonClearPlayers"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -127,7 +127,7 @@
             app:layout_constraintEnd_toEndOf="@+id/buttonWidthPlus"
             app:layout_constraintStart_toStartOf="@+id/buttonWidthMinus"/>
 
-    <view.subclass.MainButton
+    <com.arpadfodor.android.chain_reaction.view.subclass.MainButton
             android:id="@+id/buttonStartGame"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -184,4 +184,4 @@
             app:layout_constraintTop_toTopOf="@+id/recyclerViewPlayers"
             app:layout_constraintEnd_toStartOf="@+id/recyclerViewPlayers"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

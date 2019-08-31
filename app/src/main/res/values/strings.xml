@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE resources [
         <!ENTITY appName "Chain Reaction">
-        <!ENTITY appVersion "v0.36">
-        <!ENTITY appDate "30/08/2019">
+        <!ENTITY appVersion "v0.37">
+        <!ENTITY appDate "31/08/2019">
         ]>
 
 <resources>

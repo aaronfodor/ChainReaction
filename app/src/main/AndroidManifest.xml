@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="hu.bme.aut.android.chain_reaction">
+          package="com.arpadfodor.android.chain_reaction">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,49 +16,49 @@
             android:largeHeap="true">
 
         <activity
-                android:name="view.GameActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.GameActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:configChanges="orientation|screenSize"
                 android:screenOrientation="portrait">
         </activity>
 
         <activity
-                android:name="view.SettingsActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.SettingsActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_settings">
         </activity>
 
         <activity
-                android:name="view.MoreActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.MoreActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_more"
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name="view.StatisticsActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.StatisticsActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_activity_stats"
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name="view.StartCustomActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.StartCustomActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_custom_game"
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name="view.StartChallengeActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.StartChallengeActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_challenge"
                 android:screenOrientation="portrait"/>
 
         <activity
-                android:name="view.TypeActivity"
+                android:name="com.arpadfodor.android.chain_reaction.view.TypeActivity"
                 android:theme="@style/defaultScreenTheme"
                 android:label="@string/title_activity_type"
                 android:screenOrientation="portrait"/>
 
-        <activity android:name="view.MainActivity"
+        <activity android:name="com.arpadfodor.android.chain_reaction.view.MainActivity"
                   android:theme="@style/startScreenTheme"
                   android:screenOrientation="portrait">
             <intent-filter>
