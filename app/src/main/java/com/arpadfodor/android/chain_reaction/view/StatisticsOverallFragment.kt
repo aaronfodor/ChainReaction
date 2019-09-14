@@ -16,7 +16,7 @@ import com.arpadfodor.android.chain_reaction.model.db.stats.PlayerTypeStat
 import com.arpadfodor.android.chain_reaction.model.db.stats.PlayerTypeStatsDatabase
 import com.arpadfodor.android.chain_reaction.view.subclass.BaseFragment
 
-class StatisticsCustomFragment : BaseFragment() {
+class StatisticsOverallFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment

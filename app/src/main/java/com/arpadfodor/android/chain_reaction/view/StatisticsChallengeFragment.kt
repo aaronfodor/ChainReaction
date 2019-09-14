@@ -73,7 +73,7 @@ class StatisticsChallengeFragment : BaseFragment() {
                     when (levelsLeft) {
                         0 -> textViewChallengeMessage.text = getString(R.string.player_professional)
                         in 1..5 -> textViewChallengeMessage.text = getString(R.string.player_advanced)
-                        in 6..11 -> textViewChallengeMessage.text = getString(R.string.player_intermediate)
+                        in 6..12 -> textViewChallengeMessage.text = getString(R.string.player_intermediate)
                         !in 0..12 -> textViewChallengeMessage.text = getString(R.string.player_beginner)
                         else -> textViewChallengeMessage.text = ""
                     }
