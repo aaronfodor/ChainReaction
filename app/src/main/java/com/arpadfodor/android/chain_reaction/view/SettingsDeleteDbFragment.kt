@@ -24,7 +24,7 @@ class SettingsDeleteDbFragment : PreferenceFragmentCompat() {
 
         super.onResume()
 
-        val myPref = findPreference("delete_database") as Preference
+        val myPref = this.findPreference<Preference>("delete_database") as Preference
         myPref.setOnPreferenceClickListener {
             AudioPresenter.soundButtonClick()
             deleteDialog()

@@ -7,7 +7,8 @@
         android:id="@+id/constraintLayoutTypeActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.arpadfodor.android.chain_reaction.view.TypeActivity">
+        tools:context="com.arpadfodor.android.chain_reaction.view.TypeActivity"
+        app:layout_constraintDimensionRatio="6:1">
 
     <com.flaviofaria.kenburnsview.KenBurnsView
             android:layout_width="match_parent"
@@ -32,31 +33,23 @@
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonChallengeGame"
-            android:layout_width="250dp"
-            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/button_challenge_game"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleMode"
-            app:layout_constraintBottom_toTopOf="@+id/buttonCustomGame"/>
+            app:layout_constraintStart_toStartOf="@+id/glLowStart"
+            app:layout_constraintBottom_toTopOf="@+id/buttonCustomGame"
+            app:layout_constraintEnd_toStartOf="@+id/glLowEnd"
+            app:layout_constraintTop_toTopOf="@+id/glTop"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonCustomGame"
-            android:layout_width="250dp"
-            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/button_custom_game"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/glLowStart"
             app:layout_constraintTop_toBottomOf="@+id/buttonChallengeGame"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineType"/>
+            app:layout_constraintBottom_toTopOf="@+id/glBottom"
+            app:layout_constraintEnd_toStartOf="@+id/glLowEnd"/>
 
     <com.google.android.gms.ads.AdView
             android:id="@+id/modeAdView"
@@ -95,11 +88,28 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/buttonChallengeGame"/>
 
-    <androidx.constraintlayout.widget.Guideline
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintGuide_percent="0.65"
-            android:id="@+id/guidelineType"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glLowStart"
+                                                app:layout_constraintGuide_percent="0.2"
+                                                android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glLowEnd"
+                                                app:layout_constraintGuide_percent="0.8"
+                                                android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glTop"
+                                                app:layout_constraintGuide_percent="0.1"
+                                                android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glBottom"
+                                                app:layout_constraintGuide_percent="0.9"
+                                                android:orientation="horizontal"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.arpadfodor.android.chain_reaction.R
 import com.arpadfodor.android.chain_reaction.presenter.AudioPresenter
 
@@ -28,9 +31,9 @@ open class BaseButton : Button{
 
         this.background = resources.getDrawable(R.drawable.base_button)
         this.setTextColor(resources.getColor(R.color.colorButtonText))
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
         this.isAllCaps = true
         this.gravity = Gravity.CENTER
+        this.setPadding(40,40,40,40)
 
         this.setOnClickListener {
             AudioPresenter.soundLocked()
