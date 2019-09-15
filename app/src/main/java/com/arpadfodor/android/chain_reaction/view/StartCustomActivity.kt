@@ -80,10 +80,20 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
 
             if(presenter.canGameBeStarted()){
 
+                var height = presenter.getPlayGroundHeight()
+                var width = presenter.getPlayGroundWidth()
+
+                //flip height-width if width is greater
+                if(width > height){
+                    val temp = height
+                    height = width
+                    width = temp
+                }
+
                 val myIntent = Intent(this, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", presenter.getPlayerCount())
-                myIntent.putExtra("PlayGroundHeight", presenter.getPlayGroundHeight())
-                myIntent.putExtra("PlayGroundWidth", presenter.getPlayGroundWidth())
+                myIntent.putExtra("PlayGroundHeight", height)
+                myIntent.putExtra("PlayGroundWidth", width)
                 myIntent.putExtra("GameType", gameType)
                 myIntent.putExtra("GameMode", gameMode)
                 myIntent.putExtra("ChallengeLevel", 0)

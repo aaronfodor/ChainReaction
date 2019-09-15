@@ -32,8 +32,10 @@ open class BaseButton : Button{
         this.background = resources.getDrawable(R.drawable.base_button)
         this.setTextColor(resources.getColor(R.color.colorButtonText))
         this.isAllCaps = true
+        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+        this.setPadding(15,15,15,15)
+        this.isAllCaps = true
         this.gravity = Gravity.CENTER
-        this.setPadding(40,40,40,40)
 
         this.setOnClickListener {
             AudioPresenter.soundLocked()
