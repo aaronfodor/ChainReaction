@@ -39,18 +39,12 @@ interface IStartCustomView {
     fun minimumSizeReached()
 
     /**
-     * Shows the user the current height
+     * Shows the user the current dimension values
      *
-     * @param    value          Height value to show
+     * @param    dimension1     1st dimension value
+     * @param    dimension2     2nd dimension value
      */
-    fun updateHeightText(value: Int)
-
-    /**
-     * Shows the user the current width
-     *
-     * @param    value          Width value to show
-     */
-    fun updateWidthText(value: Int)
+    fun updateDimensionText(dimension1: Int, dimension2: Int)
 
     /**
      * Shows the user that random generating happened

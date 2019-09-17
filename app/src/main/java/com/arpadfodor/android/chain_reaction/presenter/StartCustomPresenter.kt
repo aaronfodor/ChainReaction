@@ -2,6 +2,8 @@ package com.arpadfodor.android.chain_reaction.presenter
 
 import android.content.Context
 import java.util.ArrayList
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.random.Random.Default.nextBoolean
 
 /**
@@ -27,8 +29,8 @@ class StartCustomPresenter (
         private const val MINIMUM_PLAYER_NUMBER_TO_START = 2
     }
 
-    private var playGroundHeight = 10
-    private var playGroundWidth = 7
+    private var playGroundDim1 = 10
+    private var playGroundDim2 = 7
     private var playersListData = ArrayList<PlayerListData>()
     private var adapter: PlayerListAdapter
 
@@ -132,7 +134,7 @@ class StartCustomPresenter (
      * @return  Int	    Height of the Playground
      */
     fun getPlayGroundHeight() : Int {
-        return playGroundHeight
+        return max(playGroundDim1, playGroundDim2)
     }
 
     /**
@@ -141,69 +143,69 @@ class StartCustomPresenter (
      * @return  Int	    Width of the Playground
      */
     fun getPlayGroundWidth() : Int {
-        return playGroundWidth
+        return min(playGroundDim1, playGroundDim2)
     }
 
     /**
-     * Increments the height if maximum is not reached
+     * Increments dim 1 if maximum is not reached
      */
-    fun heightPlus(){
+    fun dim1Plus(){
 
-        if(playGroundHeight == MAXIMUM_SIZE){
+        if(playGroundDim1 == MAXIMUM_SIZE){
             view.maximumSizeReached()
         }
 
         else{
-            playGroundHeight++
-            view.updateHeightText(playGroundHeight)
+            playGroundDim1++
+            view.updateDimensionText(playGroundDim1, playGroundDim2)
         }
 
     }
 
     /**
-     * Decrements the height if minimum is not reached
+     * Decrements dim 1 if minimum is not reached
      */
-    fun heightMinus(){
+    fun dim1Minus(){
 
-        if(playGroundHeight == MINIMUM_SIZE){
+        if(playGroundDim1 == MINIMUM_SIZE){
             view.minimumSizeReached()
         }
 
         else{
-            playGroundHeight--
-            view.updateHeightText(playGroundHeight)
+            playGroundDim1--
+            view.updateDimensionText(playGroundDim1, playGroundDim2)
         }
 
     }
 
     /**
-     * Increments the width if maximum is not reached
+     * Increments dim 2 if maximum is not reached
      */
-    fun widthPlus(){
+    fun dim2Plus(){
 
-        if(playGroundWidth == MAXIMUM_SIZE){
+        if(playGroundDim2 == MAXIMUM_SIZE){
             view.maximumSizeReached()
         }
 
         else{
-            playGroundWidth++
-            view.updateWidthText(playGroundWidth)
+            playGroundDim2++
+            view.updateDimensionText(playGroundDim1, playGroundDim2)
         }
 
     }
 
     /**
-     * Decrements the width if minimum is not reached
+     * Decrements dim 2 if minimum is not reached
      */
-    fun widthMinus(){
+    fun dim2Minus(){
 
-        if(playGroundWidth == MINIMUM_SIZE){
+        if(playGroundDim2 == MINIMUM_SIZE){
             view.minimumSizeReached()
         }
 
         else{
-            playGroundWidth--
-            view.updateWidthText(playGroundWidth)
+            playGroundDim2--
+            view.updateDimensionText(playGroundDim1, playGroundDim2)
         }
 
     }
@@ -227,8 +229,8 @@ class StartCustomPresenter (
     fun randomConfig(){
 
         val randomPlayerNumber = (MINIMUM_PLAYER_NUMBER_TO_START..MAXIMUM_ALLOWED_PLAYER_NUMBER).random()
-        val randomHeight = (MINIMUM_SIZE..MAXIMUM_SIZE).random()
-        val randomWidth = (MINIMUM_SIZE..MAXIMUM_SIZE).random()
+        val randomDim1 = (MINIMUM_SIZE..MAXIMUM_SIZE).random()
+        val randomDim2 = (MINIMUM_SIZE..MAXIMUM_SIZE).random()
 
         adapter.clear()
 
@@ -245,10 +247,9 @@ class StartCustomPresenter (
 
         }
 
-        playGroundHeight = randomHeight
-        view.updateHeightText(playGroundHeight)
-        playGroundWidth = randomWidth
-        view.updateWidthText(playGroundWidth)
+        playGroundDim1 = randomDim1
+        playGroundDim2 = randomDim2
+        view.updateDimensionText(playGroundDim1, playGroundDim2)
 
         view.randomGenerated()
 

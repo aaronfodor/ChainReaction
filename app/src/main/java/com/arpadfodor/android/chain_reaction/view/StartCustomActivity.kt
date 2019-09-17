@@ -80,20 +80,10 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
 
             if(presenter.canGameBeStarted()){
 
-                var height = presenter.getPlayGroundHeight()
-                var width = presenter.getPlayGroundWidth()
-
-                //flip height-width if width is greater
-                if(width > height){
-                    val temp = height
-                    height = width
-                    width = temp
-                }
-
                 val myIntent = Intent(this, GameActivity::class.java)
                 myIntent.putExtra("number_of_players", presenter.getPlayerCount())
-                myIntent.putExtra("PlayGroundHeight", height)
-                myIntent.putExtra("PlayGroundWidth", width)
+                myIntent.putExtra("PlayGroundHeight", presenter.getPlayGroundHeight())
+                myIntent.putExtra("PlayGroundWidth", presenter.getPlayGroundWidth())
                 myIntent.putExtra("GameType", gameType)
                 myIntent.putExtra("GameMode", gameMode)
                 myIntent.putExtra("ChallengeLevel", 0)
@@ -109,19 +99,19 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
         }
 
         heightPlusButton.setOnClickEvent {
-            presenter.heightPlus()
+            presenter.dim1Plus()
         }
 
         heightMinusButton.setOnClickEvent {
-            presenter.heightMinus()
+            presenter.dim1Minus()
         }
 
         widthPlusButton.setOnClickEvent {
-            presenter.widthPlus()
+            presenter.dim2Plus()
         }
 
         widthMinusButton.setOnClickEvent {
-            presenter.widthMinus()
+            presenter.dim2Minus()
         }
 
         randomButton.setOnClickEvent {
@@ -132,8 +122,7 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView.adapter = presenter.getAdapter()
 
-        updateHeightText(presenter.getPlayGroundHeight())
-        updateWidthText(presenter.getPlayGroundWidth())
+        updateDimensionText(presenter.getPlayGroundHeight(), presenter.getPlayGroundWidth())
 
         initActivityAd(findViewById(R.id.startCustomAdView))
 
@@ -191,23 +180,23 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
     }
 
     /**
-     * Shows the user the current height
+     * Shows the user the current dimension values
      *
-     * @param    value          Height value to show
+     * @param    dimension1     1st dimension value
+     * @param    dimension2     2nd dimension value
      */
-    override fun updateHeightText(value: Int){
-        val heightTextView = findViewById<TextView>(R.id.tvHeight)
-        heightTextView.text = getString(R.string.height_show, value)
-    }
+    override fun updateDimensionText(dimension1: Int, dimension2: Int){
+        val dim1TextView = findViewById<TextView>(R.id.tvDim1)
+        val dim2TextView = findViewById<TextView>(R.id.tvDim2)
 
-    /**
-     * Shows the user the current width
-     *
-     * @param    value          Width value to show
-     */
-    override fun updateWidthText(value: Int){
-        val widthTextView = findViewById<TextView>(R.id.tvWidth)
-        widthTextView.text = getString(R.string.width_show, value)
+        if(dimension1 >= dimension2){
+            dim1TextView.text = getString(R.string.height_show, dimension1)
+            dim2TextView.text = getString(R.string.width_show, dimension2)
+        }
+        else{
+            dim1TextView.text = getString(R.string.width_show, dimension1)
+            dim2TextView.text = getString(R.string.height_show, dimension2)
+        }
     }
 
     /**
