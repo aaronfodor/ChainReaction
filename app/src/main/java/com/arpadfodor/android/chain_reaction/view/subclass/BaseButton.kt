@@ -30,7 +30,7 @@ open class BaseButton : Button{
         this.setTextColor(resources.getColor(R.color.colorButtonText))
         this.isAllCaps = true
         this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-        this.setPadding(15,20,15,20)
+        this.setPadding(15,25,15,25)
         this.isAllCaps = true
         this.gravity = Gravity.CENTER
 

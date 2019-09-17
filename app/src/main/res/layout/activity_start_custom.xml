@@ -22,8 +22,8 @@
             android:stackFromBottom="true"
             app:layout_constraintStart_toStartOf="@+id/glLowStart"
             app:layout_constraintTop_toTopOf="@+id/glTop"
-            app:layout_constraintBottom_toTopOf="@+id/glMiddle"
-            app:layout_constraintEnd_toStartOf="@+id/glLowEnd"/>
+            app:layout_constraintBottom_toTopOf="@+id/buttonAddAIPlayer"
+            app:layout_constraintEnd_toStartOf="@+id/glLowEnd" android:layout_marginBottom="8dp"/>
 
     <TextView
             android:text="@string/title_custom_game"
@@ -47,10 +47,9 @@
             android:layout_height="wrap_content"
             android:text="@string/button_add_human_player"
             app:layout_constraintStart_toStartOf="@+id/glStart"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"
-            app:layout_constraintEnd_toStartOf="@+id/glVerticalMiddle"/>
+            app:layout_constraintEnd_toStartOf="@+id/glVerticalMiddle" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonHeightMinus"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonHeightMinus"
@@ -58,39 +57,37 @@
             android:layout_height="wrap_content"
             android:text="@string/buttonExtract"
             app:layout_constraintStart_toStartOf="@+id/glStart"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonAddHumanPlayer"
-            app:layout_constraintEnd_toStartOf="@+id/tvDim1"/>
+            app:layout_constraintEnd_toStartOf="@+id/tvDim1" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWidthMinus"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonWidthMinus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/buttonExtract"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonHeightMinus"
             app:layout_constraintEnd_toStartOf="@+id/tvDim2"
-            app:layout_constraintStart_toStartOf="@+id/glStart"/>
+            app:layout_constraintStart_toStartOf="@+id/glStart" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonClearPlayers"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonAddAIPlayer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/button_add_ai_player"
-            android:layout_marginTop="2dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewPlayers"
             app:layout_constraintStart_toStartOf="@+id/glVerticalMiddle"
-            app:layout_constraintEnd_toStartOf="@+id/glEnd"/>
+            app:layout_constraintEnd_toStartOf="@+id/glEnd" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonHeightPlus"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonHeightPlus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/buttonAdd"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonAddAIPlayer"
-            app:layout_constraintStart_toEndOf="@+id/tvDim1" app:layout_constraintEnd_toStartOf="@+id/glEnd"/>
+            app:layout_constraintStart_toEndOf="@+id/tvDim1"
+            app:layout_constraintEnd_toStartOf="@+id/glEnd"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonWidthPlus"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonRandom"
@@ -99,18 +96,18 @@
             android:text="@string/buttonRand"
             app:layout_constraintEnd_toStartOf="@+id/glEnd"
             app:layout_constraintStart_toStartOf="@+id/glVerticalMiddle"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonWidthPlus" android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonStartGame"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonWidthPlus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/buttonAdd"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonHeightPlus"
             app:layout_constraintStart_toEndOf="@+id/tvDim2"
-            app:layout_constraintEnd_toStartOf="@+id/glEnd"/>
+            app:layout_constraintEnd_toStartOf="@+id/glEnd" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonRandom"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.BaseButton
             android:id="@+id/buttonClearPlayers"
@@ -120,9 +117,8 @@
             app:layout_constraintStart_toStartOf="@+id/glStart"
             app:layout_constraintEnd_toStartOf="@+id/glVerticalMiddle"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="2dp"
-            app:layout_constraintTop_toBottomOf="@+id/buttonWidthMinus"
-    />
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonStartGame"/>
 
     <com.arpadfodor.android.chain_reaction.view.subclass.MainButton
             android:id="@+id/buttonStartGame"
@@ -132,7 +128,7 @@
             app:layout_constraintBottom_toTopOf="@+id/glBottom"
             app:layout_constraintEnd_toStartOf="@+id/glEnd"
             app:layout_constraintStart_toStartOf="@+id/glStart"
-            app:layout_constraintTop_toBottomOf="@+id/buttonRandom"/>
+    />
 
     <TextView
             android:layout_width="0dp"
@@ -213,12 +209,6 @@
                                                 android:layout_height="wrap_content"
                                                 android:id="@+id/glTop"
                                                 app:layout_constraintGuide_percent="0.1"
-                                                android:orientation="horizontal"/>
-
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:id="@+id/glMiddle"
-                                                app:layout_constraintGuide_percent="0.55"
                                                 android:orientation="horizontal"/>
 
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
