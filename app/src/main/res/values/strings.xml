@@ -115,5 +115,7 @@
     <string name="confirm_leave_game_description">Are you sure you want to leave the current game?</string>
     <string name="positive_button">OK</string>
     <string name="negative_button">Cancel</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="auth_completed">Authentication succeed</string>
 
 </resources>

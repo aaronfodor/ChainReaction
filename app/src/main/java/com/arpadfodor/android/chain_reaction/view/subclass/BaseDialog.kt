@@ -33,7 +33,7 @@ class BaseDialog(context: Context, title: String, description: String, image: Dr
         this.window?.attributes?.windowAnimations = R.style.MenuDialogAnimation
 
         val inflater = getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.dialog_menu, null)
+        val view = inflater.inflate(R.layout.dialog_base, null)
         setView(view)
 
         val imageViewIcon = view.findViewById<ImageView>(R.id.ivMenuDialog)

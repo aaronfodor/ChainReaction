@@ -25,7 +25,7 @@ class StartCustomActivity : AdActivity(), IStartCustomView {
     }
 
     /**
-     * hu.bme.aut.android.chain_reaction.presenter of the hu.bme.aut.android.chain_reaction.view
+     * Presenter of the view
      */
     private lateinit var presenter: StartCustomPresenter
 

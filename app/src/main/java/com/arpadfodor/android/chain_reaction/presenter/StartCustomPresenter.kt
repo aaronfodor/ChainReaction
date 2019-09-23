@@ -13,7 +13,7 @@ import kotlin.random.Random.Default.nextBoolean
  */
 class StartCustomPresenter (
     /**
-     * MVP hu.bme.aut.android.chain_reaction.view
+     * MVP view
      */
     private val view: IStartCustomView,
     /**

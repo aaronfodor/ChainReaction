@@ -17,8 +17,7 @@
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/morePager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" tools:layout_editor_absoluteY="-49dp"
-            tools:layout_editor_absoluteX="243dp">
+            android:layout_height="match_parent">
 
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/morePagerTitles"

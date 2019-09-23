@@ -32,10 +32,10 @@ class MoreActivity : AdActivity() {
         //Instantiate a ViewPager
         mPager = findViewById(R.id.morePager)
         //Instantiate the titles shown in the ViewPager
-        mPagerTitles = findViewById(R.id.morePagerTitles)
+        mPagerTitles = this.findViewById(R.id.morePagerTitles)
         mPagerTitles.setupWithViewPager(mPager)
 
-        // The pager adapter, which provides the pages to the hu.bme.aut.android.chain_reaction.view pager widget
+        // The pager adapter, which provides the pages to the view pager widget
         val pagerAdapter = MoreSlidePagerAdapter(supportFragmentManager, getString(R.string.how_to_play_title), getString(R.string.about_title))
         mPager.adapter = pagerAdapter
         mPager.addOnPageChangeListener(ViewPagerPageChangeListener)
