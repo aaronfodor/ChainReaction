@@ -81,7 +81,7 @@ class StatisticsOverallFragment : BaseFragment() {
         val victoryData = ArrayList<PieEntry>(2)
         val setColors = ArrayList<Int>(2)
 
-        chart.tag = "AI vs human victories"
+        chart.tag = getString(R.string.stats_chart_title)
         chart.description.isEnabled = false
         chart.setUsePercentValues(true)
         chart.setExtraOffsets(5.toFloat(), 10.toFloat(), 5.toFloat(), 5.toFloat())

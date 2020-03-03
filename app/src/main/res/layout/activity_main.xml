@@ -136,6 +136,7 @@
                                                 android:id="@+id/glButton1Down"
                                                 ads:layout_constraintGuide_percent="0.1"
                                                 android:orientation="horizontal"/>
+
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:id="@+id/glBottom"

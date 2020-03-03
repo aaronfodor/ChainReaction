@@ -22,7 +22,8 @@
             android:layout_height="0dp"
             android:background="@drawable/rounded_fragment"
             tools:context=".StatisticsFragment"
-            tools:showIn="@layout/fragment_statistics_custom" app:layout_constraintTop_toTopOf="@+id/glTop"
+            tools:showIn="@layout/fragment_statistics_custom"
+            app:layout_constraintTop_toTopOf="@+id/glTop"
             app:layout_constraintBottom_toTopOf="@+id/glBottom"
             app:layout_constraintEnd_toStartOf="@+id/glLowEnd"
             app:layout_constraintStart_toStartOf="@+id/glLowStart">

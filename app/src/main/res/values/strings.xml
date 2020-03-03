@@ -53,8 +53,36 @@
     <string name="title_more">More</string>
     <string name="how_to_play_title">How to play</string>
     <string name="about_title">About</string>
-    <string name="how_to_play">&appName; is a two-eight player board game. Human and AI Players can play against each other on different playgrounds. Each player has an allocated color, red (first player) or green (second player) and so on.\n\nThe objective of the game is to take control of the board by eliminating your opponents\' particles. Players take it in turns to place their atoms in a cell.\n\nOnce a cell has reached critical mass the particles explode into the surrounding cells adding an extra atom and claiming the cell for the player. The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.\n\nWhen a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow. The same rule is applicable for other colors.\n\nA player may only place their atoms in a blank cell or a cell that contains atoms of their own color. As soon as a player looses all their particles they are out of the game.</string>
-    <string name="about">&appName;\n&appVersion;\n\nCreated by Arpad Fodor\ngithub.com/arpadfodor\n\nRelease date:\n&appDate;\n\nResources:\npixabay.com\nfreesound.org\n\nAI players are powered by DL4j</string>
+    <string name="how_to_play">
+        &appName; is a two-eight player board game.
+        Human and AI Players can play against each other on different playgrounds.
+        Each player has an allocated color, red (first player) or green (second player) and so on.\n
+        \n
+        The objective of the game is to take control of the board by eliminating your opponents\' particles.
+        Players take it in turns to place their atoms in a cell.\n
+        \n
+        Once a cell has reached critical mass the particles explode into the surrounding cells adding an extra atom and claiming the cell for the player.
+        The explosions might result in overloading of an adjacent cell and the chain reaction of explosion continues until every cell is stable.\n
+        \n
+        When a red cell explodes and there are green cells around, the green cells are converted to red and the other rules of explosions still follow.
+        The same rule is applicable for other colors.\n\nA player may only place their atoms in a blank cell or a cell that contains atoms of their own color.
+        As soon as a player looses all their particles they are out of the game.
+    </string>
+    <string name="about">
+        &appName;\n
+        &appVersion;\n
+        \n
+        Created by Arpad Fodor\n
+        github.com/arpadfodor\n
+        \n
+        Release date:\n
+        &appDate;\n
+        \n
+        Resources:\n
+        pixabay.com\n
+        freesound.org\n
+        \n
+        AI players are powered by DL4j</string>
 
     <string name="title_activity_type">Game types</string>
     <string name="title_challenge">Challenge game</string>
@@ -83,6 +111,7 @@
     <string name="victory_data">human victories: %1$d\ \nAI victories: %2$d\</string>
     <string name="victories_chart_label">Victories %</string>
     <string name="step_time_chart_label">Avg. step time of Players</string>
+    <string name="stats_chart_title">AI vs human victories</string>
     <string name="offline">Overall</string>
     <string name="challenge">Challenge</string>
     <string name="empty_challenge_db">Challenge data not available</string>

@@ -89,7 +89,7 @@ class MainActivity : AdActivity(), IMainView {
             exitDialog()
         }
 
-        initActivityAd(findViewById(R.id.mainAdView))
+        initActivityAd(this.findViewById(R.id.mainAdView))
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 

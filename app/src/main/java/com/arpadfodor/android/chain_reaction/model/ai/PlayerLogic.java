@@ -12,7 +12,7 @@ public class PlayerLogic {
 
     /**
      * DeepLearning4J Neural Network
-     * Pre-built hu.bme.aut.android.chain_reaction.model
+     * Pre-built model
      * input layer: 9 neurons
      * output layer: 9 neurons
      */
