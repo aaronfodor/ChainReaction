@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.aaronfodor.android.chain_reaction.view.StartChallengeActivity"
+        android:id="@+id/levelFragmentCoordinatorLayout">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintBottom_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rounded_fragment"
+            tools:context=".LevelFragment"
+            tools:showIn="@layout/fragment_level"
+            app:layout_constraintTop_toTopOf="@+id/glTop"
+            app:layout_constraintEnd_toStartOf="@+id/glEnd"
+            app:layout_constraintStart_toStartOf="@+id/glStart"
+            app:layout_constraintBottom_toTopOf="@+id/glBottom"
+    >
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewChallengePlayers"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:transcriptMode="alwaysScroll"
+                android:stackFromBottom="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/tvChallengeHeight"
+                app:layout_constraintStart_toStartOf="@+id/glLowStart"
+                app:layout_constraintEnd_toStartOf="@+id/glLowEnd"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"/>
+
+        <com.aaronfodor.android.chain_reaction.view.subclass.MainButton
+                android:id="@+id/buttonStartChallengeGame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/button_start_game"
+                android:background="@drawable/base_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"/>
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorMessage"
+                android:id="@+id/tvChallengeWidth"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonStartChallengeGame"/>
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorMessage"
+                android:id="@+id/tvChallengeHeight"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvChallengeWidth"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ivGamePlayable"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"/>
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/isCompletedLevelView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"/>
+
+        <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:id="@+id/glLowEnd"
+                                                    app:layout_constraintGuide_percent="0.8"
+                                                    android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:id="@+id/glLowStart"
+                                                    app:layout_constraintGuide_percent="0.2"
+                                                    android:orientation="vertical"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glStart"
+                                                app:layout_constraintGuide_percent="0.1"
+                                                android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glEnd"
+                                                app:layout_constraintGuide_percent="0.9"
+                                                android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glTop"
+                                                app:layout_constraintGuide_percent="0.05"
+                                                android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/glBottom"
+                                                app:layout_constraintGuide_percent="0.85"
+                                                android:orientation="horizontal"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

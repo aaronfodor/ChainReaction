@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "971610432652",
+    "firebase_url": "https://chain-reaction-a65e6.firebaseio.com",
+    "project_id": "chain-reaction-a65e6",
+    "storage_bucket": "chain-reaction-a65e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971610432652:android:21f534d1552dfc2ca607a9",
+        "android_client_info": {
+          "package_name": "com.aaronfodor.android.chain_reaction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971610432652-dc680dip09ssupvfel1s8o2lr3eccmhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXMqH1cHaUEVV552qIJZdIzW8dC1PeJKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971610432652-dc680dip09ssupvfel1s8o2lr3eccmhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
