@@ -1,8 +1,8 @@
 # Chain Reaction
 
-[<img src="https://user-images.githubusercontent.com/37120889/151682074-9b81ae45-3f5c-45dc-8962-fa158980e30f.png" width="150"/>](https://github.com/aaronfodor/ChainReaction)
+[<img src="https://user-images.githubusercontent.com/37120889/151682074-9b81ae45-3f5c-45dc-8962-fa158980e30f.png" width="150"/>](https://github.com/arpadfodor/ChainReaction)
 
-![](https://img.shields.io/github/license/aaronfodor/ChainReaction) 
+![](https://img.shields.io/github/license/arpadfodor/ChainReaction) 
 
 [<img src="https://user-images.githubusercontent.com/37120889/122966033-22a2b180-d389-11eb-8b13-f65fabed4bf7.png" alt="google-play-badge" width="200"/>](https://play.google.com/store/apps/details?id=com.aaronfodor.android.chain_reaction)
 
